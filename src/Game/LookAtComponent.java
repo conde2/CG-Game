@@ -32,7 +32,6 @@ public class LookAtComponent extends GameComponent
 	@Override
 	public void Update(float delta)
 	{
-		
 		if (!start)
 		{
 			x = GetTransform().GetPos().GetX();	

@@ -96,7 +96,7 @@ public class Window
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0, width, 0, height, -1, 1);
-		
+
 		glfwSetKeyCallback(window, Input.GetKeyboardCallback());
 		glfwSetMouseButtonCallback(window, Input.GetMouseCallback());
 		
@@ -109,6 +109,8 @@ public class Window
 	
 	public static void Render()
 	{
+	    //glClearColor(1.0f, 0.0f, 1.0f, 0.0f); 
+	    //glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapBuffers(window);
 
 	}

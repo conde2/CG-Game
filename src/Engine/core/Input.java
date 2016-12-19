@@ -41,8 +41,7 @@ public final class Input {
     private static long mouseDoubleClickPeriodNS = 1000000000 / 5; //5th of a second for double click.
 
     private static int NO_STATE = -1;
-    
-    
+
     private static class InputLoad {
         private static final Input INSTANCE = new Input();
     }
@@ -120,9 +119,7 @@ public final class Input {
 		
 		glfwPollEvents();
 	}
-	
-	
-	
+
     public static boolean IsKeyDown(int key)
     {
         return activeKeys[key];

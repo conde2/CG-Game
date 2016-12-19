@@ -34,7 +34,9 @@ public class Texture
 	private static HashMap<String, TextureResource> s_loadedTextures = new HashMap<String, TextureResource>();
 	private TextureResource m_resource;
 	private String          m_fileName;
-	
+	private int 			m_height = 0;
+	private int 			m_widith = 0;
+
 	public Texture(String fileName)
 	{
 		this.m_fileName = fileName;
@@ -47,7 +49,7 @@ public class Texture
 		}
 		else
 		{
-			m_resource = LoadTexture(fileName);
+			m_resource = Load(fileName);
 			s_loadedTextures.put(fileName, m_resource);
 		}
 	}
@@ -76,6 +78,69 @@ public class Texture
 	public int GetID()
 	{
 		return m_resource.GetId();
+	}
+	
+	public int getHeight()
+	{
+		return m_height;
+	}
+
+	public int getWidth()
+	{
+		return m_widith;
+	}
+	
+	private TextureResource Load(String fileName)
+	{
+		try
+		{
+			BufferedImage image = ImageIO.read(new File("./res/textures/" + fileName));
+			int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+
+			ByteBuffer buffer = Util.CreateByteBuffer(image.getHeight() * image.getWidth() * 4);
+			boolean hasAlpha = image.getColorModel().hasAlpha();
+
+			m_height = image.getHeight();
+			m_widith = image.getWidth();
+			
+			for(int y = 0; y < m_height; y++)
+			{
+				for(int x = 0; x < m_widith; x++)
+				{
+					int pixel = pixels[y * m_widith + x];
+
+					buffer.put((byte)((pixel >> 16) & 0xFF));
+					buffer.put((byte)((pixel >> 8) & 0xFF));
+					buffer.put((byte)((pixel) & 0xFF));
+					if(hasAlpha)
+						buffer.put((byte)((pixel >> 24) & 0xFF));
+					else
+						buffer.put((byte)(0xFF));
+				}
+			}
+
+			buffer.flip();
+
+			TextureResource resource = new TextureResource();
+			glBindTexture(GL_TEXTURE_2D, resource.GetId());
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+			return resource;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		return null;
 	}
 	
 	private static TextureResource LoadTexture(String fileName)
