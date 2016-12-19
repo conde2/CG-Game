@@ -49,15 +49,13 @@ public class FreeLook extends GameComponent
 
 		if(Input.IsKeyPressed(m_unlockMouseKey))
 		{
-			System.out.println("Call E");
-			//Input.SetCursor(true);
+			Input.SetCursorEnabled();
 			m_mouseLocked = false;
 		}
 		if(Input.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
 		{
-			System.out.println("Call M");
 			Input.SetMousePosition(centerPosition);
-			//Input.SetCursor(false);
+			Input.SetCursorDisabled();
 			m_mouseLocked = true;
 		}
 

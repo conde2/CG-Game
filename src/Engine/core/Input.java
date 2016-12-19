@@ -42,6 +42,7 @@ public final class Input {
 
     private static int NO_STATE = -1;
     
+    
     private static class InputLoad {
         private static final Input INSTANCE = new Input();
     }
@@ -188,5 +189,28 @@ public final class Input {
 	{
 		glfwSetCursorPos(Window.getCurrentWindow(), pos.GetX(), pos.GetY());
 	}
+
+	public static void SetCursorDisabled()
+	{
+		glfwSetInputMode(Window.getCurrentWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+	
+	public static void SetCursorDisabled(boolean canLeaveWindow)
+	{
+		if (canLeaveWindow)
+		{
+			glfwSetInputMode(Window.getCurrentWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		}
+		else
+		{
+			glfwSetInputMode(Window.getCurrentWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
+	}
+	
+	public static void SetCursorEnabled()
+	{
+		glfwSetInputMode(Window.getCurrentWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+	
 
 }
