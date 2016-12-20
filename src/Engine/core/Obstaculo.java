@@ -27,13 +27,13 @@ public class Obstaculo extends GameObject
 {
 	float radius;
 	int nCircles;
-	public Obstaculo(float r,int n,Vector3f v)
+	public Obstaculo(float radius,int numberOfCircles,Vector3f center)
 	{
 		super();
-		GetTransform().SetPos(v);
-		radius = r;
-		nCircles = n;
-		float littleRadius = (float)Math.abs(Math.PI*radius/nCircles);	
+		GetTransform().SetPos(center);
+		this.radius = radius;
+		nCircles = numberOfCircles;
+		float littleRadius = (float)Math.floor(Math.PI*radius/nCircles);	
 		for(int i=0;i<nCircles;i++){
 			GameObject circle = new GameObject();
 			Circulo circuloComponent = new Circulo(littleRadius);
