@@ -27,11 +27,13 @@ public class Obstaculo extends GameObject
 {
 	float radius;
 	int nCircles;
-	public Obstaculo(float radius,int numberOfCircles,Vector3f center)
+	int speed;
+	public Obstaculo(float radius,int numberOfCircles,Vector3f center,int speed)
 	{
 		super();
 		GetTransform().SetPos(center);
 		this.radius = radius;
+		this.speed=speed;
 		nCircles = numberOfCircles;
 		float littleRadius = (float)Math.floor(Math.PI*radius/nCircles);	
 		for(int i=0;i<nCircles;i++){
@@ -44,19 +46,26 @@ public class Obstaculo extends GameObject
 		}
 	}
 	
+	public void SetSpeed(int s){
+		speed=s;
+	}
+	
+	public int GetSpeed(int s){
+		return speed;
+	}
+	
 	public void UpdateAll(float delta)
 	{
 		Update(delta);
-
 		for(GameObject child : m_children){
-			//ArrayList<GameObject> child = GetAllAttached();
+			//MOVE OBJETO
 			//TRANSLADA PARA 0,0 o centro e tira 20*delta
 			child.GetTransform().SetPos(child.GetTransform().GetPos().Add(new Vector3f(
 																	-GetTransform().GetPos().GetX(),
-																	-GetTransform().GetPos().GetY()-20*delta,0.0f)));
+																	-GetTransform().GetPos().GetY()-20*speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
 			//Rotaciona delta graus
-			child.GetTransform().SetPos(new Vector3f((float)(child.GetTransform().GetPos().GetX()*Math.cos(delta)- child.GetTransform().GetPos().GetY()*Math.sin(delta)),
-															(float)(child.GetTransform().GetPos().GetX()*Math.sin(delta)+ child.GetTransform().GetPos().GetY()*Math.cos(delta)),0.0f));
+			child.GetTransform().SetPos(new Vector3f((float)(child.GetTransform().GetPos().GetX()*Math.cos(speed*delta)- child.GetTransform().GetPos().GetY()*Math.sin(speed*delta)),
+															(float)(child.GetTransform().GetPos().GetX()*Math.sin(speed*delta)+ child.GetTransform().GetPos().GetY()*Math.cos(speed*delta)),0.0f));
 			//Retorna centro ao ponto original
 			child.GetTransform().SetPos(child.GetTransform().GetPos().Add(new Vector3f(
 																	GetTransform().GetPos().GetX(),
@@ -65,10 +74,21 @@ public class Obstaculo extends GameObject
 			child.UpdateAll(delta);
 		}
 	}
+	
+	public boolean Collision(Vector3f ponto){
+		for(GameObject child : m_children)
+			for(GameComponent circle: child.m_components)
+				if (circle instanceof Circulo){
+					if(((Circulo) circle).Inside(ponto))
+						return true;
+				}
+			
+		return false;
+	}
 
 	public void Update(float delta)
 	{
-		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-20*delta,0.0f))); //adiciona delta em Y atual
+		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-20*speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro do obstaculo
 		for(GameComponent component : m_components)
 			component.Update(delta);
 	}

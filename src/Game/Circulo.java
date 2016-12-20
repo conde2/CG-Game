@@ -25,7 +25,7 @@ public class Circulo extends GameComponent{
   		double xx = radius;//we start at angle = 0 
   		double yy = 0; 
   	    
-  		if (fill==true)
+  		if (IsFilled())
   		{
   			glBegin(GL_TRIANGLE_FAN);
   		}
@@ -53,6 +53,16 @@ public class Circulo extends GameComponent{
 				< Math.pow(radius,2))
 			return true;
 		return false;
+	}
+	
+	public void SetFill(){
+		fill= true;
+	}
+	public void SetEmpty(){
+		fill= false;	
+	}
+	public boolean IsFilled(){
+		return fill;	
 	}
 	
 	/*public void Update(float delta){
