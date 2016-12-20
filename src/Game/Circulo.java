@@ -9,7 +9,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Circulo extends GameComponent{
 	
-	boolean fill=true;
+	boolean fill=false;
 	float radius=0;
 	Circulo(float r){
 		this.radius=r;
@@ -53,6 +53,10 @@ public class Circulo extends GameComponent{
 				< Math.pow(radius,2))
 			return true;
 		return false;
+	}
+	
+	public void Update(float delta){
+		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,delta,0.0f))); //adiciona delta em Y atual
 	}
 	
 }

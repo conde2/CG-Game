@@ -31,7 +31,7 @@ public class TestGame extends Game
 				(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f)));
 		
 		GameObject player = new GameObject();
-		Circulo circuloComponrnt = new Circulo(150.0f);
+		Circulo circuloComponrnt = new Circulo(20.0f);
 		player.GetTransform().SetPos(new Vector3f(200.0f,200.0f,0.0f));
 		Sprite playerSprite = new Sprite(new Texture("circulo.png"));
 		playerSprite.setScale(new Vector3f(0.5f, 0.5f, 1.0f));
