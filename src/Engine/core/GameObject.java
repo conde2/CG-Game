@@ -24,10 +24,10 @@ import java.util.ArrayList;
 
 public class GameObject
 {
-	private ArrayList<GameObject> m_children;
-	private ArrayList<GameComponent> m_components;
-	private Transform m_transform;
-	private CoreEngine m_engine;
+	protected ArrayList<GameObject> m_children;
+	protected ArrayList<GameComponent> m_components;
+	protected Transform m_transform;
+	protected CoreEngine m_engine;
 
 	public GameObject()
 	{

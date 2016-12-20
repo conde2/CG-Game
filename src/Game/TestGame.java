@@ -36,9 +36,11 @@ public class TestGame extends Game
 		Sprite playerSprite = new Sprite(new Texture("circulo.png"));
 		playerSprite.setScale(new Vector3f(0.5f, 0.5f, 1.0f));
 		player.AddComponent(circuloComponrnt);
+		Obstaculo obstacle= new Obstaculo(60.0f,10,new Vector3f(500.0f,500.0f,0.0f));
 
 		AddObject(camera);
 		AddObject(player);
+		AddObject(obstacle);
 		
 	}
 }

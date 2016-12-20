@@ -11,7 +11,7 @@ public class Circulo extends GameComponent{
 	
 	boolean fill=false;
 	float radius=0;
-	Circulo(float r){
+	public Circulo(float r){
 		this.radius=r;
 	}
 	
@@ -55,8 +55,8 @@ public class Circulo extends GameComponent{
 		return false;
 	}
 	
-	public void Update(float delta){
-		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,delta,0.0f))); //adiciona delta em Y atual
-	}
+	/*public void Update(float delta){
+		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-20*delta,0.0f))); //adiciona delta em Y atual
+	}*/
 	
 }
