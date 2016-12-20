@@ -11,8 +11,12 @@ public class Circulo extends GameComponent{
 	
 	boolean fill=false;
 	float radius=0;
-	public Circulo(float r){
-		this.radius=r;
+	public Circulo(float radius){
+		this.radius=radius;
+	}
+	public Circulo(float radius,boolean filled){
+		this(radius);
+		fill=filled;
 	}
 	
 	public void Render(Shader shader, RenderingEngine renderingEngine) {
