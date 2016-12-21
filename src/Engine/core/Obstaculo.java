@@ -16,10 +16,10 @@
 
 package Engine.core;
 
+import Engine.components.Circulo;
 import Engine.components.GameComponent;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Shader;
-import Game.Circulo;
 
 import java.util.ArrayList;
 
@@ -54,6 +54,7 @@ public class Obstaculo extends GameObject
 		return speed;
 	}
 	
+	@Override
 	public void UpdateAll(float delta)
 	{
 		Update(delta);
@@ -85,10 +86,11 @@ public class Obstaculo extends GameObject
 			
 		return false;
 	}
-
+	@Override
 	public void Update(float delta)
 	{
 		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-20*speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro do obstaculo
+		//GetTransform().Rotate(new Vector3f(1,1,0),10);
 		for(GameComponent component : m_components)
 			component.Update(delta);
 	}

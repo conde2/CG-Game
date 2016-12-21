@@ -1,6 +1,5 @@
-package Game;
+package Engine.components;
 
-import Engine.components.GameComponent;
 import Engine.core.*;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Shader;
@@ -18,7 +17,7 @@ public class Circulo extends GameComponent{
 		this(radius);
 		fill=filled;
 	}
-	
+	@Override
 	public void Render(Shader shader, RenderingEngine renderingEngine) {
 		glColor3f(1.0f, 0.0f, 0.0f);
         double theta = (2.0f * Math.PI) / 360.0f; 

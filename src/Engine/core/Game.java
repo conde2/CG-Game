@@ -44,7 +44,7 @@ public abstract class Game
 		GetRootObject().AddChild(object);
 	}
 
-	private GameObject GetRootObject()
+	protected GameObject GetRootObject()
 	{
 		if(m_root == null)
 			m_root = new GameObject();

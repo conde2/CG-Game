@@ -16,65 +16,42 @@
 
 package Engine.core;
 
+import Engine.components.Circulo;
+import Engine.components.FreeMove;
 import Engine.components.GameComponent;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Shader;
 
 import java.util.ArrayList;
 
-public class GameObject
+public class Player extends GameObject
 {
-	protected ArrayList<GameObject> m_children;
-	protected ArrayList<GameComponent> m_components;
-	protected Transform m_transform;
-	protected CoreEngine m_engine;
-
-	public GameObject()
+	float radius;
+	public Player(float radius,int speed)
 	{
-		m_children = new ArrayList<GameObject>();
-		m_components = new ArrayList<GameComponent>();
-		m_transform = new Transform();
-		m_engine = null;
+		super();
+		this.radius = radius;
+		GetTransform().SetPos(new Vector3f(400.0f,radius,0.0f));
+		AddComponent(new FreeMove(speed));
+		Circulo circuloComponent = new Circulo(radius);
+		AddComponent(circuloComponent);
+	}
+	
+	public ArrayList<Vector3f> Circumference(){
+		ArrayList<Vector3f> lista = new ArrayList<Vector3f>();
+		lista.add(GetTransform().GetPos().Add(new Vector3f(radius,0.0f,0.0f)));
+		lista.add(GetTransform().GetPos().Add(new Vector3f(0.0f,radius,0.0f)));
+		lista.add(GetTransform().GetPos().Add(new Vector3f(0.0f,-radius,0.0f)));
+		return lista;
 	}
 
-	public GameObject AddChild(GameObject child)
-	{
-		m_children.add(child);
-		child.SetEngine(m_engine);
-		child.GetTransform().SetParent(m_transform);
-		
-		return this;
-	}
-
-	public GameObject AddComponent(GameComponent component)
-	{
-		m_components.add(component);
-		component.SetParent(this);
-
-		return this;
-	}
-
-	public void InputAll(float delta)
-	{
-		Input(delta);
-
-		for(GameObject child : m_children)
-			child.InputAll(delta);
-	}
-
-	public void UpdateAll(float delta)
-	{
-		Update(delta);
-
-		for(GameObject child : m_children)
-			child.UpdateAll(delta);
-	}
-
+	
+	/*
 	public void RenderAll(Shader shader, RenderingEngine renderingEngine)
 	{
 		Render(shader, renderingEngine);
 
-		for(GameObject child : m_children)
+		for(Obstaculo child : m_children)
 			child.RenderAll(shader, renderingEngine);
 	}
 
@@ -86,35 +63,20 @@ public class GameObject
 			component.Input(delta);
 	}
 
-	public void Update(float delta)
-	{
-		for(GameComponent component : m_components)
-			component.Update(delta);
-	}
-
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
 		for(GameComponent component : m_components)
 			component.Render(shader, renderingEngine);
 	}
 
-	public ArrayList<GameObject> GetAllAttached()
+	public ArrayList<Obstaculo> GetAllAttached()
 	{
-		ArrayList<GameObject> result = new ArrayList<GameObject>();
+		ArrayList<Obstaculo> result = new ArrayList<Obstaculo>();
 
-		for(GameObject child : m_children)
+		for(Obstaculo child : m_children)
 			result.addAll(child.GetAllAttached());
 
 		result.add(this);
-		return result;
-	}
-	public ArrayList<GameComponent> GetAllComponents()
-	{
-		ArrayList<GameComponent> result = new ArrayList<GameComponent>();
-
-		for(GameComponent component : m_components)
-			result.add(component);
-
 		return result;
 	}
 
@@ -132,8 +94,8 @@ public class GameObject
 			for(GameComponent component : m_components)
 				component.AddToEngine(engine);
 
-			for(GameObject child : m_children)
+			for(Obstaculo child : m_children)
 				child.SetEngine(engine);
 		}
-	}
+	}*/
 }
