@@ -16,6 +16,7 @@
 
 package Engine.core;
 
+import Engine.components.GameComponent;
 import Engine.rendering.RenderingEngine;
 
 public abstract class Game
@@ -32,6 +33,39 @@ public abstract class Game
 	public void Update(float delta)
 	{
 		GetRootObject().UpdateAll(delta);
+		CheckCollision();
+	}
+	
+	public void CheckCollision()
+	{
+		for(GameObject child : GetRootObject().GetAllAttached())
+		{
+			if (child.GetCollider() == null)
+				continue;
+					
+			for(GameObject other :  GetRootObject().GetAllAttached())
+			{
+				if (other.GetCollider() == null)
+					continue;
+				
+				if (child == other)
+					continue;
+				
+				if (child.GetCollider().Intersect(other.GetCollider()))
+				{
+					for(GameComponent component : child.GetAllComponents()) 
+					{
+						component.OnCollide(other);
+					}
+						for(GameComponent component : other.GetAllComponents()) 
+					{
+						component.OnCollide(child);
+					}
+				}
+
+			}
+		}
+
 	}
 
 	public void Render(RenderingEngine renderingEngine)

@@ -16,11 +16,16 @@
 
 package Game;
 
-import java.util.ArrayList;
+import Engine.collision.BoundingSphere;
+import Engine.collision.Collider;
+
+//import java.util.ArrayList;
 
 import Engine.components.*;
 import Engine.core.*;
 import Engine.rendering.*;
+import Game.components.ObstacleManager;
+import Game.components.Player;
 
 public class TestGame extends Game
 {
@@ -32,19 +37,31 @@ public class TestGame extends Game
 		GameObject camera = new GameObject();
 		camera.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(90.0f),
 				(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f)));
+
+		GameObject player = new GameObject();
+		Player playerComponent = new Player();
+		player.AddComponent(playerComponent);
 		
-		Player player = new Player(10,50);
-		//Sprite playerSprite = new Sprite(new Texture("circulo.png"));
-		//playerSprite.setScale(new Vector3f(0.5f, 0.5f, 1.0f));
-		Obstaculo obstacle= new Obstaculo(70.0f,10,new Vector3f(400.0f,500.0f,0.0f),1);
+		BoundingSphere boundingSphere = new BoundingSphere(player.GetTransform().GetPos(), 10);
+		Collider collider = new Collider(boundingSphere);
+		player.AddComponent(collider);
+		
+		Circulo circuloComponent = new Circulo(10.0f);
+		player.AddComponent(circuloComponent);
+		
+		player.AddComponent(new FreeMove(80.0f));
+		
+
+		GameObject obstacleManager = new GameObject();
+		ObstacleManager obstacleManagerComponent = new ObstacleManager();
+		obstacleManager.AddComponent(obstacleManagerComponent);
 
 		AddObject(camera);
 		AddObject(player);
-		AddObject(obstacle);
-		
+		AddObject(obstacleManager);
 	}
 	
-	@Override
+	/*@Override
 	public void Update(float delta) {
 		super.Update(delta);
 		
@@ -64,7 +81,7 @@ public class TestGame extends Game
 					
 				
 			
+	
 		
-		
-	}
+	}*/
 }

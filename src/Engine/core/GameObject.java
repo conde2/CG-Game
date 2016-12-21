@@ -16,6 +16,7 @@
 
 package Engine.core;
 
+import Engine.collision.Collider;
 import Engine.components.GameComponent;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Shader;
@@ -24,10 +25,11 @@ import java.util.ArrayList;
 
 public class GameObject
 {
-	protected ArrayList<GameObject> m_children;
-	protected ArrayList<GameComponent> m_components;
-	protected Transform m_transform;
-	protected CoreEngine m_engine;
+	private ArrayList<GameObject> m_children;
+	private ArrayList<GameComponent> m_components;
+	private Transform m_transform;
+	private Collider m_collider;
+	private CoreEngine m_engine;
 
 	public GameObject()
 	{
@@ -35,6 +37,7 @@ public class GameObject
 		m_components = new ArrayList<GameComponent>();
 		m_transform = new Transform();
 		m_engine = null;
+		m_collider = null;
 	}
 
 	public GameObject AddChild(GameObject child)
@@ -48,8 +51,14 @@ public class GameObject
 
 	public GameObject AddComponent(GameComponent component)
 	{
+		if (component instanceof Collider)
+		{
+			m_collider = (Collider)component;
+		}
+
 		m_components.add(component);
 		component.SetParent(this);
+		component.Start();
 
 		return this;
 	}
@@ -69,7 +78,17 @@ public class GameObject
 		for(GameObject child : m_children)
 			child.UpdateAll(delta);
 	}
+	
+	public Collider GetCollider()
+	{
+		return m_collider;
+	}
 
+	public void CheckCollisionAll()
+	{
+
+	}
+	
 	public void RenderAll(Shader shader, RenderingEngine renderingEngine)
 	{
 		Render(shader, renderingEngine);
@@ -108,6 +127,16 @@ public class GameObject
 		result.add(this);
 		return result;
 	}
+	
+    public <U extends GameComponent> U GetComponent(Class<U> clazz) {
+        for (GameComponent component : m_components) {
+            if (clazz.isInstance(component)) {
+                return clazz.cast(component);
+            }
+        }
+        return null;
+    }
+	
 	public ArrayList<GameComponent> GetAllComponents()
 	{
 		ArrayList<GameComponent> result = new ArrayList<GameComponent>();

@@ -26,13 +26,20 @@ public abstract class GameComponent
 {
 	private GameObject m_parent;
 
+	public void Start() {};
 	public void Input(float delta) {}
 	public void Update(float delta) {}
+	public void OnCollide(GameObject object) {}
 	public void Render(Shader shader, RenderingEngine renderingEngine) {}
 
 	public void SetParent(GameObject parent)
 	{
 		this.m_parent = parent;
+	}
+	
+	public GameObject GetParent()
+	{
+		return m_parent;
 	}
 
 	public Transform GetTransform()
