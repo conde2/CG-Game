@@ -31,12 +31,13 @@ public class TestGame extends Game
 				(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f)));
 		
 		GameObject player = new GameObject();
-		Circulo circuloComponrnt = new Circulo(20.0f);
-		player.GetTransform().SetPos(new Vector3f(200.0f,200.0f,0.0f));
-		Sprite playerSprite = new Sprite(new Texture("circulo.png"));
-		playerSprite.setScale(new Vector3f(0.5f, 0.5f, 1.0f));
-		player.AddComponent(circuloComponrnt);
-		Obstaculo obstacle= new Obstaculo(50.0f,10,new Vector3f(500.0f,500.0f,0.0f),1);
+		Circulo circuloComponent = new Circulo(10.0f);
+		player.GetTransform().SetPos(new Vector3f(400.0f,200.0f,0.0f));
+		//Sprite playerSprite = new Sprite(new Texture("circulo.png"));
+		//playerSprite.setScale(new Vector3f(0.5f, 0.5f, 1.0f));
+		player.AddComponent(new FreeMove(50));
+		player.AddComponent(circuloComponent);
+		Obstaculo obstacle= new Obstaculo(70.0f,10,new Vector3f(400.0f,500.0f,0.0f),1);
 
 		AddObject(camera);
 		AddObject(player);

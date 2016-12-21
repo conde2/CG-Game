@@ -64,8 +64,8 @@ public class Obstaculo extends GameObject
 																	-GetTransform().GetPos().GetX(),
 																	-GetTransform().GetPos().GetY()-20*speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
 			//Rotaciona delta graus
-			child.GetTransform().SetPos(new Vector3f((float)(child.GetTransform().GetPos().GetX()*Math.cos(speed*delta)- child.GetTransform().GetPos().GetY()*Math.sin(speed*delta)),
-															(float)(child.GetTransform().GetPos().GetX()*Math.sin(speed*delta)+ child.GetTransform().GetPos().GetY()*Math.cos(speed*delta)),0.0f));
+			child.GetTransform().SetPos(new Vector3f((float)(child.GetTransform().GetPos().GetX()*Math.cos(speed*delta/5)- child.GetTransform().GetPos().GetY()*Math.sin(speed*delta/5)),
+															(float)(child.GetTransform().GetPos().GetX()*Math.sin(speed*delta/5)+ child.GetTransform().GetPos().GetY()*Math.cos(speed*delta/5)),0.0f));
 			//Retorna centro ao ponto original
 			child.GetTransform().SetPos(child.GetTransform().GetPos().Add(new Vector3f(
 																	GetTransform().GetPos().GetX(),

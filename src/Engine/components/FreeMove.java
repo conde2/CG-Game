@@ -49,9 +49,9 @@ public class FreeMove extends GameComponent
 		float movAmt = m_speed * delta;
 
 		if(Input.IsKeyDown(m_forwardKey))
-			Move(GetTransform().GetRot().GetForward(), movAmt);
+			Move(GetTransform().GetRot().GetUp(), movAmt);
 		if(Input.IsKeyDown(m_backKey))
-			Move(GetTransform().GetRot().GetForward(), -movAmt);
+			Move(GetTransform().GetRot().GetDown(), movAmt);
 		if(Input.IsKeyDown(m_leftKey))
 			Move(GetTransform().GetRot().GetLeft(), movAmt);
 		if(Input.IsKeyDown(m_rightKey))
