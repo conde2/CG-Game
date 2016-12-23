@@ -10,6 +10,7 @@ public class Circulo extends GameComponent{
 	
 	boolean fill=false;
 	float radius=0;
+	Vector3f color=new Vector3f(1.0f, 0.0f, 0.0f);
 	public Circulo(float radius){
 		this.radius=radius;
 	}
@@ -17,9 +18,13 @@ public class Circulo extends GameComponent{
 		this(radius);
 		fill=filled;
 	}
+	public Circulo(float radius,boolean filled, Vector3f color){
+		this(radius,filled);
+		this.color=color;
+	}
 	@Override
 	public void Render(Shader shader, RenderingEngine renderingEngine) {
-		glColor3f(1.0f, 0.0f, 0.0f);
+		glColor3f(color.GetX(),color.GetY(),color.GetZ());
         double theta = (2.0f * Math.PI) / 360.0f; 
   		double c = Math.cos(theta);//precalculate the sine and cosine
   		double s = Math.sin(theta);
@@ -66,6 +71,13 @@ public class Circulo extends GameComponent{
 	}
 	public boolean IsFilled(){
 		return fill;	
+	}
+	
+	public void SetColor(Vector3f color){
+		this.color=color;
+	}
+	public Vector3f GetColor(){
+		return color;
 	}
 	
 	/*public void Update(float delta){
