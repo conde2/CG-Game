@@ -30,7 +30,22 @@ public class ObstacleManager extends GameComponent
 	public int m_numberOfObstacles = 10;
 	public Vector3f m_center = new Vector3f(400.0f, 500.0f, 0.0f);
 	public ArrayList<GameObject> m_obstacles;
-
+	public enum Cores{
+		BRANCO(new Vector3f(1.0f, 1.0f, 1.0f)),VERMELHO(new Vector3f(1.0f, 0.0f, 0.0f));
+		
+		public Vector3f cor;
+		
+		Cores(Vector3f cor){
+			this.cor = cor;
+		}
+		
+		public Vector3f getCor(){
+			return cor;
+		}
+	
+		
+		
+	}
 	@Override
 	public void Start()
 	{
@@ -42,6 +57,7 @@ public class ObstacleManager extends GameComponent
 		{
 			
 			GameObject circle = new GameObject();
+			circle.SetColor(Cores.VERMELHO.getCor());
 			
 			BoundingSphere boundingSphere = new BoundingSphere(m_center, littleRadius);
 			Collider collider = new Collider(boundingSphere);
