@@ -51,13 +51,15 @@ public abstract class Game
 				if (child == other)
 					continue;
 				
-				if (child.GetCollider().Intersect(other.GetCollider()))
+				if (child.GetCollider().Intersect(other.GetCollider())
+						&& child.GetColor()!=other.GetColor()) //se tem intersecção
 				{
+					//rotina de colisao para child e other e seus componentes
 					for(GameComponent component : child.GetAllComponents()) 
 					{
 						component.OnCollide(other);
 					}
-						for(GameComponent component : other.GetAllComponents()) 
+					for(GameComponent component : other.GetAllComponents()) 
 					{
 						component.OnCollide(child);
 					}

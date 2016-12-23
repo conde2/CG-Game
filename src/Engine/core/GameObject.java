@@ -30,6 +30,7 @@ public class GameObject
 	private Transform m_transform;
 	private Collider m_collider;
 	private CoreEngine m_engine;
+	private Vector3f m_color;
 
 	public GameObject()
 	{
@@ -38,6 +39,7 @@ public class GameObject
 		m_transform = new Transform();
 		m_engine = null;
 		m_collider = null;
+		m_color = new Vector3f(1.0f, 0.0f, 0.0f);
 	}
 
 	public GameObject AddChild(GameObject child)
@@ -164,5 +166,12 @@ public class GameObject
 			for(GameObject child : m_children)
 				child.SetEngine(engine);
 		}
+	}
+	
+	public void SetColor(Vector3f color){
+		this.m_color=color;
+	}
+	public Vector3f GetColor(){
+		return m_color;
 	}
 }
