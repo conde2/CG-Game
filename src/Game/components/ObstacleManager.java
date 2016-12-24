@@ -37,13 +37,13 @@ public class ObstacleManager extends GameComponent
             VERDE(new Vector3f(0.0f,1.0f,0.0f)),
             AZUL(new Vector3f(0.0f, 0.0f, 1.0f));
 		
-		public Vector3f cor;
+		private final  Vector3f cor;
 		
 		Cores(Vector3f cor){
 			this.cor = cor;
 		}
 		
-		public Vector3f getCor(){
+		private Vector3f getCor(){
 			return cor;
 		}
 	}
@@ -60,13 +60,8 @@ public class ObstacleManager extends GameComponent
 			
 			GameObject circle = new GameObject();
 			// Usando as 3 cores (mod 3 para definir)
-            int resto = i % 3;
-            if (resto == 0)
-			    circle.SetColor(Cores.AZUL.getCor());
-            else if (resto == 1)
-                circle.SetColor(Cores.VERDE.getCor());
-            else
-                circle.SetColor(Cores.BRANCO.getCor());
+			circle.SetColor(Cores.values()[i%Cores.values().length].getCor()); //pega a inesima cor do enum, modulado no numero de cores total do enum
+           
 			
 			BoundingSphere boundingSphere = new BoundingSphere(m_center, littleRadius);
 			Collider collider = new Collider(boundingSphere);
