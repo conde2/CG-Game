@@ -25,13 +25,17 @@ import java.util.ArrayList;
 
 public class ObstacleManager extends GameComponent
 {
-	public float m_radius = 70.0f;
+	public float m_radius = 100.0f;
 	public float m_speed = 1.0f;
-	public int m_numberOfObstacles = 10;
-	public Vector3f m_center = new Vector3f(400.0f, 500.0f, 0.0f);
+	public int m_numberOfObstacles = 9;
+	public Vector3f m_center = new Vector3f(150.0f, 600.0f, 0.0f);
 	public ArrayList<GameObject> m_obstacles;
+
 	public enum Cores{
-		BRANCO(new Vector3f(1.0f, 1.0f, 1.0f)),VERMELHO(new Vector3f(1.0f, 0.0f, 0.0f));
+		BRANCO(new Vector3f(1.0f, 1.0f, 1.0f)),
+            VERMELHO(new Vector3f(1.0f, 0.0f, 0.0f)),
+            VERDE(new Vector3f(0.0f,1.0f,0.0f)),
+            AZUL(new Vector3f(0.0f, 0.0f, 1.0f));
 		
 		public Vector3f cor;
 		
@@ -42,10 +46,8 @@ public class ObstacleManager extends GameComponent
 		public Vector3f getCor(){
 			return cor;
 		}
-	
-		
-		
 	}
+
 	@Override
 	public void Start()
 	{
@@ -57,7 +59,14 @@ public class ObstacleManager extends GameComponent
 		{
 			
 			GameObject circle = new GameObject();
-			circle.SetColor(Cores.VERMELHO.getCor());
+			// Usando as 3 cores (mod 3 para definir)
+            int resto = i % 3;
+            if (resto == 0)
+			    circle.SetColor(Cores.AZUL.getCor());
+            else if (resto == 1)
+                circle.SetColor(Cores.VERDE.getCor());
+            else
+                circle.SetColor(Cores.BRANCO.getCor());
 			
 			BoundingSphere boundingSphere = new BoundingSphere(m_center, littleRadius);
 			Collider collider = new Collider(boundingSphere);

@@ -50,10 +50,11 @@ public abstract class Game
 				
 				if (child == other)
 					continue;
-				
+
 				if (child.GetCollider().Intersect(other.GetCollider())
-						&& child.GetColor()!=other.GetColor()) //se tem intersecção
+						&& !child.GetColor().equals(other.GetColor())) //se tem intersecï¿½ï¿½o
 				{
+					System.out.println("Cores Child: " + child.GetColor() + "other: " + other.GetColor());
 					//rotina de colisao para child e other e seus componentes
 					for(GameComponent component : child.GetAllComponents()) 
 					{

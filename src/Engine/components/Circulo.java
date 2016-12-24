@@ -37,7 +37,7 @@ public class Circulo extends GameComponent{
   			glBegin(GL_LINE_LOOP);
   		}
 
-  		for(int i = 0; i < 360; i++) 
+  		for(int i = 0; i < 360; i++)
   		{ 
   			glVertex2d(xx + GetTransform().GetPos().GetX(), yy + GetTransform().GetPos().GetY());//output vertex 
   	        
