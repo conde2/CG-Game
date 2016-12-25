@@ -29,7 +29,7 @@ public class ObstacleManager extends GameComponent
 	public float m_radius = 100.0f;
 	public float m_speed = 2.0f;
 	public int m_numberOfObstacles = 10;
-	public Vector3f m_center = new Vector3f(150.0f, 600.0f, 0.0f);
+	public Vector3f m_center = new Vector3f(125.0f, 600.0f, 0.0f);
 	public ArrayList<GameObject> m_obstacles;
 
 	public static enum Cores{

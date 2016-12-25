@@ -29,7 +29,7 @@ import Game.components.Player;
 
 public class TestGame extends Game
 {
-
+	GameObject obstacleManager = new GameObject();
 	public void Init()
 	{
 
@@ -49,11 +49,11 @@ public class TestGame extends Game
 		Circulo circuloComponent = new Circulo(10.0f,false);
 		player.AddComponent(circuloComponent);
 		player.SetColor(new Vector3f(1.0f, 1.0f, 1.0f));
+		player.GetTransform().SetPos(new Vector3f((float) Window.GetWidth() /2,(float) Window.GetHeight()/2,0.0f));
 		
 		player.AddComponent(new FreeMove(80.0f));
 		
-
-		GameObject obstacleManager = new GameObject();
+		
 		ObstacleManager obstacleManagerComponent = new ObstacleManager();
 		obstacleManager.AddComponent(obstacleManagerComponent);
 
@@ -61,6 +61,17 @@ public class TestGame extends Game
 		AddObject(player);
 		AddObject(obstacleManager);
 	}
+	@Override
+	public void Update(float delta) {
+		super.Update(delta);
+		if(obstacleManager.GetTransform().GetPos().GetY()<-100){
+			obstacleManager = new GameObject();
+			ObstacleManager obstacleManagerComponent = new ObstacleManager();
+			obstacleManager.AddComponent(obstacleManagerComponent);
+			AddObject(obstacleManager);
+		}
+	}
+	
 	
 	/*@Override
 	public void Update(float delta) {
