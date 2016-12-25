@@ -16,6 +16,8 @@
 
 package Game;
 
+import java.util.Random;
+
 import Engine.collision.BoundingSphere;
 import Engine.collision.Collider;
 
@@ -26,10 +28,13 @@ import Engine.core.*;
 import Engine.rendering.*;
 import Game.components.ObstacleManager;
 import Game.components.Player;
+import Game.components.ObstacleManager.Cores;
 
 public class TestGame extends Game
 {
 	GameObject obstacleManager = new GameObject();
+	float speed=2.0f;
+	Random randomNum = new Random();
 	public void Init()
 	{
 
@@ -54,7 +59,7 @@ public class TestGame extends Game
 		player.AddComponent(new FreeMove(80.0f));
 		
 		
-		ObstacleManager obstacleManagerComponent = new ObstacleManager();
+		ObstacleManager obstacleManagerComponent = new ObstacleManager(speed,5+randomNum.nextInt(5));
 		obstacleManager.AddComponent(obstacleManagerComponent);
 
 		AddObject(camera);
@@ -66,7 +71,7 @@ public class TestGame extends Game
 		super.Update(delta);
 		if(obstacleManager.GetTransform().GetPos().GetY()<-100){
 			obstacleManager = new GameObject();
-			ObstacleManager obstacleManagerComponent = new ObstacleManager();
+			ObstacleManager obstacleManagerComponent = new ObstacleManager(speed++,11);
 			obstacleManager.AddComponent(obstacleManagerComponent);
 			AddObject(obstacleManager);
 		}

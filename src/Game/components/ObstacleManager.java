@@ -21,15 +21,17 @@ import Engine.components.Circulo;
 import Engine.components.GameComponent;
 import Engine.core.GameObject;
 import Engine.core.Vector3f;
+import Engine.rendering.Window;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ObstacleManager extends GameComponent
 {
-	public float m_radius = 100.0f;
+	public float m_radius = Window.GetWidth()/2;
 	public float m_speed = 2.0f;
 	public int m_numberOfObstacles = 10;
-	public Vector3f m_center = new Vector3f(125.0f, 600.0f, 0.0f);
+	public Vector3f m_center = new Vector3f(Window.GetWidth()/2, Window.GetHeight()+m_radius, 0.0f);
 	public ArrayList<GameObject> m_obstacles;
 
 	public static enum Cores{
@@ -55,14 +57,26 @@ public class ObstacleManager extends GameComponent
 			return cor;
 		}
 	}
-
+	public ObstacleManager(){
+		super();
+	}
+	
+	public ObstacleManager(float speed,int numberOfObstacles){
+		super();
+		m_speed = speed;
+		m_numberOfObstacles=numberOfObstacles;
+	}
+	
 	@Override
 	public void Start()
 	{
 		m_obstacles = new ArrayList<GameObject>();
 
 		GetTransform().SetPos(m_center);
-		float littleRadius = (float)Math.floor(Math.PI*m_radius/m_numberOfObstacles);
+		float littleRadius=0.0f;
+		littleRadius = (float)Math.floor(Math.PI*(m_radius-littleRadius)/m_numberOfObstacles);
+		littleRadius = (float)Math.floor(Math.PI*(m_radius-littleRadius)/m_numberOfObstacles);
+		
 		//Adicionando pelo menos um circulo branco
 		{
 			GameObject circle = new GameObject();
@@ -76,8 +90,8 @@ public class ObstacleManager extends GameComponent
 			Circulo circuloComponent = new Circulo(littleRadius);
 			circle.AddComponent(circuloComponent);
 			
-			circle.GetTransform().SetPos(new Vector3f((float)(GetTransform().GetPos().GetX()+m_radius*Math.cos(0)),
-					(float)(GetTransform().GetPos().GetY()+m_radius*Math.sin(0)),0.0f));
+			circle.GetTransform().SetPos(new Vector3f((float)(GetTransform().GetPos().GetX()+(m_radius-littleRadius)*Math.cos(0)),
+					(float)(GetTransform().GetPos().GetY()+(m_radius-littleRadius)*Math.sin(0)),0.0f));
 
 			GetParent().AddChild(circle);
 			m_obstacles.add(circle);
@@ -97,8 +111,8 @@ public class ObstacleManager extends GameComponent
 			Circulo circuloComponent = new Circulo(littleRadius);
 			circle.AddComponent(circuloComponent);
 			
-			circle.GetTransform().SetPos(new Vector3f((float)(GetTransform().GetPos().GetX()+m_radius*Math.cos(i*2*Math.PI/m_numberOfObstacles)),
-					(float)(GetTransform().GetPos().GetY()+m_radius*Math.sin(i*2*Math.PI/m_numberOfObstacles)),0.0f));
+			circle.GetTransform().SetPos(new Vector3f((float)(GetTransform().GetPos().GetX()+(m_radius-littleRadius)*Math.cos(i*2*Math.PI/m_numberOfObstacles)),
+					(float)(GetTransform().GetPos().GetY()+(m_radius-littleRadius)*Math.sin(i*2*Math.PI/m_numberOfObstacles)),0.0f));
 
 			GetParent().AddChild(circle);
 			m_obstacles.add(circle);
