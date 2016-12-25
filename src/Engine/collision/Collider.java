@@ -40,7 +40,7 @@ public class Collider extends GameComponent
 	@Override
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
-		glColor3f(0.0f, 1.0f, 0.0f);
+		glColor3f(0.0f, 0.0f, 0.0f);
         double theta = (2.0f * Math.PI) / 360.0f; 
   		double c = Math.cos(theta);//precalculate the sine and cosine
   		double s = Math.sin(theta);
