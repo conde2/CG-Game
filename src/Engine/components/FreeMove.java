@@ -18,6 +18,7 @@ package Engine.components;
 
 import Engine.core.Input;
 import Engine.core.Vector3f;
+import Engine.rendering.Window;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -48,13 +49,13 @@ public class FreeMove extends GameComponent
 	{
 		float movAmt = m_speed * delta;
 
-		if(Input.IsKeyDown(m_forwardKey))
+		if(Input.IsKeyDown(m_forwardKey)&& GetTransform().GetPos().GetY() <= Window.GetHeight())
 			Move(GetTransform().GetRot().GetUp(), movAmt);
-		if(Input.IsKeyDown(m_backKey))
+		if(Input.IsKeyDown(m_backKey) 	&& GetTransform().GetPos().GetY()>0)
 			Move(GetTransform().GetRot().GetDown(), movAmt);
-		if(Input.IsKeyDown(m_leftKey))
+		if(Input.IsKeyDown(m_leftKey) 	&& GetTransform().GetPos().GetX()>0)
 			Move(GetTransform().GetRot().GetLeft(), movAmt);
-		if(Input.IsKeyDown(m_rightKey))
+		if(Input.IsKeyDown(m_rightKey)	&& GetTransform().GetPos().GetX() <= Window.GetWidth())
 			Move(GetTransform().GetRot().GetRight(), movAmt);
 	}
 
