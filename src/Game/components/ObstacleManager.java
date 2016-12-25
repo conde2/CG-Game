@@ -74,7 +74,10 @@ public class ObstacleManager extends GameComponent
 
 		GetTransform().SetPos(m_center);
 		float littleRadius=0.0f;
-		littleRadius = (float)Math.floor(Math.PI*(m_radius-littleRadius)/m_numberOfObstacles);
+		//recursao para determinar melhor raio, pois o raio maior-raio menos = largura da tela
+		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
+		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
+		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
 		littleRadius = (float)Math.floor(Math.PI*(m_radius-littleRadius)/m_numberOfObstacles);
 		
 		//Adicionando pelo menos um circulo branco
@@ -101,7 +104,7 @@ public class ObstacleManager extends GameComponent
 			
 			GameObject circle = new GameObject();
 			Random randomNum = new Random();
-			circle.SetColor(Cores.values()[randomNum.nextInt(Cores.values().length)].getCor()); //pega a inesima cor do enum, modulado no numero de cores total do enum
+			circle.SetColor(Cores.values()[i==m_numberOfObstacles/2? 0:randomNum.nextInt(Cores.values().length)].getCor()); //pega a inesima cor do enum,(se for o do meio eh branco) modulado no numero de cores total do enum
            
 			
 			BoundingSphere boundingSphere = new BoundingSphere(m_center, littleRadius);

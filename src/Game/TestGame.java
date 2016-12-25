@@ -33,7 +33,7 @@ import Game.components.ObstacleManager.Cores;
 public class TestGame extends Game
 {
 	GameObject obstacleManager = new GameObject();
-	float speed=2.0f;
+	float speed=4.0f;
 	Random randomNum = new Random();
 	public void Init()
 	{
@@ -71,7 +71,7 @@ public class TestGame extends Game
 		super.Update(delta);
 		if(obstacleManager.GetTransform().GetPos().GetY()<-100){
 			obstacleManager = new GameObject();
-			ObstacleManager obstacleManagerComponent = new ObstacleManager(speed++,11);
+			ObstacleManager obstacleManagerComponent = new ObstacleManager(speed++,5+randomNum.nextInt(8));
 			obstacleManager.AddComponent(obstacleManagerComponent);
 			AddObject(obstacleManager);
 		}
