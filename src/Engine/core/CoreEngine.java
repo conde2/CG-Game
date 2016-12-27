@@ -16,6 +16,9 @@
 
 package Engine.core;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_N;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Y;
+
 import Engine.core.Input;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Window;
@@ -109,9 +112,17 @@ public class CoreEngine
 				if(!m_isPaused){				
 				m_game.Update((float) m_frameTime);
 				}
+				else{
+					if(Input.IsKeyDown(GLFW_KEY_Y)){
+						CoreEngine.Resume();
+					}
+					if(Input.IsKeyDown(GLFW_KEY_N)){
+						CoreEngine.Stop();
+					}
+				}
 				if(frameCounter >= 1.0)
 				{
-					System.out.println(frames);
+					//System.out.println(frames);
 					frames = 0;
 					frameCounter = 0;
 				}

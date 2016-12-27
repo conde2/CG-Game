@@ -19,6 +19,9 @@ package Game.components;
 import Engine.components.GameComponent;
 import Engine.core.CoreEngine;
 import Engine.core.GameObject;
+import Engine.core.Input;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends GameComponent
 {
@@ -33,5 +36,7 @@ public class Player extends GameComponent
 	{
 		System.out.println("COLISAO");
 		CoreEngine.Pause();
+		System.out.println("Continue? y/n");
+		
 	}
 }
