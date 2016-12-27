@@ -149,7 +149,7 @@ public class ObstacleManager extends GameComponent
 	@Override
 	public void Update(float delta)
 	{
-		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-20*m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro do obstaculo
+		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-1-m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro do obstaculo
 
 		for(GameObject obstacle : m_obstacles)
 		{
@@ -157,7 +157,7 @@ public class ObstacleManager extends GameComponent
 			//TRANSLADA PARA 0,0 o centro e tira 20*delta
 			obstacle.GetTransform().SetPos(obstacle.GetTransform().GetPos().Add(new Vector3f(
 																	-GetTransform().GetPos().GetX(),
-																	-GetTransform().GetPos().GetY()-0.9f-m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
+																	-GetTransform().GetPos().GetY()-1-m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
 			//Rotaciona delta graus
 			obstacle.GetTransform().SetPos(new Vector3f(
 					obstacle.GetTransform().GetPos().GetX()*(float)Math.cos(clockwise*m_speed*delta/5)- obstacle.GetTransform().GetPos().GetY()*(float)Math.sin(clockwise*m_speed*delta/5),

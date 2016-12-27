@@ -17,6 +17,7 @@
 package Game.components;
 
 import Engine.components.GameComponent;
+import Engine.core.CoreEngine;
 import Engine.core.GameObject;
 
 public class Player extends GameComponent
@@ -31,5 +32,6 @@ public class Player extends GameComponent
 	public void OnCollide(GameObject object)
 	{
 		System.out.println("COLISAO");
+		CoreEngine.Stop();
 	}
 }

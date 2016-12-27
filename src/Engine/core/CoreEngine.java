@@ -23,7 +23,7 @@ import Engine.rendering.Window;
 
 public class CoreEngine
 {
-	private boolean         m_isRunning;
+	private static boolean         m_isRunning;
 	private Game            m_game;
 	private RenderingEngine m_renderingEngine;
 	private int             m_width;
@@ -54,7 +54,7 @@ public class CoreEngine
 		Run();
 	}
 	
-	public void Stop()
+	public static void Stop()
 	{
 		if(!m_isRunning)
 			return;
