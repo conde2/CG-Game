@@ -10,6 +10,8 @@ public class Circulo extends GameComponent{
 	
 	boolean fill=false;
 	float radius=0;
+	float centerX;
+	float centerY;
 	public Circulo(float radius){
 		this.radius=radius;
 	}
@@ -20,50 +22,57 @@ public class Circulo extends GameComponent{
 	@Override
 	public void Render(Shader shader, RenderingEngine renderingEngine) {
 		glColor3f(GetParent().GetColor().GetX(),GetParent().GetColor().GetY(),GetParent().GetColor().GetZ());
-        double theta = (2.0f * Math.PI) / 360.0f; 
-  		double c = Math.cos(theta);//precalculate the sine and cosine
-  		double s = Math.sin(theta);
-  		double t;
-
-  		double xx = radius;//we start at angle = 0 
-  		double yy = 0; 
   		
-  		float centerX=GetTransform().GetPos().GetX();
-		float centerY=GetTransform().GetPos().GetY();
-  	    
+  		
   		if (IsFilled())
   		{
   			glBegin(GL_LINE_LOOP);
+  			/*glBegin(GL_TRIANGLE_FAN);
   			glVertex2f(centerX,centerY);//center
+  			*/
   		}
   		else
   		{
   			glBegin(GL_POINTS);
   		}
   		
-  		for(int i = 0; i < 45; i++)
+  		/*for(int i = 0; i < 45; i++)
   		{ 
   			//glVertex2d(xx + GetTransform().GetPos().GetX(), yy + GetTransform().GetPos().GetY());//output vertex 
-  	        
-
-  			/*t = xx;
-  			xx = c * xx - s * yy;
-  			yy = s * t + c * yy;
-  			*/
+  			
   			float eixoX =(float)Math.sin(Math.toRadians(i))*radius;
   			float eixoY =(float)Math.cos(Math.toRadians(i))*radius;
   			
-  			glVertex2f(centerX + eixoX, centerY + eixoY);
-  			glVertex2f(centerX - eixoX, centerY + eixoY);
-  			glVertex2f(centerX + eixoX, centerY - eixoY);
-  			glVertex2f(centerX - eixoX, centerY - eixoY);
-  			glVertex2f(centerX + eixoY, centerY + eixoX);
-  			glVertex2f(centerX - eixoY, centerY + eixoX);
-  			glVertex2f(centerX + eixoY, centerY - eixoX);
-  			glVertex2f(centerX - eixoY, centerY - eixoX);
-  			    
-  		} 
+  			circlepoints(eixoX,eixoY);		    
+  		}*/
+  		float d = 1 -radius;
+  		float x = 0;
+  		float y = radius;
+  		circlepoints(x,y);
+  		while(x<y){
+	  		if (d<=0){
+	  			d = d + 2*x + 3;
+	  			x++;
+	  		}
+	  		else{
+	  			d = d + 2*x -2*y + 5;
+	  			x++;
+	  			y--;
+	  		}
+	  		circlepoints(x,y);
+  		}
   		glEnd();
+	}
+	
+	void circlepoints(float eixoX,float eixoY){
+		glVertex2f(centerX + eixoX, centerY + eixoY);//para cada ponto do circulo
+		glVertex2f(centerX - eixoX, centerY + eixoY);//coloca no mesmo ponto em cada octante do circulo
+		glVertex2f(centerX + eixoX, centerY - eixoY);
+		glVertex2f(centerX - eixoX, centerY - eixoY);
+		glVertex2f(centerX + eixoY, centerY + eixoX);
+		glVertex2f(centerX - eixoY, centerY + eixoX);
+		glVertex2f(centerX + eixoY, centerY - eixoX);
+		glVertex2f(centerX - eixoY, centerY - eixoX);		
 	}
 
 
@@ -85,8 +94,9 @@ public class Circulo extends GameComponent{
 		return fill;	
 	}
 	
-	/*public void Update(float delta){
-		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-20*delta,0.0f))); //adiciona delta em Y atual
-	}*/
+	public void Update(float delta){
+		centerX=GetTransform().GetPos().GetX();
+		centerY=GetTransform().GetPos().GetY();	
+	}
 	
 }
