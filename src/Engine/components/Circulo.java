@@ -27,18 +27,21 @@ public class Circulo extends GameComponent{
 
   		double xx = radius;//we start at angle = 0 
   		double yy = 0; 
+  		
+  		float centerX=GetTransform().GetPos().GetX();
+		float centerY=GetTransform().GetPos().GetY();
   	    
   		if (IsFilled())
   		{
-  			glBegin(GL_TRIANGLE_FAN);
-  			glVertex2f((float)GetTransform().GetPos().GetX(),(float)GetTransform().GetPos().GetY());//center
+  			glBegin(GL_LINE_LOOP);
+  			glVertex2f(centerX,centerY);//center
   		}
   		else
   		{
-  			glBegin(GL_LINE_LOOP);
+  			glBegin(GL_POINTS);
   		}
-
-  		for(int i = 0; i < 360; i++)
+  		
+  		for(int i = 0; i < 45; i++)
   		{ 
   			//glVertex2d(xx + GetTransform().GetPos().GetX(), yy + GetTransform().GetPos().GetY());//output vertex 
   	        
@@ -47,9 +50,17 @@ public class Circulo extends GameComponent{
   			xx = c * xx - s * yy;
   			yy = s * t + c * yy;
   			*/
-  			    float x2 = GetTransform().GetPos().GetX()+ (float)Math.sin(Math.toRadians(i))*radius;
-  			    float y2 = GetTransform().GetPos().GetY() +(float)Math.cos(Math.toRadians(i))*radius;
-  			    glVertex2f(x2,y2);
+  			float eixoX =(float)Math.sin(Math.toRadians(i))*radius;
+  			float eixoY =(float)Math.cos(Math.toRadians(i))*radius;
+  			
+  			glVertex2f(centerX + eixoX, centerY + eixoY);
+  			glVertex2f(centerX - eixoX, centerY + eixoY);
+  			glVertex2f(centerX + eixoX, centerY - eixoY);
+  			glVertex2f(centerX - eixoX, centerY - eixoY);
+  			glVertex2f(centerX + eixoY, centerY + eixoX);
+  			glVertex2f(centerX - eixoY, centerY + eixoX);
+  			glVertex2f(centerX + eixoY, centerY - eixoX);
+  			glVertex2f(centerX - eixoY, centerY - eixoX);
   			    
   		} 
   		glEnd();
