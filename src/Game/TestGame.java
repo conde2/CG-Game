@@ -51,7 +51,7 @@ public class TestGame extends Game
 		Collider collider = new Collider(boundingSphere);
 		player.AddComponent(collider);
 
-		Circulo circuloComponent = new Circulo(10.0f,false);
+		Circulo circuloComponent = new Circulo(10.0f,true);
 		player.AddComponent(circuloComponent);
 		player.SetColor(new Vector3f(1.0f, 1.0f, 1.0f));
 		player.GetTransform().SetPos(new Vector3f((float) Window.GetWidth() /2,(float) Window.GetHeight()/2,0.0f));

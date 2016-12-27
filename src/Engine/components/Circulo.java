@@ -31,6 +31,7 @@ public class Circulo extends GameComponent{
   		if (IsFilled())
   		{
   			glBegin(GL_TRIANGLE_FAN);
+  			glVertex2f((float)GetTransform().GetPos().GetX(),(float)GetTransform().GetPos().GetY());//center
   		}
   		else
   		{
@@ -39,12 +40,17 @@ public class Circulo extends GameComponent{
 
   		for(int i = 0; i < 360; i++)
   		{ 
-  			glVertex2d(xx + GetTransform().GetPos().GetX(), yy + GetTransform().GetPos().GetY());//output vertex 
+  			//glVertex2d(xx + GetTransform().GetPos().GetX(), yy + GetTransform().GetPos().GetY());//output vertex 
   	        
 
-  			t = xx;
+  			/*t = xx;
   			xx = c * xx - s * yy;
   			yy = s * t + c * yy;
+  			*/
+  			    float x2 = GetTransform().GetPos().GetX()+ (float)Math.sin(Math.toRadians(i))*radius;
+  			    float y2 = GetTransform().GetPos().GetY() +(float)Math.cos(Math.toRadians(i))*radius;
+  			    glVertex2f(x2,y2);
+  			    
   		} 
   		glEnd();
 	}
