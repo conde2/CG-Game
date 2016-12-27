@@ -29,8 +29,10 @@ import java.util.Random;
 public class ObstacleManager extends GameComponent
 {
 	public float m_radius = Window.GetWidth()/2;
-	public float m_speed = 2.0f;
+	public float m_speed = 1.0f;
 	public int m_numberOfObstacles = 10;
+	float circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
+	int clockwise = Math.random()>0.5? 1:-1;
 	public Vector3f m_center = new Vector3f(Window.GetWidth()/2, Window.GetHeight()+m_radius, 0.0f);
 	public ArrayList<GameObject> m_obstacles;
 
@@ -65,6 +67,7 @@ public class ObstacleManager extends GameComponent
 		super();
 		m_speed = speed;
 		m_numberOfObstacles=numberOfObstacles;
+		circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
 	}
 	
 	@Override
@@ -93,8 +96,10 @@ public class ObstacleManager extends GameComponent
 			Circulo circuloComponent = new Circulo(littleRadius);
 			circle.AddComponent(circuloComponent);
 			
-			circle.GetTransform().SetPos(new Vector3f((float)(GetTransform().GetPos().GetX()+(m_radius-littleRadius)*Math.cos(0)),
-					(float)(GetTransform().GetPos().GetY()+(m_radius-littleRadius)*Math.sin(0)),0.0f));
+			circle.GetTransform().SetPos(new Vector3f(
+													GetTransform().GetPos().GetX()+(m_radius-littleRadius),//cos(0)
+													GetTransform().GetPos().GetY(), //sen(0)
+													0.0f));
 
 			GetParent().AddChild(circle);
 			m_obstacles.add(circle);
@@ -114,8 +119,10 @@ public class ObstacleManager extends GameComponent
 			Circulo circuloComponent = new Circulo(littleRadius);
 			circle.AddComponent(circuloComponent);
 			
-			circle.GetTransform().SetPos(new Vector3f((float)(GetTransform().GetPos().GetX()+(m_radius-littleRadius)*Math.cos(i*2*Math.PI/m_numberOfObstacles)),
-					(float)(GetTransform().GetPos().GetY()+(m_radius-littleRadius)*Math.sin(i*2*Math.PI/m_numberOfObstacles)),0.0f));
+			circle.GetTransform().SetPos(new Vector3f(
+					GetTransform().GetPos().GetX()+(m_radius-littleRadius)*(float)Math.cos(i*circunferenceLength),
+					GetTransform().GetPos().GetY()+(m_radius-littleRadius)*(float)Math.sin(i*circunferenceLength),
+					0.0f));
 
 			GetParent().AddChild(circle);
 			m_obstacles.add(circle);
@@ -148,8 +155,10 @@ public class ObstacleManager extends GameComponent
 																	-GetTransform().GetPos().GetX(),
 																	-GetTransform().GetPos().GetY()-20*m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
 			//Rotaciona delta graus
-			obstacle.GetTransform().SetPos(new Vector3f((float)(obstacle.GetTransform().GetPos().GetX()*Math.cos(m_speed*delta/5)- obstacle.GetTransform().GetPos().GetY()*Math.sin(m_speed*delta/5)),
-															(float)(obstacle.GetTransform().GetPos().GetX()*Math.sin(m_speed*delta/5)+ obstacle.GetTransform().GetPos().GetY()*Math.cos(m_speed*delta/5)),0.0f));
+			obstacle.GetTransform().SetPos(new Vector3f(
+					obstacle.GetTransform().GetPos().GetX()*(float)Math.cos(clockwise*m_speed*delta/5)- obstacle.GetTransform().GetPos().GetY()*(float)Math.sin(clockwise*m_speed*delta/5),
+					obstacle.GetTransform().GetPos().GetX()*(float)Math.sin(clockwise*m_speed*delta/5)+ obstacle.GetTransform().GetPos().GetY()*(float)Math.cos(clockwise*m_speed*delta/5),
+					0.0f));
 			//Retorna centro ao ponto original
 			obstacle.GetTransform().SetPos(obstacle.GetTransform().GetPos().Add(new Vector3f(
 																	GetTransform().GetPos().GetX(),

@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Circulo extends GameComponent{
 	
-	boolean fill=false;
+	boolean fill=true;
 	float radius=0;
 	float centerX;
 	float centerY;
