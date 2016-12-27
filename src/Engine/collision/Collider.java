@@ -1,7 +1,6 @@
 package Engine.collision;
 
 import Engine.components.GameComponent;
-import Engine.core.*;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Shader;
 import static org.lwjgl.opengl.GL11.*;

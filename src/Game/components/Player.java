@@ -32,6 +32,6 @@ public class Player extends GameComponent
 	public void OnCollide(GameObject object)
 	{
 		System.out.println("COLISAO");
-		CoreEngine.Stop();
+		CoreEngine.Pause();
 	}
 }

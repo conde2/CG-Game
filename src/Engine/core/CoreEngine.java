@@ -23,7 +23,8 @@ import Engine.rendering.Window;
 
 public class CoreEngine
 {
-	private static boolean         m_isRunning;
+	private static boolean  m_isRunning;
+	private static boolean  m_isPaused;
 	private Game            m_game;
 	private RenderingEngine m_renderingEngine;
 	private int             m_width;
@@ -33,6 +34,7 @@ public class CoreEngine
 	public CoreEngine(int width, int height, double framerate, Game game)
 	{
 		this.m_isRunning = false;
+		this.m_isPaused = false;
 		this.m_game = game;
 		this.m_width = width;
 		this.m_height = height;
@@ -60,6 +62,15 @@ public class CoreEngine
 			return;
 		
 		m_isRunning = false;
+	}
+	
+	public static void Pause()
+	{
+		m_isPaused = true;
+	}
+	public static void Resume()
+	{
+		m_isPaused = false;
 	}
 	
 	private void Run()
@@ -93,12 +104,11 @@ public class CoreEngine
 				
 				if(Window.IsCloseRequested())
 					Stop();
-
 				m_game.Input((float) m_frameTime);
 				Input.Update();
-				
+				if(!m_isPaused){				
 				m_game.Update((float) m_frameTime);
-				
+				}
 				if(frameCounter >= 1.0)
 				{
 					System.out.println(frames);

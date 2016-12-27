@@ -28,7 +28,6 @@ import Engine.core.*;
 import Engine.rendering.*;
 import Game.components.ObstacleManager;
 import Game.components.Player;
-import Game.components.ObstacleManager.Cores;
 
 public class TestGame extends Game
 {
