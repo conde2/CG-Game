@@ -33,7 +33,8 @@ import Game.components.ObstacleManager.Cores;
 public class TestGame extends Game
 {
 	GameObject obstacleManager = new GameObject();
-	float speed=4.0f;
+	GameObject player = new GameObject();
+	float speed=2.0f;
 	Random randomNum = new Random();
 	public void Init()
 	{
@@ -43,7 +44,6 @@ public class TestGame extends Game
 		camera.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(90.0f),
 				(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f)));
 
-		GameObject player = new GameObject();
 		Player playerComponent = new Player();
 		player.AddComponent(playerComponent);
 		
@@ -56,10 +56,10 @@ public class TestGame extends Game
 		player.SetColor(new Vector3f(1.0f, 1.0f, 1.0f));
 		player.GetTransform().SetPos(new Vector3f((float) Window.GetWidth() /2,(float) Window.GetHeight()/2,0.0f));
 		
-		player.AddComponent(new FreeMove(80.0f));
+		player.AddComponent(new FreeMove(78.0f+speed));
 		
 		
-		ObstacleManager obstacleManagerComponent = new ObstacleManager(speed,5+randomNum.nextInt(5));
+		ObstacleManager obstacleManagerComponent = new ObstacleManager(speed,6+randomNum.nextInt(4));
 		obstacleManager.AddComponent(obstacleManagerComponent);
 
 		AddObject(camera);
@@ -71,9 +71,15 @@ public class TestGame extends Game
 		super.Update(delta);
 		if(obstacleManager.GetTransform().GetPos().GetY()<-100){
 			obstacleManager = new GameObject();
-			ObstacleManager obstacleManagerComponent = new ObstacleManager(speed++,5+randomNum.nextInt(8));
+			ObstacleManager obstacleManagerComponent = new ObstacleManager(speed++,6+randomNum.nextInt(7));
 			obstacleManager.AddComponent(obstacleManagerComponent);
 			AddObject(obstacleManager);
+			
+			for (GameComponent componente: player.GetAllComponents()){
+				if(componente instanceof FreeMove){
+					((FreeMove) componente).setSpeed(78.0f + speed);
+				}
+			}
 		}
 	}
 	

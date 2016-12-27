@@ -63,4 +63,7 @@ public class FreeMove extends GameComponent
 	{
 		GetTransform().SetPos(GetTransform().GetPos().Add(dir.Mul(amt)));
 	}
+	public void setSpeed(float speed){
+		m_speed=speed;
+	}
 }
