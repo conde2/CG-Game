@@ -77,7 +77,7 @@ public class ObstacleManager extends GameComponent
 
 		GetTransform().SetPos(m_center);
 		//usando a relacao 2*littleRadius*m_numberOfObstacles=2*Math.PI*(radius-littleRadius)
-		//é possivel determinar aprocimadamente melhor littleRadius dado o raio externo do obstaculo
+		//é possivel determinar aproximadamente melhor littleRadius dado o raio externo do obstaculo
 		float littleRadius= (float)Math.floor(Math.PI*m_radius/(m_numberOfObstacles+Math.PI));
 		
 		/*float littleRadius=0.0f;
