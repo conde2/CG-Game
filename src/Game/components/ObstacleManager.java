@@ -31,7 +31,7 @@ public class ObstacleManager extends GameComponent
 	public float m_radius = Window.GetWidth()/2;
 	public float m_speed = 1.0f;
 	public int m_numberOfObstacles = 10;
-	float circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
+	//float circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
 	int clockwise = Math.random()>0.5? 1:-1;
 	public Vector3f m_center = new Vector3f(Window.GetWidth()/2, Window.GetHeight()+m_radius, 0.0f);
 	public ArrayList<GameObject> m_obstacles;
@@ -67,7 +67,7 @@ public class ObstacleManager extends GameComponent
 		super();
 		m_speed = speed;
 		m_numberOfObstacles=numberOfObstacles;
-		circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
+		//circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
 	}
 	
 	@Override
@@ -76,13 +76,17 @@ public class ObstacleManager extends GameComponent
 		m_obstacles = new ArrayList<GameObject>();
 
 		GetTransform().SetPos(m_center);
-		float littleRadius=0.0f;
+		//usando a relacao 2*littleRadius*m_numberOfObstacles=2*Math.PI*(radius-littleRadius)
+		//é possivel determinar aprocimadamente melhor littleRadius dado o raio externo do obstaculo
+		float littleRadius= (float)Math.floor(Math.PI*m_radius/(m_numberOfObstacles+Math.PI));
+		
+		/*float littleRadius=0.0f;
 		//recursao para determinar melhor raio, pois o raio maior-raio menos = largura da tela
 		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
 		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
 		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
 		littleRadius = (float)Math.floor(Math.PI*(m_radius-littleRadius)/m_numberOfObstacles);
-		
+		*/
 		//Adicionando pelo menos um circulo branco
 		{
 			GameObject circle = new GameObject();
@@ -120,8 +124,8 @@ public class ObstacleManager extends GameComponent
 			circle.AddComponent(circuloComponent);
 			
 			circle.GetTransform().SetPos(new Vector3f(
-					GetTransform().GetPos().GetX()+(m_radius-littleRadius)*(float)Math.cos(i*circunferenceLength),
-					GetTransform().GetPos().GetY()+(m_radius-littleRadius)*(float)Math.sin(i*circunferenceLength),
+					GetTransform().GetPos().GetX()+(m_radius-littleRadius)*(float)Math.cos(i*(float)(2*Math.PI/m_numberOfObstacles)),
+					GetTransform().GetPos().GetY()+(m_radius-littleRadius)*(float)Math.sin(i*(float)(2*Math.PI/m_numberOfObstacles)),
 					0.0f));
 
 			GetParent().AddChild(circle);
@@ -153,7 +157,7 @@ public class ObstacleManager extends GameComponent
 			//TRANSLADA PARA 0,0 o centro e tira 20*delta
 			obstacle.GetTransform().SetPos(obstacle.GetTransform().GetPos().Add(new Vector3f(
 																	-GetTransform().GetPos().GetX(),
-																	-GetTransform().GetPos().GetY()-20*m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
+																	-GetTransform().GetPos().GetY()-0.9f-m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
 			//Rotaciona delta graus
 			obstacle.GetTransform().SetPos(new Vector3f(
 					obstacle.GetTransform().GetPos().GetX()*(float)Math.cos(clockwise*m_speed*delta/5)- obstacle.GetTransform().GetPos().GetY()*(float)Math.sin(clockwise*m_speed*delta/5),
