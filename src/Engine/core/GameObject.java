@@ -39,7 +39,7 @@ public class GameObject
 		m_transform = new Transform();
 		m_engine = null;
 		m_collider = null;
-		m_color = new Vector3f(1.0f, 0.0f, 0.0f);
+		m_color = new Vector3f(1.0f, 1.0f, 1.0f);
 	}
 
 	public GameObject AddChild(GameObject child)

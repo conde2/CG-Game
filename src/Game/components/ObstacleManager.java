@@ -19,8 +19,10 @@ package Game.components;
 import Engine.collision.*;
 import Engine.components.Circulo;
 import Engine.components.GameComponent;
+import Engine.components.Sprite;
 import Engine.core.GameObject;
 import Engine.core.Vector3f;
+import Engine.rendering.Texture;
 import Engine.rendering.Window;
 
 import java.util.ArrayList;
@@ -66,8 +68,7 @@ public class ObstacleManager extends GameComponent
 	public ObstacleManager(float speed,int numberOfObstacles){
 		super();
 		m_speed = speed;
-		m_numberOfObstacles=numberOfObstacles;
-		//circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
+		m_numberOfObstacles = numberOfObstacles;
 	}
 	
 	@Override
@@ -80,48 +81,29 @@ public class ObstacleManager extends GameComponent
 		//é possivel determinar aproximadamente melhor littleRadius dado o raio externo do obstaculo
 		float littleRadius= (float)Math.floor(Math.PI*m_radius/(m_numberOfObstacles+Math.PI));
 		
-		/*float littleRadius=0.0f;
-		//recursao para determinar melhor raio, pois o raio maior-raio menos = largura da tela
-		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
-		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
-		littleRadius = (float)Math.PI*(m_radius-littleRadius)/m_numberOfObstacles;
-		littleRadius = (float)Math.floor(Math.PI*(m_radius-littleRadius)/m_numberOfObstacles);
-		*/
-		//Adicionando pelo menos um circulo branco
-		{
-			GameObject circle = new GameObject();
-			circle.SetColor(new Vector3f(1.0f, 1.0f, 1.0f)); //pega a inesima cor do enum, modulado no numero de cores total do enum
-           
-			
-			BoundingSphere boundingSphere = new BoundingSphere(m_center, littleRadius);
-			Collider collider = new Collider(boundingSphere);
-			circle.AddComponent(collider);
-			
-			Circulo circuloComponent = new Circulo(littleRadius);
-			circle.AddComponent(circuloComponent);
-			
-			circle.GetTransform().SetPos(new Vector3f(
-													GetTransform().GetPos().GetX()+(m_radius-littleRadius),//cos(0)
-													GetTransform().GetPos().GetY(), //sen(0)
-													0.0f));
 
-			GetParent().AddChild(circle);
-			m_obstacles.add(circle);
-		}
+		Random randomNum = new Random();
 		for(int i = 1; i < m_numberOfObstacles; i++)
 		{
+			//pega a inesima cor do enum,(se for o do meio eh branco) modulado no numero de cores total do enum
+			Vector3f color = Cores.values()[i==m_numberOfObstacles/2? 0:randomNum.nextInt(Cores.values().length)].getCor();
+
+			if (color.equals(Cores.BRANCO.getCor()))
+				continue;
 			
 			GameObject circle = new GameObject();
-			Random randomNum = new Random();
-			circle.SetColor(Cores.values()[i==m_numberOfObstacles/2? 0:randomNum.nextInt(Cores.values().length)].getCor()); //pega a inesima cor do enum,(se for o do meio eh branco) modulado no numero de cores total do enum
-           
+			circle.SetColor(color); 
 			
 			BoundingSphere boundingSphere = new BoundingSphere(m_center, littleRadius);
 			Collider collider = new Collider(boundingSphere);
 			circle.AddComponent(collider);
+	
+			Sprite meteorSprite = new Sprite(new Texture("meteor.png"), -0.2f);
+			meteorSprite.setScale(new Vector3f(0.46f - 0.025f*m_numberOfObstacles, 0.46f- 0.025f*m_numberOfObstacles, 1.0f));
+			circle.AddComponent(meteorSprite);
 			
-			Circulo circuloComponent = new Circulo(littleRadius);
-			circle.AddComponent(circuloComponent);
+			System.out.println(m_numberOfObstacles);
+			System.out.println(littleRadius);
 			
 			circle.GetTransform().SetPos(new Vector3f(
 					GetTransform().GetPos().GetX()+(m_radius-littleRadius)*(float)Math.cos(i*(float)(2*Math.PI/m_numberOfObstacles)),
@@ -130,7 +112,7 @@ public class ObstacleManager extends GameComponent
 
 			GetParent().AddChild(circle);
 			m_obstacles.add(circle);
-	
+			
 		}
 	}
 
@@ -171,3 +153,4 @@ public class ObstacleManager extends GameComponent
 		}
 	}
 }
+

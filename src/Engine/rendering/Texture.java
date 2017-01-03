@@ -42,16 +42,16 @@ public class Texture
 		this.m_fileName = fileName;
 		TextureResource oldResource = s_loadedTextures.get(fileName);
 
-		if(oldResource != null)
-		{
-			m_resource = oldResource;
-			m_resource.AddReference();
-		}
-		else
-		{
+		//if(oldResource != null)
+		//{
+		//	m_resource = oldResource;
+		//	m_resource.AddReference();
+		//}
+		//else
+		//{
 			m_resource = Load(fileName);
 			s_loadedTextures.put(fileName, m_resource);
-		}
+		//}
 	}
 
 	@Override

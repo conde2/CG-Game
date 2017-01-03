@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Collider extends GameComponent
 {
+	boolean m_debug = true;
 
 	private BoundingCollider m_boundingCollider = null;
 	public Collider(BoundingCollider boundingCollider)
@@ -39,6 +40,9 @@ public class Collider extends GameComponent
 	@Override
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
+		if(!m_debug)
+			return;
+		
 		glColor3f(0.0f, 0.0f, 0.0f);
         double theta = (2.0f * Math.PI) / 360.0f; 
   		double c = Math.cos(theta);//precalculate the sine and cosine

@@ -46,22 +46,28 @@ public class TestGame extends Game
 		Player playerComponent = new Player();
 		player.AddComponent(playerComponent);
 		
-		BoundingSphere boundingSphere = new BoundingSphere(player.GetTransform().GetPos(), 10);
+		BoundingSphere boundingSphere = new BoundingSphere(player.GetTransform().GetPos(), 13);
 		Collider collider = new Collider(boundingSphere);
 		player.AddComponent(collider);
 
-		Circulo circuloComponent = new Circulo(10.0f,true);
-		player.AddComponent(circuloComponent);
 		player.SetColor(new Vector3f(1.0f, 1.0f, 1.0f));
 		player.GetTransform().SetPos(new Vector3f((float) Window.GetWidth() /2,(float) Window.GetHeight()/2,0.0f));
 		
 		player.AddComponent(new FreeMove(78.0f+speed));
 		
+		Sprite playerSprite = new Sprite(new Texture("spaceship.png"), -0.1f);
+		player.AddComponent(playerSprite);
+		
+		GameObject background = new GameObject();
+		Sprite backgroundSprite = new Sprite(new Texture("background.jpg"), -0.5f);
+		background.AddComponent(backgroundSprite);
+
 		
 		ObstacleManager obstacleManagerComponent = new ObstacleManager(speed,6+randomNum.nextInt(4));
 		obstacleManager.AddComponent(obstacleManagerComponent);
 
 		AddObject(camera);
+		AddObject(background);
 		AddObject(player);
 		AddObject(obstacleManager);
 	}
@@ -81,29 +87,4 @@ public class TestGame extends Game
 			}
 		}
 	}
-	
-	
-	/*@Override
-	public void Update(float delta) {
-		super.Update(delta);
-		
-		GameObject root = this.GetRootObject();
-		ArrayList<GameObject> objetos=root.GetAllAttached();
-		for(GameObject objeto : objetos)
-			if (objeto instanceof Player)
-				for(GameObject outro : objetos)
-					if(outro!=objeto)
-						if(outro instanceof Obstaculo)
-							for(Vector3f ponto:((Player) objeto).Circumference())
-								if(((Obstaculo) outro).Collision(ponto)){
-									//COLLISION CODE
-									System.out.println("COLIDIU");
-									break;
-								}
-					
-				
-			
-	
-		
-	}*/
 }

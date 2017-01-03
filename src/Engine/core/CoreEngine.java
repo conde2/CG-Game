@@ -129,6 +129,7 @@ public class CoreEngine
 			}
 			if(render)
 			{
+				Window.Clear();
 				m_game.Render(m_renderingEngine);
 				Window.Render();
 				frames++;
