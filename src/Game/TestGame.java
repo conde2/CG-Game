@@ -55,7 +55,8 @@ public class TestGame extends Game
 		
 		player.AddComponent(new FreeMove(78.0f+speed));
 		
-		Sprite playerSprite = new Sprite(new Texture("spaceship.png"), -0.1f);
+		Sprite playerSprite = new Sprite(new Texture("spaceship.png"), 0.2f);
+		playerSprite.setScale(new Vector3f(0.15f,0.15f,1.0f));
 		player.AddComponent(playerSprite);
 		
 		GameObject background = new GameObject();
@@ -66,10 +67,11 @@ public class TestGame extends Game
 		ObstacleManager obstacleManagerComponent = new ObstacleManager(speed,6+randomNum.nextInt(4));
 		obstacleManager.AddComponent(obstacleManagerComponent);
 
+		// Desenhar primeiro os objetos com menor Z !!
 		AddObject(camera);
 		AddObject(background);
-		AddObject(player);
 		AddObject(obstacleManager);
+		AddObject(player);
 	}
 	@Override
 	public void Update(float delta) {
