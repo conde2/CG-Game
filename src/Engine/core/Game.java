@@ -42,19 +42,24 @@ public abstract class Game
 		{
 			if (child.GetCollider() == null)
 				continue;
+			
+			if(!child.IsEnabled() || !child.GetCollider().IsEnabled())
+				continue;
 					
 			for(GameObject other :  GetRootObject().GetAllAttached())
-			{
+			{	
+
+				if (child == other)
+					continue;
+				
 				if (other.GetCollider() == null)
 					continue;
 				
-				if (child == other)
+				if(!other.IsEnabled() || !other.GetCollider().IsEnabled())
 					continue;
 
-				if (child.GetCollider().Intersect(other.GetCollider())
-						&& !child.GetColor().equals(other.GetColor())) //se tem intersec��o
+				if (child.GetCollider().Intersect(other.GetCollider()))
 				{
-//					System.out.println("Cores Child: " + child.GetColor() + "other: " + other.GetColor());
 					//rotina de colisao para child e other e seus componentes
 					for(GameComponent component : child.GetAllComponents()) 
 					{

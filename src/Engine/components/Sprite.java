@@ -15,8 +15,6 @@
  */
 
 package Engine.components;
-
-import Engine.core.GameObject;
 import Engine.core.Vector3f;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Shader;
@@ -29,6 +27,7 @@ public class Sprite extends GameComponent
 	private Vector3f 	m_scale = new Vector3f(1.0f,1.0f,1.0f);
 	private float       m_zBuffer = 0.0f;
 	private boolean     m_center = true;
+	private Vector3f	m_color = new Vector3f(1.0f,1.0f,1.0f);
 
 	public Sprite(Texture texture, float zBuffer)
 	{
@@ -61,11 +60,21 @@ public class Sprite extends GameComponent
 		return m_texture.getWidth();
 	}
 	
+	public void SetColor(Vector3f color)
+	{
+		m_color = color;
+	}
+
+	public Vector3f GetColor()
+	{
+		return m_color;
+	}	
+	
 	@Override
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
 		m_texture.Bind();
-		glColor4f(GetParent().GetColor().GetX(), GetParent().GetColor().GetY(), GetParent().GetColor().GetZ(), 1.0f);
+		glColor4f(m_color.GetX(), m_color.GetY(), m_color.GetZ(), 1.0f);
 		glEnable(GL_TEXTURE_2D);
 		glBegin(GL_QUADS);
 

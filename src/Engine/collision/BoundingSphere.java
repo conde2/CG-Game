@@ -12,13 +12,18 @@ public class BoundingSphere extends BoundingCollider
 		this.center = center;
 		this.radius = radius;
 	}
-	
+
 	@Override
 	public void Update(Vector3f center)
 	{
 		this.center = center;
 	}
-		
+    
+	public void SetRadius(float radius)
+	{
+		this.radius = radius;
+	}
+	
 	public boolean Intersect(BoundingBox box)
 	{
 

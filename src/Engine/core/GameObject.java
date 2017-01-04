@@ -30,7 +30,8 @@ public class GameObject
 	private Transform m_transform;
 	private Collider m_collider;
 	private CoreEngine m_engine;
-	private Vector3f m_color;
+	private boolean m_enabled;
+	private String m_tag;
 
 	public GameObject()
 	{
@@ -39,9 +40,30 @@ public class GameObject
 		m_transform = new Transform();
 		m_engine = null;
 		m_collider = null;
-		m_color = new Vector3f(1.0f, 1.0f, 1.0f);
+		m_enabled = true;
+		m_tag = "GameObject";
 	}
 
+	public boolean IsEnabled()
+	{
+		return m_enabled;
+	}
+	
+	public void SetEnabled(boolean enabled)
+	{
+		m_enabled = enabled;
+	}
+	
+	public String GetTag()
+	{
+		return m_tag;
+	}
+	
+	public void SetTag(String tag)
+	{
+		m_tag = tag;
+	}
+	
 	public GameObject AddChild(GameObject child)
 	{
 		m_children.add(child);
@@ -60,6 +82,7 @@ public class GameObject
 
 		m_components.add(component);
 		component.SetParent(this);
+		component.SetEnabled(true);
 		component.Start();
 
 		return this;
@@ -67,6 +90,9 @@ public class GameObject
 
 	public void InputAll(float delta)
 	{
+		if (!m_enabled)
+			return;
+
 		Input(delta);
 
 		for(GameObject child : m_children)
@@ -75,6 +101,9 @@ public class GameObject
 
 	public void UpdateAll(float delta)
 	{
+		if (!m_enabled)
+			return;
+
 		Update(delta);
 
 		for(GameObject child : m_children)
@@ -85,14 +114,12 @@ public class GameObject
 	{
 		return m_collider;
 	}
-
-	public void CheckCollisionAll()
-	{
-
-	}
 	
 	public void RenderAll(Shader shader, RenderingEngine renderingEngine)
 	{
+		if (!m_enabled)
+			return;
+
 		Render(shader, renderingEngine);
 
 		for(GameObject child : m_children)
@@ -101,22 +128,40 @@ public class GameObject
 
 	public void Input(float delta)
 	{
+		if (!m_enabled)
+			return;
+
 		m_transform.Update();
 
 		for(GameComponent component : m_components)
-			component.Input(delta);
+		{
+			if (component.IsEnabled())
+				component.Input(delta);
+		}
 	}
 
 	public void Update(float delta)
 	{
+		if (!m_enabled)
+			return;
+		
 		for(GameComponent component : m_components)
-			component.Update(delta);
+		{
+			if (component.IsEnabled())
+				component.Update(delta);	
+		}
 	}
 
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
+		if (!m_enabled)
+			return;
+
 		for(GameComponent component : m_components)
-			component.Render(shader, renderingEngine);
+		{
+			if (component.IsEnabled())
+				component.Render(shader, renderingEngine);	
+		}
 	}
 
 	public ArrayList<GameObject> GetAllAttached()
@@ -166,12 +211,5 @@ public class GameObject
 			for(GameObject child : m_children)
 				child.SetEngine(engine);
 		}
-	}
-	
-	public void SetColor(Vector3f color){
-		this.m_color=color;
-	}
-	public Vector3f GetColor(){
-		return m_color;
 	}
 }

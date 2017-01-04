@@ -17,9 +17,11 @@
 package Game.components;
 
 import Engine.components.GameComponent;
+import Engine.components.Sprite;
 import Engine.core.CoreEngine;
 import Engine.core.GameObject;
 import Engine.core.Input;
+import Engine.core.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -34,9 +36,17 @@ public class Player extends GameComponent
 	@Override
 	public void OnCollide(GameObject object)
 	{
+		
+		if (object.GetTag() == "PowerUp")
+		{
+			object.SetEnabled(false);			
+		}
+
+		//Sprite spr = object.GetComponent(Sprite.class);
+		//spr.SetEnabled(false);
 		System.out.println("COLISAO");
-		CoreEngine.Pause();
-		System.out.println("Continue? y/n");
+		//CoreEngine.Pause();
+		//System.out.println("Continue? y/n");
 		
 	}
 }

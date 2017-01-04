@@ -49,7 +49,7 @@ public class Collider extends GameComponent
   		double s = Math.sin(theta);
   		double t;
 
-  		double xx = 3 + ((BoundingSphere)m_boundingCollider).radius;//we start at angle = 0 
+  		double xx = ((BoundingSphere)m_boundingCollider).radius;//we start at angle = 0 
   		double yy = 0; 
 
   		glBegin(GL_LINE_LOOP);

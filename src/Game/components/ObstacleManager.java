@@ -17,7 +17,6 @@
 package Game.components;
 
 import Engine.collision.*;
-import Engine.components.Circulo;
 import Engine.components.GameComponent;
 import Engine.components.Sprite;
 import Engine.core.GameObject;
@@ -28,14 +27,18 @@ import Engine.rendering.Window;
 import java.util.ArrayList;
 import java.util.Random;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class ObstacleManager extends GameComponent
 {
 	public float m_radius = Window.GetWidth()/2;
 	public float m_speed = 1.0f;
 	public int m_numberOfObstacles = 10;
-	//float circunferenceLength = (float)(2*Math.PI/m_numberOfObstacles);
-	int clockwise = Math.random()>0.5? 1:-1;
+
+	int clockwise = 1;
 	public Vector3f m_center = new Vector3f(Window.GetWidth()/2, Window.GetHeight()+m_radius, 0.0f);
+	
+	
 	public ArrayList<GameObject> m_obstacles;
 
 	public static enum Cores{
@@ -76,46 +79,72 @@ public class ObstacleManager extends GameComponent
 	{
 		m_obstacles = new ArrayList<GameObject>();
 
-		GetTransform().SetPos(m_center);
-		//usando a relacao 2*littleRadius*m_numberOfObstacles=2*Math.PI*(radius-littleRadius)
-		//é possivel determinar aproximadamente melhor littleRadius dado o raio externo do obstaculo
-		float littleRadius= (float)Math.floor(Math.PI*m_radius/(m_numberOfObstacles+Math.PI));
-		
-
-		Random randomNum = new Random();
-		for(int i = 1; i < m_numberOfObstacles; i++)
+		for(int i = 0; i < 15; i++)
 		{
-			//pega a inesima cor do enum,(se for o do meio eh branco) modulado no numero de cores total do enum
-			Vector3f color = Cores.values()[i==m_numberOfObstacles/2? 0:randomNum.nextInt(Cores.values().length)].getCor();
+			GameObject obstacle = new GameObject();
+			obstacle.SetEnabled(false);
+			obstacle.SetTag("Obstacle");
 
-			if (color.equals(Cores.BRANCO.getCor()))
-				continue;
+			Sprite obstacleSprite = new Sprite(new Texture("meteor.png"), 0.0f);
+			obstacleSprite.setScale(new Vector3f(0.15f, 0.15f, 1.0f));
 			
-			GameObject circle = new GameObject();
-			circle.SetColor(color); 
-			
-			BoundingSphere boundingSphere = new BoundingSphere(m_center, littleRadius);
+			BoundingSphere boundingSphere = new BoundingSphere(m_center, 15);
 			Collider collider = new Collider(boundingSphere);
-			circle.AddComponent(collider);
-	
-			Sprite meteorSprite = new Sprite(new Texture("meteor.png"), -0.2f);
-			meteorSprite.setScale(new Vector3f(0.46f - 0.025f*m_numberOfObstacles, 0.46f- 0.025f*m_numberOfObstacles, 1.0f));
-			circle.AddComponent(meteorSprite);
-			
-			System.out.println(m_numberOfObstacles);
-			System.out.println(littleRadius);
-			
-			circle.GetTransform().SetPos(new Vector3f(
-					GetTransform().GetPos().GetX()+(m_radius-littleRadius)*(float)Math.cos(i*(float)(2*Math.PI/m_numberOfObstacles)),
-					GetTransform().GetPos().GetY()+(m_radius-littleRadius)*(float)Math.sin(i*(float)(2*Math.PI/m_numberOfObstacles)),
-					0.0f));
 
-			GetParent().AddChild(circle);
-			m_obstacles.add(circle);
-			
+			obstacle.AddComponent(collider);
+			obstacle.AddComponent(obstacleSprite);
+
+			GetParent().AddChild(obstacle);
+			m_obstacles.add(obstacle);
 		}
+		
+		Spawn();
 	}
 
+	private void Spawn()
+	{
+		GetTransform().SetPos(m_center);
+		
+		clockwise = Math.random() > 0.5 ? 1 : -1;
+		m_numberOfObstacles = ThreadLocalRandom.current().nextInt(5, 12);
+		float littleRadius= (float)Math.floor(Math.PI * m_radius / (m_numberOfObstacles + Math.PI));
+		
+		
+		int alive = 1;
+		for(GameObject obstacle : m_obstacles)
+		{
+			if (alive >= m_numberOfObstacles)
+			{
+				obstacle.SetEnabled(false);
+				continue;
+			}
+
+			Vector3f color = Cores.values()[alive==m_numberOfObstacles/2? 0:ThreadLocalRandom.current().nextInt(Cores.values().length)].getCor();
+			if (color.equals(Cores.BRANCO.getCor()))
+			{
+				alive++;
+				continue;
+			}
+
+			Sprite sprite = obstacle.GetComponent(Sprite.class);
+			sprite.setScale(new Vector3f(0.46f - 0.025f * m_numberOfObstacles, 0.46f - 0.025f * m_numberOfObstacles, 1.0f));
+			sprite.SetColor(color);
+	
+			Collider collider = obstacle.GetComponent(Collider.class);
+			BoundingSphere boudingSphere = (BoundingSphere)collider.GetBoundingCollider();
+			boudingSphere.SetRadius(littleRadius);
+			
+			obstacle.GetTransform().SetPos(new Vector3f(
+					GetTransform().GetPos().GetX()+(m_radius-littleRadius)*(float)Math.cos(alive*(float)(2*Math.PI/m_numberOfObstacles)),
+					GetTransform().GetPos().GetY()+(m_radius-littleRadius)*(float)Math.sin(alive*(float)(2*Math.PI/m_numberOfObstacles)),
+					0.0f));
+			
+			obstacle.SetEnabled(true);
+			alive++;
+
+		}
+	}
+	
 	public void SetSpeed(int speed){
 		m_speed = speed;
 	}
@@ -150,6 +179,11 @@ public class ObstacleManager extends GameComponent
 																	GetTransform().GetPos().GetX(),
 																	GetTransform().GetPos().GetY(),0.0f)));
 
+		}
+
+		if(GetTransform().GetPos().GetY() < -Window.GetHeight() + m_radius)
+		{
+			Spawn();
 		}
 	}
 }

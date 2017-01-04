@@ -25,6 +25,7 @@ import Engine.rendering.Shader;
 public abstract class GameComponent
 {
 	private GameObject m_parent;
+	private boolean m_enabled;
 
 	public void Start() {};
 	public void Input(float delta) {}
@@ -45,6 +46,16 @@ public abstract class GameComponent
 	public Transform GetTransform()
 	{
 		return m_parent.GetTransform();
+	}
+	
+	public boolean IsEnabled()
+	{
+		return m_enabled;
+	}
+	
+	public void SetEnabled(boolean enabled)
+	{
+		m_enabled = enabled;
 	}
 
 	public void AddToEngine(CoreEngine engine) {}
