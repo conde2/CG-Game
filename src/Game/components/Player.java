@@ -16,37 +16,77 @@
 
 package Game.components;
 
+import Engine.components.FreeMove;
 import Engine.components.GameComponent;
 import Engine.components.Sprite;
 import Engine.core.CoreEngine;
 import Engine.core.GameObject;
 import Engine.core.Input;
 import Engine.core.Vector3f;
+import Engine.rendering.RenderingEngine;
+import Engine.rendering.Shader;
+import Engine.rendering.Texture;
+import Engine.rendering.Window;
 
 import static org.lwjgl.glfw.GLFW.*;
+
+import java.util.ArrayList;
 
 public class Player extends GameComponent
 {
 
+	private ArrayList<GameObject> m_playerLifes;
+	public int m_lifes = 3;
 	public Player()
 	{
-
 	}
+	
+	@Override
+	public void Start()
+	{
+		m_playerLifes = new ArrayList<GameObject>();
 
+		for(int i = 0; i < m_lifes; i++)
+		{
+			GameObject playerLife = new GameObject();
+			playerLife.GetTransform().SetPos(new Vector3f(Window.GetWidth() - m_lifes*25.0f + i*25, Window.GetHeight() - 15.0f, 1.0f));
+			Sprite lifeSprite = new Sprite(new Texture("life.png"), 1.0f);
+			lifeSprite.setScale(new Vector3f(0.1f, 0.1f, 1.0f));
+			playerLife.AddComponent(lifeSprite);
+
+			m_playerLifes.add(playerLife);
+			GetParent().AddChild(playerLife);
+		}
+	}
+	
 	@Override
 	public void OnCollide(GameObject object)
 	{
 		
 		if (object.GetTag() == "PowerUp")
 		{
-			object.SetEnabled(false);			
+			object.SetEnabled(false);
+			GetParent().GetComponent(FreeMove.class).setSpeed(200.0f);
 		}
-
-		//Sprite spr = object.GetComponent(Sprite.class);
-		//spr.SetEnabled(false);
-		System.out.println("COLISAO");
-		//CoreEngine.Pause();
-		//System.out.println("Continue? y/n");
+		else if (object.GetTag() == "GamePoint")
+		{
+			object.SetEnabled(false);	
+		}
+		else if (object.GetTag() == "Obstacle")
+		{
+			for(GameObject obstacle : m_playerLifes)
+			{
+				if(obstacle.IsEnabled())
+				{
+					obstacle.SetEnabled(false);
+					break;
+				}
+				
+				// Player DEAD
+			}
+			
+			object.SetEnabled(false);
+		}
 		
 	}
 }

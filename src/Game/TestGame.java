@@ -27,9 +27,10 @@ import Engine.core.Matrix4f;
 import Engine.core.Vector3f;
 import Engine.rendering.Texture;
 import Engine.rendering.Window;
+import Game.components.GameManager;
 import Game.components.ObstacleManager;
 import Game.components.Player;
-import Game.components.PowerUpManager;
+
 //import text.Text;
 
 public class TestGame extends Game
@@ -46,7 +47,7 @@ public class TestGame extends Game
 
 		GameObject player = new GameObject();
 		player.GetTransform().SetPos(new Vector3f((float) Window.GetWidth() /2,(float) Window.GetHeight()/2,0.0f));
-	
+
 		Player playerComponent = new Player();
 		player.AddComponent(playerComponent);
 		
@@ -69,14 +70,14 @@ public class TestGame extends Game
 		ObstacleManager obstacleManagerComponent = new ObstacleManager();
 		obstacleManager.AddComponent(obstacleManagerComponent);
 		
-		GameObject powerUpManager = new GameObject();
-		PowerUpManager powerUpManagerComponent = new PowerUpManager();
-		powerUpManager.AddComponent(powerUpManagerComponent);
-		
+		GameObject gameManager = new GameObject();
+		GameManager gameManagerComponent = new GameManager();
+		gameManager.AddComponent(gameManagerComponent);
+
 		// Desenhar primeiro os objetos com menor Z !!
 		AddObject(camera);
 		AddObject(background);
-		AddObject(powerUpManager);
+		AddObject(gameManager);
 		AddObject(obstacleManager);
 		AddObject(player);
 		AddObject(text);

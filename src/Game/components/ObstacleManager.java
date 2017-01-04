@@ -104,8 +104,7 @@ public class ObstacleManager extends GameComponent
 		clockwise = Math.random() > 0.5 ? 1 : -1;
 		m_numberOfObstacles = ThreadLocalRandom.current().nextInt(5, 12);
 		float littleRadius= (float)Math.floor(Math.PI * m_radius / (m_numberOfObstacles + Math.PI));
-		
-		
+
 		int alive = 1;
 		for(GameObject obstacle : m_obstacles)
 		{
@@ -141,15 +140,18 @@ public class ObstacleManager extends GameComponent
 		}
 	}
 	
-	public void SetSpeed(int speed){
+	public void SetSpeed(int speed)
+	{
 		m_speed = speed;
 	}
 	
-	public float GetSpeed(){
+	public float GetSpeed()
+	{
 		return m_speed;
 	}
 	
-	public float GetRadius(){
+	public float GetRadius()
+	{
 		return m_radius;
 	}
 	

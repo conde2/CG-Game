@@ -25,7 +25,7 @@ import Engine.rendering.Window;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PowerUp extends GameComponent
+public class GamePoint extends GameComponent
 {
 
 	
@@ -34,7 +34,7 @@ public class PowerUp extends GameComponent
 	private float m_dropSpeed = 40.0f;
 	public ArrayList<GameObject> m_powerUps;
 
-	public PowerUp()
+	public GamePoint()
 	{
 
 	}

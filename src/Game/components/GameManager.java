@@ -28,14 +28,19 @@ import java.util.ArrayList;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class PowerUpManager extends GameComponent
+public class GameManager extends GameComponent
 {
 
-	private float m_timer = 0.0f;
-	private float m_interval = 3.0f;
+	private float m_powerUpTimer = 0.0f;
+	private float m_powerUpInterval = 1.0f;
+	
+	private float m_gamePointsTimer = 0.0f;
+	private float m_gamePointsInterval = 3.0f;
+	
 	public ArrayList<GameObject> m_powerUps;
-
-	public PowerUpManager()
+	public ArrayList<GameObject> m_gamePoints;
+	
+	public GameManager()
 	{
 		
 	}
@@ -52,7 +57,7 @@ public class PowerUpManager extends GameComponent
 			powerUp.SetTag("PowerUp");
 			
 			Sprite powerUpSprite = new Sprite(new Texture("powerup.png"), -0.1f);
-			powerUpSprite.setScale(new Vector3f(0.15f, 0.15f, 1.0f));
+			powerUpSprite.setScale(new Vector3f(0.28f, 0.28f, 1.0f));
 			
 			BoundingSphere boundingSphere = new BoundingSphere(new Vector3f(100.0f, 100.0f, 0.0f), 15);
 			Collider collider = new Collider(boundingSphere);
@@ -67,22 +72,48 @@ public class PowerUpManager extends GameComponent
 			GetParent().AddChild(powerUp);
 			m_powerUps.add(powerUp);
 		}
+		
+		
+		m_gamePoints = new ArrayList<GameObject>();
+
+		for(int i = 0; i < 5; i++)
+		{
+			GameObject gamePoint = new GameObject();
+			gamePoint.SetEnabled(false);
+			gamePoint.SetTag("GamePoint");
+			
+			Sprite gamePointSprite = new Sprite(new Texture("point.png"), -0.1f);
+			gamePointSprite.setScale(new Vector3f(0.15f, 0.15f, 1.0f));
+			
+			BoundingSphere boundingSphere = new BoundingSphere(new Vector3f(100.0f, 100.0f, 0.0f), 15);
+			Collider collider = new Collider(boundingSphere);
+			
+			PowerUp powerUpComponent = new PowerUp();
+
+
+			gamePoint.AddComponent(collider);
+			gamePoint.AddComponent(powerUpComponent);
+			gamePoint.AddComponent(gamePointSprite);
+
+			GetParent().AddChild(gamePoint);
+			m_gamePoints.add(gamePoint);
+		}
 	}
 	
-	public void Spawn(GameObject powerUp)
+	public void Spawn(GameObject object)
 	{
 
 		int x = ThreadLocalRandom.current().nextInt(20, Window.GetWidth() - 20);
 		int y = Window.GetHeight();
-		powerUp.GetTransform().SetPos(new Vector3f(x, y, 0.0f));
-		powerUp.SetEnabled(true);
-		
+		object.GetTransform().SetPos(new Vector3f(x, y, 0.0f));
+		object.SetEnabled(true);	
 	}
+
 		
 	@Override
 	public void Update(float delta)
 	{
-		if(m_timer >= m_interval)
+		if(m_powerUpTimer >= m_powerUpInterval)
 		{
 			for(GameObject powerUp : m_powerUps)
 			{
@@ -92,10 +123,24 @@ public class PowerUpManager extends GameComponent
 					break;
 				}
 			}
-			m_timer = 0.0f;
+			m_powerUpTimer = 0.0f;
 		}
 		
-		m_timer += delta;
+		if(m_gamePointsTimer >= m_gamePointsInterval)
+		{
+			for(GameObject gamePoint : m_gamePoints)
+			{
+				if(!gamePoint.IsEnabled())
+				{
+					Spawn(gamePoint);
+					break;
+				}
+			}
+			m_gamePointsTimer = 0.0f;
+		}
+		
+		m_gamePointsTimer += delta;
+		m_powerUpTimer += delta;
 	}
 }
 
