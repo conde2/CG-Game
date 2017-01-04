@@ -1,6 +1,8 @@
 package text;
 
 import Engine.components.GameComponent;
+import Engine.rendering.RenderingEngine;
+import Engine.rendering.Shader;
 import org.lwjgl.opengl.GL11;
 
 public class Text extends GameComponent {
@@ -21,6 +23,10 @@ public class Text extends GameComponent {
     @Override
     public void Start() {
         super.Start();
+    }
+
+    @Override
+    public void Render(Shader shader, RenderingEngine renderingEngine) {
         drawString(mString, mX, mY, mScale, mWidth);
     }
 

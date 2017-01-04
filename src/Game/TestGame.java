@@ -40,13 +40,13 @@ public class TestGame extends Game
 {
 	private GameObject obstacleManager = new GameObject();
 	private GameObject player = new GameObject();
-	private GameObject text = new GameObject();
 	private float speed=2.0f;
 	private Random randomNum = new Random();
 
 	public void Init() {
 		// For text
-		text.AddComponent(new Text("Let's go", 10, 10, 100, 10));
+		GameObject text = new GameObject();
+		text.AddComponent(new Text("Lets go", 10, 50, 10, 1));
 
 		// Add our camera
 		GameObject camera = new GameObject();
