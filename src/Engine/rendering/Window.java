@@ -99,8 +99,7 @@ public class Window
 
 		glfwSetKeyCallback(window, Input.GetKeyboardCallback());
 		glfwSetMouseButtonCallback(window, Input.GetMouseCallback());
-
-		
+	    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 	
 	public static long getCurrentWindow()
@@ -110,16 +109,7 @@ public class Window
 	
 	public static void Clear()
 	{
-		glEnable(GL_DEPTH_TEST); 
-		glDepthFunc(GL_LEQUAL);
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glAlphaFunc(GL_GREATER, 0);
-		glClearDepth(1.0f); 
-	    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	}
 	
 	public static void Render()

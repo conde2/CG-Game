@@ -76,6 +76,14 @@ public class Sprite extends GameComponent
 		m_texture.Bind();
 		glColor4f(m_color.GetX(), m_color.GetY(), m_color.GetZ(), 1.0f);
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_DEPTH_TEST); 
+		glDepthFunc(GL_LEQUAL);
+		glClearDepth(1.0f);
+		
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glAlphaFunc(GL_GREATER, 0);
+		
 		glBegin(GL_QUADS);
 
 			float x = GetTransform().GetPos().GetX();
@@ -113,7 +121,8 @@ public class Sprite extends GameComponent
 			}
         glEnd();
         glDisable(GL_TEXTURE_2D);
-
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
 		
 	}
 }
