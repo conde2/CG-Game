@@ -36,7 +36,12 @@ public class Player extends GameComponent
 {
 
 	private ArrayList<GameObject> m_playerLifes;
+	private GameObject m_lastLifeTaken = null;
 	public int m_lifes = 3;
+	public float m_blinkTimer = 0.0f;
+	public float m_blinkInterval = 0.3f;
+	public int m_blinkTimes = 0;
+	
 	public Player()
 	{
 	}
@@ -60,6 +65,29 @@ public class Player extends GameComponent
 	}
 	
 	@Override
+	public void Update(float delta)
+	{
+		
+		if(m_blinkTimes > 0 && m_blinkTimer >= m_blinkInterval)
+		{
+			if (m_lastLifeTaken != null)
+			{
+				m_lastLifeTaken.SetEnabled(!m_lastLifeTaken.IsEnabled());
+			}
+			m_blinkTimer = 0.0f;
+			m_blinkTimes--;
+			
+			if (m_blinkTimes <= 0)
+			{
+				m_lastLifeTaken.SetEnabled(false);				
+			}
+		}
+		
+		m_blinkTimer += delta;
+		
+	}
+	
+	@Override
 	public void OnCollide(GameObject object)
 	{
 		
@@ -74,11 +102,13 @@ public class Player extends GameComponent
 		}
 		else if (object.GetTag() == "Obstacle")
 		{
-			for(GameObject obstacle : m_playerLifes)
+			for(GameObject life : m_playerLifes)
 			{
-				if(obstacle.IsEnabled())
+				if(life.IsEnabled())
 				{
-					obstacle.SetEnabled(false);
+					m_blinkTimes = 5;
+					m_lastLifeTaken = life;
+					//life.SetEnabled(false);
 					break;
 				}
 				
