@@ -25,7 +25,6 @@ import Engine.rendering.Texture;
 import Engine.rendering.Window;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -56,22 +55,19 @@ public class ObstacleManager extends GameComponent
 		
 		private final  Vector3f cor;
 		
-		Cores(Vector3f cor){
+		Cores(Vector3f cor)
+		{
 			this.cor = cor;
 		}
 		
-		private Vector3f getCor(){
+		private Vector3f getCor()
+		{
 			return cor;
 		}
 	}
-	public ObstacleManager(){
-		super();
-	}
-	
-	public ObstacleManager(float speed,int numberOfObstacles){
-		super();
-		m_speed = speed;
-		m_numberOfObstacles = numberOfObstacles;
+	public ObstacleManager()
+	{
+
 	}
 	
 	@Override
