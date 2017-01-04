@@ -63,7 +63,7 @@ public class Text extends GameComponent {
     }
 
     private static void setUpStates() {
-        glClearColor(1, 0.3f, 1, 1);
+        glClearColor(0, 0.3f, 0, 1);
     }
 
     @Override
