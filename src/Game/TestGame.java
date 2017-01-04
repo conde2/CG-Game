@@ -16,27 +16,37 @@
 
 package Game;
 
-import java.util.Random;
-
 import Engine.collision.BoundingSphere;
 import Engine.collision.Collider;
+import Engine.components.Camera;
+import Engine.components.FreeMove;
+import Engine.components.GameComponent;
+import Engine.components.Sprite;
+import Engine.core.Game;
+import Engine.core.GameObject;
+import Engine.core.Matrix4f;
+import Engine.core.Vector3f;
+import Engine.rendering.Texture;
+import Engine.rendering.Window;
+import Game.components.ObstacleManager;
+import Game.components.Player;
+import text.Text;
+
+import java.util.Random;
 
 //import java.util.ArrayList;
 
-import Engine.components.*;
-import Engine.core.*;
-import Engine.rendering.*;
-import Game.components.ObstacleManager;
-import Game.components.Player;
-
 public class TestGame extends Game
 {
-	GameObject obstacleManager = new GameObject();
-	GameObject player = new GameObject();
-	float speed=2.0f;
-	Random randomNum = new Random();
-	public void Init()
-	{
+	private GameObject obstacleManager = new GameObject();
+	private GameObject player = new GameObject();
+	private GameObject text = new GameObject();
+	private float speed=2.0f;
+	private Random randomNum = new Random();
+
+	public void Init() {
+		// For text
+		text.AddComponent(new Text("Let's go", 10, 10, 100, 10));
 
 		// Add our camera
 		GameObject camera = new GameObject();
@@ -72,10 +82,12 @@ public class TestGame extends Game
 		AddObject(background);
 		AddObject(obstacleManager);
 		AddObject(player);
+		AddObject(text);
 	}
 	@Override
 	public void Update(float delta) {
 		super.Update(delta);
+
 		if(obstacleManager.GetTransform().GetPos().GetY()<-100){
 			obstacleManager = new GameObject();
 			ObstacleManager obstacleManagerComponent = new ObstacleManager(speed++,6+randomNum.nextInt(7));
