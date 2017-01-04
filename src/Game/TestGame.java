@@ -30,6 +30,7 @@ import Engine.rendering.Window;
 import Game.components.GameManager;
 import Game.components.ObstacleManager;
 import Game.components.Player;
+import text.Text;
 
 //import text.Text;
 
@@ -38,7 +39,7 @@ public class TestGame extends Game
 	public void Init() {
 		// For text
 		GameObject text = new GameObject();
-		//text.AddComponent(new Text("Lets go", 10, 50, 10, 1));
+		text.AddComponent(new Text("Lets go", 10, 50, 10, 1));
 
 		// Add our camera
 		GameObject camera = new GameObject();

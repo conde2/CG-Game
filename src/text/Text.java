@@ -3,17 +3,29 @@ package text;
 import Engine.components.GameComponent;
 import Engine.rendering.RenderingEngine;
 import Engine.rendering.Shader;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.BufferUtils;
+import de.matthiasmann.twl.utils.PNGDecoder;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengles.GLES20.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengles.GLES20.GL_CULL_FACE;
 
 public class Text extends GameComponent {
-    private String mString;
+    /** The string that is rendered on-screen. */
+    private static final StringBuilder renderString = new StringBuilder("Enter your text");
+    /** The texture object for the bitmap font. */
+    private static int fontTexture;
     private float mX;
     private float mY;
     private float mScale;
     private float mWidth;
 
     public Text(String string, float x, float y, float scale, float width) {
-        mString = string;
+//        mString = string;
         mX = x;
         mY = y;
         mScale = scale;
@@ -23,350 +35,102 @@ public class Text extends GameComponent {
     @Override
     public void Start() {
         super.Start();
+        try {
+            setUpTextures();
+        } catch (IOException e) {
+            e.printStackTrace();
+            cleanUp(true);
+        }
+        setUpStates();
+//        cleanUp(false);
+    }
+
+    private static void setUpTextures() throws IOException {
+        // Create a new texture for the bitmap font.
+        fontTexture = glGenTextures();
+        // Bind the texture object to the GL_TEXTURE_2D target, specifying that it will be a 2D texture.
+        glBindTexture(GL_TEXTURE_2D, fontTexture);
+        // Use TWL's utility classes to load the png file.
+        PNGDecoder decoder = new PNGDecoder(new FileInputStream("res/textures/arial_font.png"));
+        ByteBuffer buffer = BufferUtils.createByteBuffer(4 * decoder.getWidth() * decoder.getHeight());
+        decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
+        buffer.flip();
+        // Load the previously loaded texture data into the texture object.
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, decoder.getWidth(), decoder.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                buffer);
+        // Unbind the texture.
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    private static void setUpStates() {
+        glClearColor(1, 0.3f, 1, 1);
     }
 
     @Override
     public void Render(Shader shader, RenderingEngine renderingEngine) {
-        drawString(mString, mX, mY, mScale, mWidth);
+//        glClear(GL_COLOR_BUFFER_BIT);
+        renderString(renderString.toString(), fontTexture, 16, 10.9f, 0, 0.3f, 0.225f);
     }
 
-    public static void drawString(String s, float x, float y, float scale, float width) {
-        float startX = x;
-        scale = scale * 0.25f;
-        GL11.glLineWidth(width);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glEnable(GL11.GL_LINE_WIDTH);
-        GL11.glColor3f(1, 1, 1);
-        boolean space = false;
-        int charNum = 1, spaceNum = 0;
-        for (char c : s.toLowerCase().toCharArray()) {
-            switch(c){
-                case ' ':
-                    space = true;
-                    break;
-                case '\n':
-                    y -= 2;
-                    startX -= charNum * (scale * 5);
-                    startX -= spaceNum * (scale * 3);
-                    spaceNum = 0;
-                    charNum = 0;
-                    break;
-                case 'a':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + -1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + -1));
-                    GL11.glVertex2f(scale * startX, scale * (y + -1));
-                    GL11.glVertex2f(scale * startX, scale * (y + -1));
-                    GL11.glVertex2f(scale * startX, scale * y);
-                    GL11.glVertex2f(scale * startX, scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * startX, scale * y);
-                    GL11.glVertex2f(scale * startX, scale * (y + 0.5f));
-                    GL11.glVertex2f(scale * startX, scale * (y + 0.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.5f));
-                    break;
-                case 'b':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    break;
-                case 'd':
-                    GL11.glVertex2f(scale * startX, scale * (y - 1));
-                    GL11.glVertex2f(scale * startX, scale * (y + 0.8f));
-                case 'c':
-                    GL11.glVertex2f(scale * startX, scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * startX, scale * (y - 1));
-                    break;
-                case 'e':
-                    GL11.glVertex2f(scale * startX, scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * startX, scale * y);
-                    GL11.glVertex2f(scale * startX, scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * startX, scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case 'f':
-                    GL11.glVertex2f(scale * (startX + 0.25f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.25f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.25f));
-                    break;
-                case 'g':
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1.5f));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1.5f));
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1f));
-                    break;
-                case 'h':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case 'i':
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glEnd();
-                    GL11.glPointSize(width);
-                    GL11.glBegin(GL11.GL_POINTS);
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y + 0.25f));
-                    GL11.glEnd();
-                    GL11.glBegin(GL11.GL_LINES);
-                    break;
-                case 'j':
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1.5f));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1.5f));
-                    GL11.glEnd();
-                    GL11.glPointSize(width);
-                    GL11.glBegin(GL11.GL_POINTS);
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y + 0.25f));
-                    GL11.glEnd();
-                    GL11.glBegin(GL11.GL_LINES);
-                    break;
-                case 'k':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.25f));
-                    break;
-                case 't':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.15f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.15f));
-                case 'l':
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    break;
-                case 'm':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case 'p':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1.5f));
-                case 'o':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                case 'n':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case 'q':
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case 'r':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 0.15f));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 0.1f));
-                    break;
-                case 's':
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 0.5f));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    break;
-                case 'u':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * y);
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * y);
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case 'w':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.125f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.125f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX + 0.125f), scale * (y));
-                    break;
-                case 'v':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    break;
-                case 'x':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    break;
-                case 'y':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.33f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1.5f));
-                    break;
-                case 'z':
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case '1':
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.25f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case '2':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.65f));
-                    GL11.glVertex2f(scale * (startX - 0.3f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.3f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.15f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.15f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.35f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    break;
-                case '3':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    break;
-                case '4':
-                    GL11.glVertex2f(scale * startX, scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * startX, scale * (y - 1));
-                    GL11.glVertex2f(scale * startX, scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    break;
-                case '8':
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                case '6':
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                case '5':
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    break;
-                case '7':
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    break;
-                case '9':
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    break;
-                case '0':
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y - 1));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX - 0.5f), scale * (y + 0.8f));
-                    GL11.glVertex2f(scale * (startX), scale * (y + 0.8f));
-                    break;
-            }
-            if(!space){
-                startX += scale * 5;
-                charNum++;
-            }else{
-                startX += scale * 3;
-                spaceNum++;
-            }
-            space = false;
+    /**
+     * Renders text using a font bitmap.
+     *
+     * @param string the string to render
+     * @param textureObject the texture object containing the font glyphs
+     * @param gridSize the dimensions of the bitmap grid (e.g. 16 -> 16x16 grid; 8 -> 8x8 grid)
+     * @param x the x-coordinate of the bottom-left corner of where the string starts rendering
+     * @param y the y-coordinate of the bottom-left corner of where the string starts rendering
+     * @param characterWidth the width of the character
+     * @param characterHeight the height of the character
+     */
+    private static void renderString(String string, int textureObject, int gridSize, float x, float y,
+                                     float characterWidth, float characterHeight) {
+        glPushAttrib(GL_TEXTURE_BIT | GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, textureObject);
+        // Enable linear texture filtering for smoothed results.
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        // Enable additive blending. This means that the colours will be added to already existing colours in the
+        // frame buffer. In practice, this makes the black parts of the texture become invisible.
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE);
+        // Store the current model-view matrix.
+        glPushMatrix();
+        // Offset all subsequent (at least up until 'glPopMatrix') vertex coordinates.
+        glTranslatef(x, y, 0);
+        glBegin(GL_QUADS);
+        // Iterate over all the characters in the string.
+        for (int i = 0; i < string.length(); i++) {
+            // Get the ASCII-code of the character by type-casting to integer.
+            int asciiCode = (int) string.charAt(i);
+            // There are 16 cells in a texture, and a texture coordinate ranges from 0.0 to 1.0.
+            final float cellSize = 1.0f / gridSize;
+            // The cell's x-coordinate is the greatest integer smaller than remainder of the ASCII-code divided by the
+            // amount of cells on the x-axis, times the cell size.
+            float cellX = ((int) asciiCode % gridSize) * cellSize;
+            // The cell's y-coordinate is the greatest integer smaller than the ASCII-code divided by the amount of
+            // cells on the y-axis.
+            float cellY = ((int) asciiCode / gridSize) * cellSize;
+            glTexCoord2f(cellX, cellY + cellSize);
+            glVertex2f(i * characterWidth / 3, y);
+            glTexCoord2f(cellX + cellSize, cellY + cellSize);
+            glVertex2f(i * characterWidth / 3 + characterWidth / 2, y);
+            glTexCoord2f(cellX + cellSize, cellY);
+            glVertex2f(i * characterWidth / 3 + characterWidth / 2, y + characterHeight);
+            glTexCoord2f(cellX, cellY);
+            glVertex2f(i * characterWidth / 3, y + characterHeight);
         }
-        GL11.glEnd();
-        GL11.glDisable(GL11.GL_LINE_WIDTH);
+        glEnd();
+        glPopMatrix();
+        glPopAttrib();
+    }
+
+    private static void cleanUp(boolean asCrash) {
+        glDeleteTextures(fontTexture);
+        System.out.println("Font texture crashed");
+        System.exit(asCrash ? 1 : 0);
     }
 
 }
