@@ -108,7 +108,6 @@ public class Player extends GameComponent
 				{
 					m_blinkTimes = 5;
 					m_lastLifeTaken = life;
-					//life.SetEnabled(false);
 					break;
 				}
 				

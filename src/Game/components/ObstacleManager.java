@@ -100,7 +100,8 @@ public class ObstacleManager extends GameComponent
 	private void Spawn()
 	{
 		GetTransform().SetPos(m_center);
-		
+		m_speed = (float) (m_speed + 0.1*GameManager.GetGameLevel());
+
 		clockwise = Math.random() > 0.5 ? 1 : -1;
 		m_numberOfObstacles = ThreadLocalRandom.current().nextInt(5, 12);
 		float littleRadius= (float)Math.floor(Math.PI * m_radius / (m_numberOfObstacles + Math.PI));
@@ -179,8 +180,9 @@ public class ObstacleManager extends GameComponent
 
 		}
 
-		if(GetTransform().GetPos().GetY() < -Window.GetHeight() + m_radius)
+		if(GetTransform().GetPos().GetY() < -Window.GetHeight() + m_radius*2)
 		{
+			GameManager.SetGameLevel(GameManager.GetGameLevel() + 1);
 			Spawn();
 		}
 	}

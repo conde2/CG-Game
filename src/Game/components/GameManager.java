@@ -31,6 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameManager extends GameComponent
 {
 
+	private static int m_gameLevel = 1;
 	private float m_powerUpTimer = 0.0f;
 	private float m_powerUpInterval = 1.0f;
 	
@@ -43,6 +44,16 @@ public class GameManager extends GameComponent
 	public GameManager()
 	{
 		
+	}
+
+	public static int GetGameLevel()
+	{
+		return m_gameLevel;
+	}
+	
+	public static void SetGameLevel(int level)
+	{
+		m_gameLevel = level;
 	}
 	
 	@Override
