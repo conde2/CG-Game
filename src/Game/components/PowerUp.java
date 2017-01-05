@@ -28,10 +28,8 @@ import java.util.Random;
 public class PowerUp extends GameComponent
 {
 
-	
-	private float m_timer = 0.0f;
-	private float m_interval = 3.0f;
-	private float m_dropSpeed = 40.0f;
+
+	private float m_dropSpeed = 90.0f;
 	public ArrayList<GameObject> m_powerUps;
 
 	public PowerUp()

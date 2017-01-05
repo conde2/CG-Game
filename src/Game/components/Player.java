@@ -76,11 +76,12 @@ public class Player extends GameComponent
 		}
 		// setting up the score by its parts
 		for (int i=0; i<=5; i++) { // i=5 unidade, 4 dezenas, 3 centenas...
-			m_playerScore.add(new GameObject());
-			m_playerScore.get(i).GetTransform().SetPos(new Vector3f((i+1)*17.0f, Window.GetHeight() - 15.0f, 1.0f));
-			m_playerScore.get(i).AddComponent(m_numberSprites.get(i));
-			m_playerScore.get(i).SetEnabled(false);
-			GetParent().AddChild(m_playerScore.get(i));
+			GameObject number = new GameObject();
+			number.GetTransform().SetPos(new Vector3f((i+1)*17.0f, Window.GetHeight() - 15.0f, 1.0f));
+			number.AddComponent(m_numberSprites.get(i));
+			number.SetEnabled(false);
+			GetParent().AddChild(number);
+			m_playerScore.add(number);
 		}
 		m_playerScore.get(5).SetEnabled(true);	// enabling units
 		addScore(0);	// start score
@@ -113,8 +114,6 @@ public class Player extends GameComponent
 			m_timer--;
 		}
 //		System.out.println(m_timer);
-
-		
 	}
 	
 	@Override

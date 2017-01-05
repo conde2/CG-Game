@@ -33,7 +33,7 @@ public class GameManager extends GameComponent
 
 	private static int m_gameLevel = 1;
 	private float m_powerUpTimer = 0.0f;
-	private float m_powerUpInterval = 1.0f;
+	private float m_powerUpInterval = 10.0f;
 	
 	private float m_gamePointsTimer = 0.0f;
 	private float m_gamePointsInterval = 3.0f;
@@ -99,11 +99,11 @@ public class GameManager extends GameComponent
 			BoundingSphere boundingSphere = new BoundingSphere(new Vector3f(100.0f, 100.0f, 0.0f), 15);
 			Collider collider = new Collider(boundingSphere);
 			
-			PowerUp powerUpComponent = new PowerUp();
+			GamePoint gamePointComponent = new GamePoint();
 
 
 			gamePoint.AddComponent(collider);
-			gamePoint.AddComponent(powerUpComponent);
+			gamePoint.AddComponent(gamePointComponent);
 			gamePoint.AddComponent(gamePointSprite);
 
 			GetParent().AddChild(gamePoint);
