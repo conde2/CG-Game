@@ -19,28 +19,27 @@ package Game.components;
 import Engine.components.FreeMove;
 import Engine.components.GameComponent;
 import Engine.components.Sprite;
-import Engine.core.CoreEngine;
 import Engine.core.GameObject;
-import Engine.core.Input;
 import Engine.core.Vector3f;
-import Engine.rendering.RenderingEngine;
-import Engine.rendering.Shader;
 import Engine.rendering.Texture;
 import Engine.rendering.Window;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Player extends GameComponent
 {
 
 	private ArrayList<GameObject> m_playerLifes;
+	private ArrayList<GameObject> m_playerScore;
+	private Vector<Sprite> m_numberSprites;
+	private ArrayList<Texture> m_textures;
 	private GameObject m_lastLifeTaken = null;
 	public int m_lifes = 3;
 	public float m_blinkTimer = 0.0f;
 	public float m_blinkInterval = 0.3f;
 	public int m_blinkTimes = 0;
+	private int m_score = 0;
 	
 	public Player()
 	{
@@ -49,6 +48,7 @@ public class Player extends GameComponent
 	@Override
 	public void Start()
 	{
+		// Player life
 		m_playerLifes = new ArrayList<GameObject>();
 
 		for(int i = 0; i < m_lifes; i++)
@@ -62,6 +62,25 @@ public class Player extends GameComponent
 			m_playerLifes.add(playerLife);
 			GetParent().AddChild(playerLife);
 		}
+
+		// Player Score
+		m_playerScore = new ArrayList<>();
+		m_numberSprites = new Vector<>();
+		m_textures = new ArrayList<>();
+		// adding Textures, Sprites and setting scale
+		for (int i=0; i<10; i++) {
+			m_textures.add(new Texture("numbers\\"+String.valueOf(i)+".png"));
+			m_numberSprites.add(new Sprite(m_textures.get(i)));
+			m_numberSprites.get(i).setScale(new Vector3f(1.0f, 1.0f, 1.0f));
+		}
+		// setting up the score by its parts
+		for (int i=0; i<6; i++) {
+			m_playerScore.add(new GameObject());
+			m_playerScore.get(i).GetTransform().SetPos(new Vector3f((i+1)*20.0f, Window.GetHeight() - 25.0f, 1.0f));
+			m_playerScore.get(i).AddComponent(m_numberSprites.get(i));
+			GetParent().AddChild(m_playerScore.get(i));
+		}
+
 	}
 	
 	@Override
@@ -98,7 +117,8 @@ public class Player extends GameComponent
 		}
 		else if (object.GetTag() == "GamePoint")
 		{
-			object.SetEnabled(false);	
+			object.SetEnabled(false);
+			m_playerScore.get(3).GetComponent(Sprite.class).setTexture(m_textures.get(7));
 		}
 		else if (object.GetTag() == "Obstacle")
 		{

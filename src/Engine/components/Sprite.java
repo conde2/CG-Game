@@ -39,7 +39,11 @@ public class Sprite extends GameComponent
 	{
 		m_texture = texture;
 	}
-	
+
+	public void setTexture(Texture m_texture) {
+		this.m_texture = m_texture;
+	}
+
 	public void setScale(Vector3f scale)
 	{
 		 m_scale = scale;
