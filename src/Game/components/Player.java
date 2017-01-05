@@ -115,7 +115,7 @@ public class Player extends GameComponent
 		}
 		
 		if (m_powerUpTimer >=5.0f ){
-			GetParent().GetComponent(FreeMove.class).setSpeed(80.0f+0.1f*GameManager.GetGameLevel());
+			GetParent().GetComponent(FreeMove.class).setSpeed(80.0f+FATOR*GameManager.GetGameLevel());
 		}
 		m_powerUpTimer	+= delta;
 		m_blinkTimer 	+= delta;
@@ -130,7 +130,7 @@ public class Player extends GameComponent
 		if (object.GetTag() == "PowerUp")
 		{
 			object.SetEnabled(false);
-			GetParent().GetComponent(FreeMove.class).setSpeed(150.0f+0.1f*GameManager.GetGameLevel());
+			GetParent().GetComponent(FreeMove.class).setSpeed(150.0f+FATOR*GameManager.GetGameLevel());
 			m_powerUpTimer = 0.0f;
 		}
 		else if (object.GetTag() == "GamePoint")

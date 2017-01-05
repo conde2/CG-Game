@@ -100,7 +100,7 @@ public class ObstacleManager extends GameComponent
 	private void Spawn()
 	{
 		GetTransform().SetPos(m_center);
-		m_speed = (float) (m_speed + 0.1*GameManager.GetGameLevel());
+		m_speed = m_speed + FATOR*GameManager.GetGameLevel();
 
 		clockwise = Math.random() > 0.5 ? 1 : -1;
 		m_numberOfObstacles = ThreadLocalRandom.current().nextInt(5, 12);
