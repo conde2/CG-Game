@@ -25,5 +25,6 @@ public class Main
 		CoreEngine engine = new CoreEngine(260, 400, 60, new TestGame());
 		engine.CreateWindow("3D Game Engine");
 		engine.Start();
+		engine.CleanUp();
 	}
 }

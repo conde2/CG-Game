@@ -146,11 +146,9 @@ public class CoreEngine
 				}
 			}
 		}
-		
-		CleanUp();
 	}
 
-	private void CleanUp()
+	public void CleanUp()
 	{
 		Window.Dispose();
 	}
