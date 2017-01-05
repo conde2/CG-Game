@@ -37,6 +37,7 @@ public class Player extends GameComponent
 	private GameObject m_lastLifeTaken = null;
 	public int m_lifes = 3;
 	public float m_blinkTimer = 0.0f;
+	public float m_timer = 0.0f;
 	public float m_blinkInterval = 0.3f;
 	public int m_blinkTimes = 0;
 	private int m_score = 0;
@@ -71,15 +72,18 @@ public class Player extends GameComponent
 		for (int i=0; i<10; i++) {
 			m_textures.add(new Texture("numbers\\"+String.valueOf(i)+".png"));
 			m_numberSprites.add(new Sprite(m_textures.get(i)));
-			m_numberSprites.get(i).setScale(new Vector3f(1.0f, 1.0f, 1.0f));
+			m_numberSprites.get(i).setScale(new Vector3f(0.8f, 0.8f, 1.0f));
 		}
 		// setting up the score by its parts
-		for (int i=0; i<6; i++) {
+		for (int i=0; i<=5; i++) { // i=5 unidade, 4 dezenas, 3 centenas...
 			m_playerScore.add(new GameObject());
-			m_playerScore.get(i).GetTransform().SetPos(new Vector3f((i+1)*20.0f, Window.GetHeight() - 25.0f, 1.0f));
+			m_playerScore.get(i).GetTransform().SetPos(new Vector3f((i+1)*17.0f, Window.GetHeight() - 15.0f, 1.0f));
 			m_playerScore.get(i).AddComponent(m_numberSprites.get(i));
+			m_playerScore.get(i).SetEnabled(false);
 			GetParent().AddChild(m_playerScore.get(i));
 		}
+		m_playerScore.get(5).SetEnabled(true);	// enabling units
+		addScore(0);	// start score
 
 	}
 	
@@ -103,6 +107,13 @@ public class Player extends GameComponent
 		}
 		
 		m_blinkTimer += delta;
+		m_timer += delta;
+		if (m_timer >=1 ){
+			addScore(1);
+			m_timer--;
+		}
+//		System.out.println(m_timer);
+
 		
 	}
 	
@@ -118,7 +129,8 @@ public class Player extends GameComponent
 		else if (object.GetTag() == "GamePoint")
 		{
 			object.SetEnabled(false);
-			m_playerScore.get(3).GetComponent(Sprite.class).setTexture(m_textures.get(7));
+			// add score
+			addScore(10);
 		}
 		else if (object.GetTag() == "Obstacle")
 		{
@@ -137,5 +149,29 @@ public class Player extends GameComponent
 			object.SetEnabled(false);
 		}
 		
+	}
+
+	public void addScore(int points) {
+		m_score += points;
+		// units
+		int num = m_score % 10;
+		m_playerScore.get(5).GetComponent(Sprite.class).setTexture(m_textures.get(num));
+		for (int i=2; i<=6; i++){ //i=2 dezena, 3 centena, 4 milhar...
+			int div = (int) Math.pow(10, i);
+			int remainder = m_score % div;	// remove right numbers
+			int div2 = (int) Math.pow(10, i-1);
+			num = remainder/div2;			// remove left numbers
+			if (num!=0) m_playerScore.get(6-i).SetEnabled(true);
+			m_playerScore.get(6-i).GetComponent(Sprite.class).setTexture(m_textures.get(num));
+//			System.out.println("m_score: " + m_score + " div: " + div + " remainder: " + remainder +
+//					"div2: "+ div2 + " num: " + num);
+		}
+	}
+
+	public void resetScore() {
+		m_score = 0;
+		for (int i=0; i<=4; i++)
+			m_playerScore.get(i).SetEnabled(false);
+		addScore(0);
 	}
 }
