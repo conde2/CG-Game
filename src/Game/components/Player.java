@@ -109,12 +109,14 @@ public class Player extends GameComponent
 			}
 		}
 		
-		if (m_scoreTimer >=1 ){
+		if (m_scoreTimer >=1 )
+		{
 			addScore(1);
 			m_scoreTimer=0.0f;
 		}
 		
-		if (m_powerUpTimer >=5.0f ){
+		if (m_powerUpTimer >=5.0f )
+		{
 			GetParent().GetComponent(FreeMove.class).setSpeed(80.0f+FATOR*GameManager.GetGameLevel());
 		}
 		m_powerUpTimer	+= delta;
@@ -141,7 +143,8 @@ public class Player extends GameComponent
 		}
 		else if (object.GetTag() == "Obstacle")
 		{
-			if(m_lifes>0){
+			if(m_lifes>0)
+			{
 				GameObject life = m_playerLifes.get(3-m_lifes); // pega vidas no vetor de 0 a 2
 				if(life.IsEnabled())//sempre sera pois esta pegando na ordem
 				{
@@ -166,7 +169,8 @@ public class Player extends GameComponent
 		// units
 		int num = m_score % 10;
 		m_playerScore.get(5).GetComponent(Sprite.class).setTexture(m_textures.get(num));
-		for (int i=2; i<=6; i++){ //i=2 dezena, 3 centena, 4 milhar...
+		for (int i=2; i<=6; i++)//i=2 dezena, 3 centena, 4 milhar...
+		{ 
 			int div = (int) Math.pow(10, i);
 			int remainder = m_score % div;	// remove right numbers
 			int div2 = (int) Math.pow(10, i-1);
