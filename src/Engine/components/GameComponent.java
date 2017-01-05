@@ -24,7 +24,7 @@ import Engine.rendering.Shader;
 
 public abstract class GameComponent
 {
-	public static final float FATOR = 0;
+	public static final float FATOR = 0.1f;
 	private GameObject m_parent;
 	private boolean m_enabled;
 
