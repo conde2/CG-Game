@@ -156,4 +156,7 @@ public class CoreEngine
 	public RenderingEngine GetRenderingEngine() {
 		return m_renderingEngine;
 	}
+	public void SetGame(Game game){
+		m_game=game;
+	}
 }

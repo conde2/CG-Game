@@ -136,8 +136,7 @@ public class Player extends GameComponent
 		{
 			if(m_lifes>0){
 				GameObject life = m_playerLifes.get(3-m_lifes); // pega vidas no vetor de 0 a 2
-				System.out.println(m_lifes);
-				if(life.IsEnabled())
+				if(life.IsEnabled())//sempre sera pois esta pegando na ordem
 				{
 					m_blinkTimes = 5;
 					m_lastLifeTaken = life;
@@ -145,6 +144,9 @@ public class Player extends GameComponent
 				}
 			}
 			//PLAYER IS DEAD
+			else{
+				CoreEngine.Stop();
+			}
 			
 			
 			object.SetEnabled(false);

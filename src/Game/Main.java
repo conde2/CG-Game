@@ -17,6 +17,7 @@
 package Game;
 
 import Engine.core.CoreEngine;
+import Engine.rendering.Window;
 
 public class Main
 {
@@ -25,6 +26,10 @@ public class Main
 		CoreEngine engine = new CoreEngine(260, 400, 60, new TestGame());
 		engine.CreateWindow("3D Game Engine");
 		engine.Start();
+		while(!Window.IsCloseRequested()){
+			engine.SetGame(new TestGame());
+			engine.Start();
+		}
 		engine.CleanUp();
 	}
 }
