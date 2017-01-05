@@ -36,12 +36,13 @@ public class Player extends GameComponent
 	private Vector<Sprite> m_numberSprites;
 	private ArrayList<Texture> m_textures;
 	private GameObject m_lastLifeTaken = null;
-	public int m_lifes = 3;
-	public float m_blinkTimer = 0.0f;
-	public float m_timer = 0.0f;
-	public float m_blinkInterval = 0.3f;
-	public int m_blinkTimes = 0;
-	private int m_score = 0;
+	public int m_lifes 						= 	 3;
+	public float m_blinkTimer				= 0.0f;
+	public float m_scoreTimer 				= 0.0f;
+	private float m_powerUpTimer 			= 0.0f;
+	public float m_blinkInterval 			= 0.3f;
+	public int m_blinkTimes 				=    0;
+	private int m_score 					=    0;
 	
 	public Player()
 	{
@@ -108,13 +109,18 @@ public class Player extends GameComponent
 			}
 		}
 		
-		m_blinkTimer += delta;
-		m_timer += delta;
-		if (m_timer >=1 ){
+		if (m_scoreTimer >=1 ){
 			addScore(1);
-			m_timer--;
+			m_scoreTimer=0.0f;
 		}
-//		System.out.println(m_timer);
+		
+		if (m_powerUpTimer >=5.0f ){
+			GetParent().GetComponent(FreeMove.class).setSpeed(80.0f+0.1f*GameManager.GetGameLevel());
+		}
+		m_powerUpTimer	+= delta;
+		m_blinkTimer 	+= delta;
+		m_scoreTimer 	+= delta;
+		
 	}
 	
 	@Override
@@ -124,7 +130,8 @@ public class Player extends GameComponent
 		if (object.GetTag() == "PowerUp")
 		{
 			object.SetEnabled(false);
-			GetParent().GetComponent(FreeMove.class).setSpeed(200.0f);
+			GetParent().GetComponent(FreeMove.class).setSpeed(150.0f+0.1f*GameManager.GetGameLevel());
+			m_powerUpTimer = 0.0f;
 		}
 		else if (object.GetTag() == "GamePoint")
 		{
