@@ -101,7 +101,6 @@ public class ObstacleManager extends GameComponent
 
 	private void Spawn()
 	{
-		System.out.println("inc");
 		GetTransform().SetPos(m_center);
 		m_speed += INCSPEED;
 
