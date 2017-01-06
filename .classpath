@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="lwjgl/native"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lwjgl/libs/lwjgl-glfw.jar" sourcepath="lwjgl/sources/lwjgl-glfw-sources.jar">
+	<classpathentry kind="src" path="src">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Game/lwjgl/native"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/libs/lwjgl-opengl.jar" sourcepath="lwjgl/libs/lwjgl-opengl.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Game/lwjgl/native"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/libs/lwjgl.jar" sourcepath="lwjgl/libs/lwjgl.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Game/lwjgl/native"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/libs/lwjgl-stb.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-glfw-javadoc.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-glfw-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-glfw-natives-macos.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-glfw-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-glfw-sources.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-glfw.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-javadoc.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-natives-macos.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-opengl-javadoc.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-opengl-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-opengl-natives-macos.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-opengl-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-opengl-sources.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-opengl.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl-sources.jar"/>
+	<classpathentry kind="lib" path="lwjgl/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

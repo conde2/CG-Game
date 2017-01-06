@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL13.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
@@ -94,7 +95,7 @@ public class Texture
 	{
 		try
 		{
-			BufferedImage image = ImageIO.read(new File("./res/textures/" + fileName));
+			BufferedImage image = ImageIO.read(new FileInputStream("./res/textures/" + fileName));
 			int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 
 			ByteBuffer buffer = Util.CreateByteBuffer(image.getHeight() * image.getWidth() * 4);
