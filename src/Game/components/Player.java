@@ -31,6 +31,7 @@ import java.util.Vector;
 public class Player extends GameComponent
 {
 
+	private static final int INCSPEED = 1;
 	private ArrayList<GameObject> m_playerLifes;
 	private ArrayList<GameObject> m_playerScore;
 	private Vector<Sprite> m_numberSprites;
@@ -132,6 +133,7 @@ public class Player extends GameComponent
 		if (object.GetTag() == "PowerUp")
 		{
 			object.SetEnabled(false);
+			GetParent().GetComponent(FreeMove.class).setSpeed(100.0f+INCSPEED*GameManager.GetGameLevel());
 			m_powerUpTimer = 0.0f;
 		}
 		else if (object.GetTag() == "GamePoint")
