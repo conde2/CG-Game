@@ -73,7 +73,7 @@ public class Player extends GameComponent
 		m_textures = new ArrayList<>();
 		// adding Textures, Sprites and setting scale
 		for (int i=0; i<10; i++) {
-			m_textures.add(new Texture("numbers\\"+String.valueOf(i)+".png"));
+			m_textures.add(new Texture("numbers/"+String.valueOf(i)+".png"));
 			m_numberSprites.add(new Sprite(m_textures.get(i)));
 			m_numberSprites.get(i).setScale(new Vector3f(0.8f, 0.8f, 1.0f));
 		}

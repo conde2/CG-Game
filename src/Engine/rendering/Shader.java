@@ -30,6 +30,7 @@ import static org.lwjgl.opengl.GL32.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -367,7 +368,7 @@ public class Shader
 		glAttachShader(m_resource.GetProgram(), shader);
 	}
 
-	private static String LoadShader(String fileName)
+	private String LoadShader(String fileName)
 	{
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
@@ -375,7 +376,9 @@ public class Shader
 
 		try
 		{
-			shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
+			
+			shaderReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/res/shaders/" + fileName)));
+			
 			String line;
 
 			while((line = shaderReader.readLine()) != null)
