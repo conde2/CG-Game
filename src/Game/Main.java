@@ -24,7 +24,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		CoreEngine engine = new CoreEngine(260, 400, 60, new TestGame());
-		engine.CreateWindow("3D Game Engine");
+		engine.CreateWindow("Asteroids");
 		engine.Start();
 		while(!Window.IsCloseRequested()){
 			engine.SetGame(new TestGame());
