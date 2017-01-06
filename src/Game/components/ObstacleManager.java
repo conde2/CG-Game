@@ -30,8 +30,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ObstacleManager extends GameComponent
 {
+	private static final float FATORANG= 1/10.0f; //relacao velocidade angular/linear
+	private static final float INCSPEED = 0.1f;
 	public float m_radius = Window.GetWidth()/2;
-	public float m_speed = 1.0f;
+	public float m_speed = 0.9f;
 	public int m_numberOfObstacles = 10;
 
 	int clockwise = 1;
@@ -99,8 +101,9 @@ public class ObstacleManager extends GameComponent
 
 	private void Spawn()
 	{
+		System.out.println("inc");
 		GetTransform().SetPos(m_center);
-		m_speed = m_speed + FATOR*GameManager.GetGameLevel();
+		m_speed += INCSPEED;
 
 		clockwise = Math.random() > 0.5 ? 1 : -1;
 		m_numberOfObstacles = ThreadLocalRandom.current().nextInt(5, 12);
@@ -159,7 +162,8 @@ public class ObstacleManager extends GameComponent
 	@Override
 	public void Update(float delta)
 	{
-		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,-1-m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro do obstaculo
+		float deslocamentoY = -1-m_speed*delta;
+		GetTransform().SetPos(GetTransform().GetPos().Add(new Vector3f(0.0f,deslocamentoY,0.0f))); //adiciona -1*speed*delta em Y do centro do obstaculo
 
 		for(GameObject obstacle : m_obstacles)
 		{
@@ -167,11 +171,11 @@ public class ObstacleManager extends GameComponent
 			//TRANSLADA PARA 0,0 o centro e tira 20*delta
 			obstacle.GetTransform().SetPos(obstacle.GetTransform().GetPos().Add(new Vector3f(
 																	-GetTransform().GetPos().GetX(),
-																	-GetTransform().GetPos().GetY()-1-m_speed*delta,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
+																	-GetTransform().GetPos().GetY()+deslocamentoY,0.0f))); //adiciona -20*speed*delta em Y do centro de cada circulo do obsaculo
 			//Rotaciona delta graus
 			obstacle.GetTransform().SetPos(new Vector3f(
-					obstacle.GetTransform().GetPos().GetX()*(float)Math.cos(clockwise*m_speed*delta/5)- obstacle.GetTransform().GetPos().GetY()*(float)Math.sin(clockwise*m_speed*delta/5),
-					obstacle.GetTransform().GetPos().GetX()*(float)Math.sin(clockwise*m_speed*delta/5)+ obstacle.GetTransform().GetPos().GetY()*(float)Math.cos(clockwise*m_speed*delta/5),
+					obstacle.GetTransform().GetPos().GetX()*(float)Math.cos(clockwise*m_speed*delta*FATORANG)- obstacle.GetTransform().GetPos().GetY()*(float)Math.sin(clockwise*m_speed*delta*FATORANG),
+					obstacle.GetTransform().GetPos().GetX()*(float)Math.sin(clockwise*m_speed*delta*FATORANG)+ obstacle.GetTransform().GetPos().GetY()*(float)Math.cos(clockwise*m_speed*delta*FATORANG),
 					0.0f));
 			//Retorna centro ao ponto original
 			obstacle.GetTransform().SetPos(obstacle.GetTransform().GetPos().Add(new Vector3f(
