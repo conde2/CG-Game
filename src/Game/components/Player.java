@@ -16,34 +16,34 @@
 
 package Game.components;
 
+import Engine.collision.BoundingSphere;
+import Engine.collision.Collider;
 import Engine.components.FreeMove;
 import Engine.components.GameComponent;
+import Engine.components.MeshRenderer;
 import Engine.components.Sprite;
 import Engine.core.CoreEngine;
 import Engine.core.GameObject;
+import Engine.core.Input;
 import Engine.core.Vector3f;
+import Engine.rendering.Material;
+import Engine.rendering.Mesh;
 import Engine.rendering.Texture;
 import Engine.rendering.Window;
+import Game.components.ObstacleManager.Cores;
 
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends GameComponent
 {
 
-	private static final int INCSPEED = 1;
-	private ArrayList<GameObject> m_playerLifes;
-	private ArrayList<GameObject> m_playerScore;
-	private Vector<Sprite> m_numberSprites;
-	private ArrayList<Texture> m_textures;
-	private GameObject m_lastLifeTaken = null;
-	public int m_lifes 						= 	 3;
-	public float m_blinkTimer				= 0.0f;
-	public float m_scoreTimer 				= 0.0f;
-	private float m_powerUpTimer 			= 0.0f;
-	public float m_blinkInterval 			= 0.3f;
-	public int m_blinkTimes 				=    0;
-	private int m_score 					=    0;
+
+	private ArrayList<GameObject> m_bullets;
+	private int m_score = 0;
 	
 	public Player()
 	{
@@ -53,79 +53,49 @@ public class Player extends GameComponent
 	public void Start()
 	{
 		// Player life
-		m_playerLifes = new ArrayList<GameObject>();
+		m_bullets = new ArrayList<GameObject>();
 
-		for(int i = 0; i < m_lifes; i++)
+		Material bulletMaterial = new Material(new Texture("wood2.png"), 0, 0,
+				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+
+		for(int i = 0; i < 50; i++)
 		{
-			GameObject playerLife = new GameObject();
-			playerLife.GetTransform().SetPos(new Vector3f(Window.GetWidth() - m_lifes*25.0f + i*25, Window.GetHeight() - 15.0f, 1.0f));
-			Sprite lifeSprite = new Sprite(new Texture("life.png"), 1.0f);
-			lifeSprite.setScale(new Vector3f(0.1f, 0.1f, 1.0f));
-			playerLife.AddComponent(lifeSprite);
-
-			m_playerLifes.add(playerLife);
-			GetParent().AddChild(playerLife);
+			GameObject playerBullet = new GameObject();
+			
+			Mesh bullet = new Mesh("sheep.obj" );
+			MeshRenderer bulletRederer = new MeshRenderer(bullet, bulletMaterial);
+			playerBullet.AddComponent(bulletRederer);
+			
+			playerBullet.SetEnabled(false);
+			m_bullets.add(playerBullet);
+			GetParent().AddChild(playerBullet);
 		}
-
-		// Player Score
-		m_playerScore = new ArrayList<>();
-		m_numberSprites = new Vector<>();
-		m_textures = new ArrayList<>();
-		// adding Textures, Sprites and setting scale
-		for (int i=0; i<10; i++) {
-			m_textures.add(new Texture("numbers/"+String.valueOf(i)+".png"));
-			m_numberSprites.add(new Sprite(m_textures.get(i)));
-			m_numberSprites.get(i).setScale(new Vector3f(0.8f, 0.8f, 1.0f));
-		}
-		// setting up the score by its parts
-		for (int i=0; i<=5; i++) { // i=5 unidade, 4 dezenas, 3 centenas...
-			GameObject number = new GameObject();
-			number.GetTransform().SetPos(new Vector3f((i+1)*17.0f, Window.GetHeight() - 15.0f, 1.0f));
-			number.AddComponent(m_numberSprites.get(i));
-			number.SetEnabled(false);
-			GetParent().AddChild(number);
-			m_playerScore.add(number);
-		}
-		m_playerScore.get(5).SetEnabled(true);	// enabling units
-		addScore(0);	// start score
 
 	}
 	
 	@Override
 	public void Update(float delta)
 	{
-		
-		if(m_blinkTimes > 0 && m_blinkTimer >= m_blinkInterval)
-		{
-			if (m_lastLifeTaken != null)
-			{
-				m_lastLifeTaken.SetEnabled(!m_lastLifeTaken.IsEnabled());
-			}
-			m_blinkTimer = 0.0f;
-			m_blinkTimes--;
-			
-			if (m_blinkTimes <= 0)
-			{
-				m_lastLifeTaken.SetEnabled(false);				
-			}
-		}
-		
-		if (m_scoreTimer >=1 )
-		{
-			addScore(1);
-			m_scoreTimer=0.0f;
-		}
-		
-		if (m_powerUpTimer >=5.0f )
-		{
-			GetParent().GetComponent(FreeMove.class).setSpeed(80.0f+INCSPEED*GameManager.GetGameLevel());
-		}
-		m_powerUpTimer	+= delta;
-		m_blinkTimer 	+= delta;
-		m_scoreTimer 	+= delta;
-		
+				
 	}
 	
+
+	public void Input(float delta) 
+	{
+		if(Input.IsKeyDown(GLFW_KEY_SPACE))
+		{
+			for (GameObject bullet : m_bullets)
+			{
+				if(bullet.IsEnabled())
+					continue;
+				
+				bullet.GetTransform().SetPos(new Vector3f(GetParent().GetTransform().GetPos().GetX() + 2,GetParent().GetTransform().GetPos().GetY(),GetParent().GetTransform().GetPos().GetZ() + 2));
+				bullet.SetEnabled(true);
+				break;
+			}
+		}
+	}
+
 	@Override
 	public void OnCollide(GameObject object)
 	{
@@ -133,60 +103,7 @@ public class Player extends GameComponent
 		if (object.GetTag() == "PowerUp")
 		{
 			object.SetEnabled(false);
-			GetParent().GetComponent(FreeMove.class).setSpeed(100.0f+INCSPEED*GameManager.GetGameLevel());
-			m_powerUpTimer = 0.0f;
-		}
-		else if (object.GetTag() == "GamePoint")
-		{
-			object.SetEnabled(false);
-			// add score
-			addScore(10);
-		}
-		else if (object.GetTag() == "Obstacle")
-		{
-			if(m_lifes>0)
-			{
-				GameObject life = m_playerLifes.get(3-m_lifes); // pega vidas no vetor de 0 a 2
-				if(life.IsEnabled())//sempre sera pois esta pegando na ordem
-				{
-					m_blinkTimes = 5;
-					m_lastLifeTaken = life;
-					m_lifes--;
-				}
-			}
-			//PLAYER IS DEAD
-			else{
-				CoreEngine.Stop();
-			}
-			
-			
-			object.SetEnabled(false);
-		}
-		
-	}
-
-	public void addScore(int points) {
-		m_score += points;
-		// units
-		int num = m_score % 10;
-		m_playerScore.get(5).GetComponent(Sprite.class).setTexture(m_textures.get(num));
-		for (int i=2; i<=6; i++)//i=2 dezena, 3 centena, 4 milhar...
-		{ 
-			int div = (int) Math.pow(10, i);
-			int remainder = m_score % div;	// remove right numbers
-			int div2 = (int) Math.pow(10, i-1);
-			num = remainder/div2;			// remove left numbers
-			if (num!=0) m_playerScore.get(6-i).SetEnabled(true);
-			m_playerScore.get(6-i).GetComponent(Sprite.class).setTexture(m_textures.get(num));
-//			System.out.println("m_score: " + m_score + " div: " + div + " remainder: " + remainder +
-//					"div2: "+ div2 + " num: " + num);
 		}
 	}
 
-	public void resetScore() {
-		m_score = 0;
-		for (int i=0; i<=4; i++)
-			m_playerScore.get(i).SetEnabled(false);
-		addScore(0);
-	}
 }

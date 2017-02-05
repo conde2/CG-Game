@@ -77,56 +77,66 @@ public class Sprite extends GameComponent
 	@Override
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
-		m_texture.Bind();
-		glColor4f(m_color.GetX(), m_color.GetY(), m_color.GetZ(), 1.0f);
+		
+		
+		
 		glEnable(GL_TEXTURE_2D);
-		glEnable(GL_DEPTH_TEST); 
-		glDepthFunc(GL_LEQUAL);
-		glClearDepth(1.0f);
-		
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glAlphaFunc(GL_GREATER, 0);
-		
+		m_texture.Bind();
+		glLoadIdentity();
+
+		// Draw a textured quad
 		glBegin(GL_QUADS);
+		float x = GetTransform().GetPos().GetX();
+		float y = GetTransform().GetPos().GetY();
+		float width = m_texture.getWidth() * m_scale.GetX();
+		float height =  m_texture.getWidth() * m_scale.GetY(); 
+		
+		glColor4f(m_color.GetX(), m_color.GetY(), m_color.GetZ(), 1.0f);
+		if (m_center)
+		{
+        	glTexCoord2f(0, 0); // top left
+        	glVertex3f(x - width/2, y - height /2, m_zBuffer);
 
-			float x = GetTransform().GetPos().GetX();
-			float y = GetTransform().GetPos().GetY();
-			float width = m_texture.getWidth() * m_scale.GetX();
-			float height =  m_texture.getWidth() * m_scale.GetY(); 
-			
-			if (m_center)
-			{
-	        	glTexCoord2f(0, 0); // top left
-	        	glVertex3f(x - width/2, y - height /2, m_zBuffer);
+        	glTexCoord2f(0, 1); // bottom left 
+        	glVertex3f(x- width/2, y + height - height /2, m_zBuffer);
 
-	        	glTexCoord2f(0, 1); // bottom left 
-	        	glVertex3f(x- width/2, y + height - height /2, m_zBuffer);
+        	glTexCoord2f(1, 1); // bottom right
+        	glVertex3f(x + width - width/2, y + height - height /2, m_zBuffer);
 
-	        	glTexCoord2f(1, 1); // bottom right
-	        	glVertex3f(x + width - width/2, y + height - height /2, m_zBuffer);
+        	glTexCoord2f(1, 0); // top right
+        	glVertex3f(x + width - width/2, y - height /2, m_zBuffer);
+		}
+		else
+		{
+			glTexCoord2f(0, 0); // top left
+			glVertex3f(x, y, m_zBuffer);
 
-	        	glTexCoord2f(1, 0); // top right
-	        	glVertex3f(x + width - width/2, y - height /2, m_zBuffer);
-			}
-			else
-			{
-				glTexCoord2f(0, 0); // top left
-				glVertex3f(x, y, m_zBuffer);
+			glTexCoord2f(0, 1); // bottom left 
+			glVertex3f(x, y + height, m_zBuffer);
 
-				glTexCoord2f(0, 1); // bottom left 
-				glVertex3f(x, y + height, m_zBuffer);
+			glTexCoord2f(1, 1); // bottom right
+			glVertex3f(x + width, y + height, m_zBuffer);
 
-				glTexCoord2f(1, 1); // bottom right
-				glVertex3f(x + width, y + height, m_zBuffer);
+			glTexCoord2f(1, 0); // top right
+			glVertex3f(x + width, y, m_zBuffer);
+		}
 
-				glTexCoord2f(1, 0); // top right
-				glVertex3f(x + width, y, m_zBuffer);
-			}
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
+		glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
+
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+
+		glMatrixMode(GL_MODELVIEW);
+		glEnd();
+		
+//		glEnable(GL_TEXTURE_2D);
+//		glEnable(GL_DEPTH_TEST); 
+//		glDepthFunc(GL_LEQUAL);
+
+//        glDisable(GL_TEXTURE_2D);
+//        glDisable(GL_DEPTH_TEST);
+//        glDisable(GL_BLEND);
 		
 	}
 }

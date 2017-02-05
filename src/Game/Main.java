@@ -23,7 +23,7 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		CoreEngine engine = new CoreEngine(260, 400, 60, new TestGame());
+		CoreEngine engine = new CoreEngine(800, 600, 60, new TestGame());
 		engine.CreateWindow("Asteroids");
 		engine.Start();
 		while(!Window.IsCloseRequested()){

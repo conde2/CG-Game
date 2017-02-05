@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Collider extends GameComponent
 {
-	boolean m_debug = false;
+	boolean m_debug = true;
 
 	private BoundingCollider m_boundingCollider = null;
 	public Collider(BoundingCollider boundingCollider)
@@ -43,42 +43,60 @@ public class Collider extends GameComponent
 		if(!m_debug)
 			return;
 		
-		glColor3f(0.0f, 0.0f, 0.0f);
-        double theta = (2.0f * Math.PI) / 360.0f; 
-  		double c = Math.cos(theta);//precalculate the sine and cosine
-  		double s = Math.sin(theta);
-  		double t;
+		
+		int stacks = 15;
+		int slices = 15;
+		float PI = (float)Math.PI;
+		float rho, drho, theta, dtheta;
+		float x = ((BoundingSphere)m_boundingCollider).center.GetX();
+		float y = ((BoundingSphere)m_boundingCollider).center.GetY();
+		float z = ((BoundingSphere)m_boundingCollider).center.GetZ();
+		float radius = ((BoundingSphere)m_boundingCollider).radius;
+		int i, j;
+		float nsign = 1.0f;
+		boolean normals = false;
+		drho = PI / stacks;
+		dtheta = 2.0f * PI / slices;
 
-  		double xx = ((BoundingSphere)m_boundingCollider).radius;//we start at angle = 0 
-  		double yy = 0; 
 
-  		glBegin(GL_LINE_LOOP);
-   		for(int i = 0; i < 360; i++) 
-  		{ 
-  			glVertex2d(xx + GetTransform().GetPos().GetX(), yy + GetTransform().GetPos().GetY());//output vertex 
-  	        
-  			//glVertex2d(xx + ((BoundingSphere)m_boundingCollider).center.GetX(), yy + ((BoundingSphere)m_boundingCollider).center.GetY());//output vertex 
-  	        
+		// draw stack lines
+		// stack line at i==stacks-1 was missing here
+		for (i = 1; i < stacks; i++)
+		{
+			
+			rho = i * drho;
 
-  			t = xx;
-  			xx = c * xx - s * yy;
-  			yy = s * t + c * yy;
-  		} 
-  		glEnd();
-  		
-  		glBegin(GL_LINE_LOOP);
-   		for(int i = 0; i < 360; i++) 
-  		{ 
-  			//glVertex2d(xx + GetTransform().GetPos().GetX(), yy + GetTransform().GetPos().GetY());//output vertex 
-  	        
-  			glVertex2d(xx + ((BoundingSphere)m_boundingCollider).center.GetX(), yy + ((BoundingSphere)m_boundingCollider).center.GetY());//output vertex 
-  	        
+			glBegin(GL_LINE_LOOP);
+			for (j = 0; j < slices; j++) {
+				theta = j * dtheta;
+				x = (float) (Math.cos(theta) * Math.sin(rho));
+				y = (float) (Math.sin(theta) * Math.sin(rho));
+				z = (float) Math.cos(rho);
+				if (normals)
+					glNormal3f(x * nsign, y * nsign, z * nsign);
+				glVertex3f(x * radius, y * radius, z * radius);
+			}
+			glEnd();
+		}
+		// draw slice lines
+		for (j = 0; j < slices; j++) {
+			theta = j * dtheta;
+			glColor3f(1.0f, 0, 0);
+			glLineWidth(3.0f);
+			glBegin(GL_LINE_STRIP);
+			for (i = 0; i <= stacks; i++) {
+				rho = i * drho;
+				x = (float) (Math.cos(theta) * Math.sin(rho));
+				y = (float) (Math.sin(theta) * Math.sin(rho));
+				z = (float) Math.cos(rho);
+				if (normals)
+					glNormal3f(x * nsign, y * nsign, z * nsign);
+				
 
-  			t = xx;
-  			xx = c * xx - s * yy;
-  			yy = s * t + c * yy;
-  		} 
-  		glEnd();
+				glVertex3f(x * radius, y * radius, z * radius);
+			}
+			glEnd();
+		}
 	}
 	
 }

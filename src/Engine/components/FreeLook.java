@@ -69,7 +69,7 @@ public class FreeLook extends GameComponent
 			if(rotY)
 				GetTransform().Rotate(Y_AXIS, (float) Math.toRadians(deltaPos.GetX() * m_sensitivity));
 			if(rotX)
-				GetTransform().Rotate(GetTransform().GetRot().GetRight(), (float) Math.toRadians(-deltaPos.GetY() * m_sensitivity));
+				GetTransform().Rotate(GetTransform().GetRot().GetRight(), (float) Math.toRadians(deltaPos.GetY() * m_sensitivity));
 
 			if(rotY || rotX)
 				Input.SetMousePosition(centerPosition);

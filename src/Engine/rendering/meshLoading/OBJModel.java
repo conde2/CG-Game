@@ -22,6 +22,7 @@ import Engine.core.Vector3f;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,7 +48,7 @@ public class OBJModel
 
 		try
 		{
-			meshReader = new BufferedReader(new FileReader(fileName));
+			meshReader =  new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/res/models/" + fileName)));
 			String line;
 
 			while((line = meshReader.readLine()) != null)

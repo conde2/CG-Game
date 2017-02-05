@@ -32,6 +32,7 @@ public class GameObject
 	private CoreEngine m_engine;
 	private boolean m_enabled;
 	private String m_tag;
+	private boolean m_update;
 
 	public GameObject()
 	{
@@ -42,6 +43,7 @@ public class GameObject
 		m_collider = null;
 		m_enabled = true;
 		m_tag = "GameObject";
+		m_update = true;
 	}
 
 	public boolean IsEnabled()
@@ -52,6 +54,16 @@ public class GameObject
 	public void SetEnabled(boolean enabled)
 	{
 		m_enabled = enabled;
+	}
+	
+	public boolean IsUpdating()
+	{
+		return m_enabled;
+	}
+	
+	public void SetUpdate(boolean update)
+	{
+		m_update = update;
 	}
 	
 	public String GetTag()
@@ -104,6 +116,9 @@ public class GameObject
 		if (!m_enabled)
 			return;
 
+		if (!m_update)
+			return;
+
 		Update(delta);
 
 		for(GameObject child : m_children)
@@ -131,6 +146,9 @@ public class GameObject
 		if (!m_enabled)
 			return;
 
+		if (!m_update)
+			return;
+
 		m_transform.Update();
 
 		for(GameComponent component : m_components)
@@ -143,6 +161,9 @@ public class GameObject
 	public void Update(float delta)
 	{
 		if (!m_enabled)
+			return;
+		
+		if (!m_update)
 			return;
 		
 		for(GameComponent component : m_components)
