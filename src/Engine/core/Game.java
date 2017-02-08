@@ -21,7 +21,7 @@ import Engine.rendering.RenderingEngine;
 
 public abstract class Game
 {
-	private GameObject m_root;
+	private static GameObject m_root;
 
 	public void Init() {}
 
@@ -81,12 +81,12 @@ public abstract class Game
 		renderingEngine.Render(GetRootObject());
 	}
 
-	public void AddObject(GameObject object)
+	public static void AddObject(GameObject object)
 	{
 		GetRootObject().AddChild(object);
 	}
 
-	protected GameObject GetRootObject()
+	protected static GameObject GetRootObject()
 	{
 		if(m_root == null)
 			m_root = new GameObject();

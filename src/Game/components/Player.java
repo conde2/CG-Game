@@ -18,30 +18,27 @@ package Game.components;
 
 import Engine.collision.BoundingSphere;
 import Engine.collision.Collider;
-import Engine.components.FreeMove;
+
 import Engine.components.GameComponent;
 import Engine.components.MeshRenderer;
-import Engine.components.Sprite;
-import Engine.core.CoreEngine;
+import Engine.core.Game;
 import Engine.core.GameObject;
 import Engine.core.Input;
 import Engine.core.Vector3f;
 import Engine.rendering.Material;
 import Engine.rendering.Mesh;
+import Engine.rendering.RenderingEngine;
+import Engine.rendering.Shader;
 import Engine.rendering.Texture;
-import Engine.rendering.Window;
-import Game.components.ObstacleManager.Cores;
 
 import java.util.ArrayList;
-import java.util.Vector;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends GameComponent
 {
 
-
+	private RenderingEngine m_renderingEngine;
 	private ArrayList<GameObject> m_bullets;
 	private int m_score = 0;
 	
@@ -66,9 +63,12 @@ public class Player extends GameComponent
 			MeshRenderer bulletRederer = new MeshRenderer(bullet, bulletMaterial);
 			playerBullet.AddComponent(bulletRederer);
 			
+			Bullet bulletComponent = new Bullet();
+			playerBullet.AddComponent(bulletComponent);
+
 			playerBullet.SetEnabled(false);
 			m_bullets.add(playerBullet);
-			GetParent().AddChild(playerBullet);
+			Game.AddObject(playerBullet);
 		}
 
 	}
@@ -82,14 +82,18 @@ public class Player extends GameComponent
 
 	public void Input(float delta) 
 	{
-		if(Input.IsKeyDown(GLFW_KEY_SPACE))
+		if(Input.IsKeyPressed(GLFW_KEY_SPACE))
 		{
+			System.out.println("SHOOT");
 			for (GameObject bullet : m_bullets)
 			{
 				if(bullet.IsEnabled())
 					continue;
 				
-				bullet.GetTransform().SetPos(new Vector3f(GetParent().GetTransform().GetPos().GetX() + 2,GetParent().GetTransform().GetPos().GetY(),GetParent().GetTransform().GetPos().GetZ() + 2));
+
+				Bullet component = bullet.GetComponent(Bullet.class);
+				component.SetDirection(GetTransform().GetRot().GetForward().Normalized());
+				bullet.GetTransform().SetPos(GetTransform().GetPos());
 				bullet.SetEnabled(true);
 				break;
 			}
@@ -104,6 +108,12 @@ public class Player extends GameComponent
 		{
 			object.SetEnabled(false);
 		}
+	}
+	
+	@Override
+	public void Render(Shader shader, RenderingEngine renderingEngine)
+	{
+		this.m_renderingEngine = renderingEngine;
 	}
 
 }

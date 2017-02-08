@@ -141,9 +141,11 @@ public class TestGame extends Game
 		GameObject testMesh3 = new GameObject().AddComponent(new LookAtComponent()).AddComponent(new MeshRenderer(tempMesh, material));
 
 		GameObject player = (new GameObject().AddComponent(new FreeLook(0.5f)).AddComponent(new FreeMove(10.0f))
-						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(70.0f),
+						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(90.0f),
 								(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f))));
 
+		player.GetTransform().GetPos().Set(5, 2, 5);
+		
 		AddObject(testMesh3);
 
 		testMesh3.GetTransform().GetPos().Set(15, 5, 5);
