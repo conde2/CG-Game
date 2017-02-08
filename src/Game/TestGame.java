@@ -145,7 +145,7 @@ public class TestGame extends Game
 								(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f))));
 
 		player.GetTransform().GetPos().Set(5, 2, 5);
-		
+
 		AddObject(testMesh3);
 
 		testMesh3.GetTransform().GetPos().Set(15, 5, 5);
@@ -168,11 +168,14 @@ public class TestGame extends Game
 		Player playerComponent = new Player();
 		player.AddComponent(playerComponent);
 		
+		
+		/*
 		GameObject baseLightObject = new GameObject();
 		PointLight light = new PointLight(new Vector3f(1.0f,1.0f,1.0f), 10000.0f, new Attenuation(5.0f, 10.0f, 15.0f));
 		baseLightObject.AddComponent(light);
 		baseLightObject.GetTransform().GetPos().Set(15, 25, 15);
-		AddObject(baseLightObject);
+		AddObject(baseLightObject); 
+		*/
 		
 		
 		AddObject(monkey);

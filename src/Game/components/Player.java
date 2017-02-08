@@ -21,10 +21,13 @@ import Engine.collision.Collider;
 
 import Engine.components.GameComponent;
 import Engine.components.MeshRenderer;
+import Engine.components.SpotLight;
 import Engine.core.Game;
 import Engine.core.GameObject;
 import Engine.core.Input;
+import Engine.core.Quaternion;
 import Engine.core.Vector3f;
+import Engine.rendering.Attenuation;
 import Engine.rendering.Material;
 import Engine.rendering.Mesh;
 import Engine.rendering.RenderingEngine;
@@ -41,6 +44,7 @@ public class Player extends GameComponent
 	private RenderingEngine m_renderingEngine;
 	private ArrayList<GameObject> m_bullets;
 	private int m_score = 0;
+	private GameObject spotLightObject;
 	
 	public Player()
 	{
@@ -70,13 +74,26 @@ public class Player extends GameComponent
 			m_bullets.add(playerBullet);
 			Game.AddObject(playerBullet);
 		}
+		
+		SpotLight spotLight = new SpotLight(new Vector3f(1,1,1), 2.4f,
+				new Attenuation(0,0,0.1f), 0.65f);
+
+		
+		spotLightObject = new GameObject();
+		spotLightObject.AddComponent(spotLight);
+
+		spotLightObject.GetTransform().GetPos().Set(GetTransform().GetPos());
+		//spotLightObject.GetTransform().SetRot(new Quaternion(new Vector3f(0, 1, 0), (float) Math.toRadians(90.0f)));
+		
+		Game.AddObject(spotLightObject);
 
 	}
 	
 	@Override
 	public void Update(float delta)
 	{
-				
+		spotLightObject.GetTransform().SetPos(new Vector3f(GetTransform().GetPos().GetX(), GetTransform().GetPos().GetY() + 0.3f, GetTransform().GetPos().GetZ()));	
+		spotLightObject.GetTransform().SetRot(GetTransform().GetRot());	
 	}
 	
 
