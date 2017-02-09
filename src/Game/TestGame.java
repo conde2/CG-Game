@@ -63,6 +63,19 @@ public class TestGame extends Game
 		Material treeMaterial = new Material(new Texture("wood2.png"), 0, 0,
 				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
 		
+		Material skyMaterial = new Material(new Texture("darksky.jpg"), 0, 0,
+				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+		
+		
+		GameObject skySphere = new GameObject();
+		Mesh skyMesh = new Mesh("Earth.obj");
+		MeshRenderer skyRenderer = new MeshRenderer(skyMesh, skyMaterial);
+		skySphere.AddComponent(skyRenderer);
+		skySphere.GetTransform().GetPos().Set(64, 1, 64);
+		skySphere.GetTransform().SetScale(new Vector3f(-90.0f, -90.0f, -90.0f));
+		skySphere.SetUpdate(false);
+		AddObject(skySphere);
+		
 		float x, z;
 		int count;
 		Random random = new Random(5666778);
@@ -112,6 +125,7 @@ public class TestGame extends Game
 			}
 		}
 
+		
 	
 
 
@@ -141,10 +155,10 @@ public class TestGame extends Game
 		GameObject testMesh3 = new GameObject().AddComponent(new LookAtComponent()).AddComponent(new MeshRenderer(tempMesh, material));
 
 		GameObject player = (new GameObject().AddComponent(new FreeLook(0.5f)).AddComponent(new FreeMove(10.0f))
-						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(90.0f),
+						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(70.0f),
 								(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f))));
 
-		player.GetTransform().GetPos().Set(5, 2, 5);
+		player.GetTransform().GetPos().Set(5, 3, 5);
 
 		AddObject(testMesh3);
 

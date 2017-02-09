@@ -75,7 +75,7 @@ public class Player extends GameComponent
 			Game.AddObject(playerBullet);
 		}
 		
-		SpotLight spotLight = new SpotLight(new Vector3f(1,1,1), 2.4f,
+		SpotLight spotLight = new SpotLight(new Vector3f(1,1,1), 4.4f,
 				new Attenuation(0,0,0.1f), 0.65f);
 
 		
@@ -92,14 +92,15 @@ public class Player extends GameComponent
 	@Override
 	public void Update(float delta)
 	{
-		spotLightObject.GetTransform().SetPos(new Vector3f(GetTransform().GetPos().GetX(), GetTransform().GetPos().GetY() + 0.3f, GetTransform().GetPos().GetZ()));	
+
 		spotLightObject.GetTransform().SetRot(GetTransform().GetRot());	
+		spotLightObject.GetTransform().SetPos(GetTransform().GetPos().Add(GetTransform().GetRot().GetForward().Mul(1.5f)));
 	}
 	
 
 	public void Input(float delta) 
 	{
-		if(Input.IsKeyPressed(GLFW_KEY_SPACE))
+		if(Input.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
 		{
 			System.out.println("SHOOT");
 			for (GameObject bullet : m_bullets)
