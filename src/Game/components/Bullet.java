@@ -23,7 +23,7 @@ import Engine.core.Vector3f;
 public class Bullet extends GameComponent
 {
 	public Vector3f m_direction = new Vector3f(0,0,0);
-	public float m_speed = 1.0f;
+	public float m_speed = 30.0f;
 	public float m_initialLifeTime = 10.0f;
 	public float m_lifeTime = 10.0f;
 	
@@ -52,7 +52,7 @@ public class Bullet extends GameComponent
 	public void Update(float delta)
 	{		
 		m_lifeTime -= delta;
-		GetTransform().SetPos(GetTransform().GetPos().Add(m_direction.Mul(m_speed)));
+		GetTransform().SetPos(GetTransform().GetPos().Add(m_direction.Mul(delta*m_speed)));
 		
 		if (m_lifeTime <= 0)
 		{
@@ -66,10 +66,12 @@ public class Bullet extends GameComponent
 	public void OnCollide(GameObject object)
 	{
 		
-		if (object.GetTag() == "PowerUp")
+		if (object.GetTag() == "Enemy")
 		{
 			object.SetEnabled(false);
+			GetParent().SetEnabled(false);
 		}
+
 	}
 
 }

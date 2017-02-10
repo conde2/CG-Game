@@ -43,7 +43,9 @@ public class Collider extends GameComponent
 		if(!m_debug)
 			return;
 		
-		
+		if (m_boundingCollider == null)
+			return;
+			
 		int stacks = 15;
 		int slices = 15;
 		float PI = (float)Math.PI;

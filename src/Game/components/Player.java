@@ -25,14 +25,12 @@ import Engine.components.SpotLight;
 import Engine.core.Game;
 import Engine.core.GameObject;
 import Engine.core.Input;
-import Engine.core.Quaternion;
 import Engine.core.Vector3f;
 import Engine.rendering.Attenuation;
 import Engine.rendering.Material;
 import Engine.rendering.Mesh;
-import Engine.rendering.RenderingEngine;
-import Engine.rendering.Shader;
 import Engine.rendering.Texture;
+import Engine.rendering.Window;
 
 import java.util.ArrayList;
 
@@ -41,9 +39,8 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Player extends GameComponent
 {
 
-	private RenderingEngine m_renderingEngine;
 	private ArrayList<GameObject> m_bullets;
-	private int m_score = 0;
+
 	private GameObject spotLightObject;
 	
 	public Player()
@@ -59,20 +56,26 @@ public class Player extends GameComponent
 		Material bulletMaterial = new Material(new Texture("wood2.png"), 0, 0,
 				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
 
-		for(int i = 0; i < 50; i++)
+		for(int i = 0; i < 20; i++)
 		{
-			GameObject playerBullet = new GameObject();
-			
-			Mesh bullet = new Mesh("sheep.obj" );
-			MeshRenderer bulletRederer = new MeshRenderer(bullet, bulletMaterial);
-			playerBullet.AddComponent(bulletRederer);
+			GameObject bullet = new GameObject();
+			bullet.SetEnabled(false);
+			bullet.SetTag("Bullet");
+
+			Mesh bulletMesh = new Mesh("sheep.obj" );
+			MeshRenderer bulletRederer = new MeshRenderer(bulletMesh, bulletMaterial);
+			bullet.AddComponent(bulletRederer);
 			
 			Bullet bulletComponent = new Bullet();
-			playerBullet.AddComponent(bulletComponent);
+			bullet.AddComponent(bulletComponent);
 
-			playerBullet.SetEnabled(false);
-			m_bullets.add(playerBullet);
-			Game.AddObject(playerBullet);
+			BoundingSphere bulletBoudingSphere = new BoundingSphere(bullet.GetTransform().GetPos(), 1);
+			Collider bulletCollider = new Collider(bulletBoudingSphere);
+			bullet.AddComponent(bulletCollider);
+			
+
+			m_bullets.add(bullet);
+			Game.AddObject(bullet);
 		}
 		
 		SpotLight spotLight = new SpotLight(new Vector3f(1,1,1), 4.4f,
@@ -100,9 +103,9 @@ public class Player extends GameComponent
 
 	public void Input(float delta) 
 	{
-		if(Input.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
+		if(Input.IsKeyPressed(GLFW_KEY_SPACE))
 		{
-			System.out.println("SHOOT");
+			//System.out.println("SHOOT");
 			for (GameObject bullet : m_bullets)
 			{
 				if(bullet.IsEnabled())
@@ -122,16 +125,10 @@ public class Player extends GameComponent
 	public void OnCollide(GameObject object)
 	{
 		
-		if (object.GetTag() == "PowerUp")
+		if (object.GetTag() == "Enemy")
 		{
-			object.SetEnabled(false);
+
+			System.out.println("LOOSE");
 		}
 	}
-	
-	@Override
-	public void Render(Shader shader, RenderingEngine renderingEngine)
-	{
-		this.m_renderingEngine = renderingEngine;
-	}
-
 }
