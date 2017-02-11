@@ -71,6 +71,13 @@ public class EnemyManager extends GameComponent
 
 	}
 	
+	public void HideAll(){
+		for (GameObject enemy: m_enemies){
+			enemy.SetEnabled(false);
+		}
+		
+	}
+	
 	public void Spawn(GameObject object)
 	{
 

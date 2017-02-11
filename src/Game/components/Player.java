@@ -130,7 +130,7 @@ public class Player extends GameComponent
 		if (object.GetTag() == "Enemy")
 		{
 			System.out.println("PlayerXEnemy"+coliderCounter++);
-			CoreEngine.Stop();
+			GetParent().GetEngine().Reset();
 		}
 	}
 }

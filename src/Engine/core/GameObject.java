@@ -233,4 +233,8 @@ public class GameObject
 				child.SetEngine(engine);
 		}
 	}
+	
+	public CoreEngine GetEngine(){
+		return m_engine;
+	}
 }

@@ -26,10 +26,6 @@ public class Main
 		CoreEngine engine = new CoreEngine(1366, 768, 60, new TestGame());
 		engine.CreateWindow("Alone? in the Dark");
 		engine.Start();
-		/*while(!Window.IsCloseRequested()){
-			engine.SetGame(new TestGame());
-			engine.Start();
-		}*/
 		engine.CleanUp();
 	}
 }

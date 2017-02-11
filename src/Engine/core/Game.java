@@ -95,4 +95,6 @@ public abstract class Game
 	}
 
 	public void SetEngine(CoreEngine engine) { GetRootObject().SetEngine(engine); }
+	
+	public void Reset(){}
 }

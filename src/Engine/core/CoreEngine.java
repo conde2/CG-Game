@@ -26,8 +26,8 @@ import Engine.rendering.Window;
 
 public class CoreEngine
 {
-	private static boolean  m_isRunning;
-	private static boolean  m_isPaused;
+	private boolean  m_isRunning;
+	private boolean  m_isPaused;
 	private Game            m_game;
 	private RenderingEngine m_renderingEngine;
 	private int             m_width;
@@ -59,7 +59,7 @@ public class CoreEngine
 		Run();
 	}
 	
-	public static void Stop()
+	public void Stop()
 	{
 		if(!m_isRunning)
 			return;
@@ -67,11 +67,11 @@ public class CoreEngine
 		m_isRunning = false;
 	}
 	
-	public static void Pause()
+	public void Pause()
 	{
 		m_isPaused = true;
 	}
-	public static void Resume()
+	public void Resume()
 	{
 		m_isPaused = false;
 	}
@@ -105,7 +105,8 @@ public class CoreEngine
 				
 				unprocessedTime -= m_frameTime;
 				
-				//if(Window.IsCloseRequested())			Stop();
+				if(Window.IsCloseRequested())			
+					Stop();
 				m_game.Input((float) m_frameTime);
 				if(!m_isRunning)
 					continue;
@@ -115,10 +116,10 @@ public class CoreEngine
 				}
 				else{
 					if(Input.IsKeyDown(GLFW_KEY_Y)){
-						CoreEngine.Resume();
+						this.Resume();
 					}
 					if(Input.IsKeyDown(GLFW_KEY_N)){
-						CoreEngine.Stop();
+						this.Stop();
 					}
 				}
 				if(frameCounter >= 1.0)
@@ -157,13 +158,7 @@ public class CoreEngine
 	public RenderingEngine GetRenderingEngine() {
 		return m_renderingEngine;
 	}
-	public void ResetRenderingEngine(){
-		this.m_renderingEngine = new RenderingEngine();
-	}
-	public void SetGame(Game game){
-		m_game=game;
-		this.m_renderingEngine = new RenderingEngine();
-		game.SetEngine(this);
-		
+	public void Reset(){
+		m_game.Reset();
 	}
 }

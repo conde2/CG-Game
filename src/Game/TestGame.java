@@ -48,6 +48,9 @@ import Game.components.Player;
 
 public class TestGame extends Game
 {
+	GameObject player 		= null;
+	GameObject enemyManager = null;
+	
 	public void Init()
 	{
 		
@@ -145,7 +148,7 @@ public class TestGame extends Game
 		AddObject(pointLightObject);
 		AddObject(spotLightObject);
 
-		GameObject player = (new GameObject().AddComponent(new FreeLook(0.5f)).AddComponent(new FreeMove(10.0f))
+		player = (new GameObject().AddComponent(new FreeLook(0.5f)).AddComponent(new FreeMove(10.0f))
 						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(70.0f),
 								(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f))));
 
@@ -159,13 +162,19 @@ public class TestGame extends Game
 		player.AddComponent(playerComponent);
 		
 
-		GameObject enemyManager = new GameObject();
+		enemyManager = new GameObject();
 		EnemyManager enemyManagerComponent = new EnemyManager();
 		enemyManager.AddComponent(enemyManagerComponent);
 		
 		//AddObject(monkey);
 		AddObject(player);
 		AddObject(enemyManager);
+		
+	}
+	
+	public void Reset(){
+		player.GetTransform().GetPos().Set(5, 3, 5);//Reseta pra posição inciial
+		enemyManager.GetComponent(EnemyManager.class).HideAll(); // esconde todos os inimigos
 		
 	}
 }
