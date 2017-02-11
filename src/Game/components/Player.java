@@ -22,6 +22,7 @@ import Engine.collision.Collider;
 import Engine.components.GameComponent;
 import Engine.components.MeshRenderer;
 import Engine.components.SpotLight;
+import Engine.core.CoreEngine;
 import Engine.core.Game;
 import Engine.core.GameObject;
 import Engine.core.Input;
@@ -38,7 +39,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends GameComponent
 {
-
+	private int coliderCounter=0;
+	
 	private ArrayList<GameObject> m_bullets;
 
 	private GameObject spotLightObject;
@@ -127,8 +129,8 @@ public class Player extends GameComponent
 		
 		if (object.GetTag() == "Enemy")
 		{
-
-			System.out.println("LOOSE");
+			System.out.println("PlayerXEnemy"+coliderCounter++);
+			CoreEngine.Stop();
 		}
 	}
 }
