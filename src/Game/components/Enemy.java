@@ -50,4 +50,17 @@ public class Enemy extends GameComponent
 	{
 		this.m_renderingEngine = renderingEngine;
 	}
+	
+	public void OnCollide(GameObject object)
+	{
+		
+		if (object.GetTag() == "Enemy")
+		{
+			if(object.IsEnabled()){
+				System.out.println("EnemyXEnemy");
+				object.SetEnabled(false);
+			}
+			
+		}
+	}
 }

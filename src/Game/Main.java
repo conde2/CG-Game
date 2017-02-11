@@ -24,12 +24,12 @@ public class Main
 	public static void main(String[] args)
 	{
 		CoreEngine engine = new CoreEngine(1366, 768, 60, new TestGame());
-		engine.CreateWindow("Asteroids");
+		engine.CreateWindow("Alone? in the Dark");
 		engine.Start();
-		while(!Window.IsCloseRequested()){
+		/*while(!Window.IsCloseRequested()){
 			engine.SetGame(new TestGame());
 			engine.Start();
-		}
+		}*/
 		engine.CleanUp();
 	}
 }

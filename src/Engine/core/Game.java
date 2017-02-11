@@ -65,10 +65,10 @@ public abstract class Game
 					{
 						component.OnCollide(other);
 					}
-					for(GameComponent component : other.GetAllComponents()) 
+					/*for(GameComponent component : other.GetAllComponents()) 
 					{
 						component.OnCollide(child);
-					}
+					}*/
 				}
 
 			}

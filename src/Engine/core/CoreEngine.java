@@ -105,9 +105,10 @@ public class CoreEngine
 				
 				unprocessedTime -= m_frameTime;
 				
-				if(Window.IsCloseRequested())
-					Stop();
+				//if(Window.IsCloseRequested())			Stop();
 				m_game.Input((float) m_frameTime);
+				if(!m_isRunning)
+					continue;
 				Input.Update();
 				if(!m_isPaused){				
 				m_game.Update((float) m_frameTime);
@@ -156,7 +157,13 @@ public class CoreEngine
 	public RenderingEngine GetRenderingEngine() {
 		return m_renderingEngine;
 	}
+	public void ResetRenderingEngine(){
+		this.m_renderingEngine = new RenderingEngine();
+	}
 	public void SetGame(Game game){
 		m_game=game;
+		this.m_renderingEngine = new RenderingEngine();
+		game.SetEngine(this);
+		
 	}
 }
