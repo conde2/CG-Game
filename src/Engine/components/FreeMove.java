@@ -56,7 +56,20 @@ public class FreeMove extends GameComponent
 			Move(GetTransform().GetRot().GetLeft(), movAmt);
 		if(Input.IsKeyDown(m_rightKey))
 			Move(GetTransform().GetRot().GetRight(), movAmt);
+		//LIMITANDO MOVIMENTO
+		if(GetTransform().GetPos().GetX()>66.0f)
+			GetTransform().GetPos().SetX(66.0f);
+		if(GetTransform().GetPos().GetX()<0.0f)
+			GetTransform().GetPos().SetX(0.0f);
+		if(GetTransform().GetPos().GetZ()>66.0)
+			GetTransform().GetPos().SetZ(66.0f);
+		if(GetTransform().GetPos().GetZ()<0.0f)
+			GetTransform().GetPos().SetZ(0.0f);
+		
+		
 	}
+	
+	
 
 	private void Move(Vector3f dir, float amt)
 	{
