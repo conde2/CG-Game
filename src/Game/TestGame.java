@@ -84,31 +84,34 @@ public class TestGame extends Game
 				count = ThreadLocalRandom.current().nextInt(0, 3);
 				for (int k = 0; k < count; k++)
 				{
-					x = ThreadLocalRandom.current().nextInt(0, 16);
-					z = ThreadLocalRandom.current().nextInt(0, 16);
+					x = ThreadLocalRandom.current().nextInt(-4, 12);
+					z = ThreadLocalRandom.current().nextInt(-4, 12);
 					
 					GameObject treeObject = new GameObject();
 					Mesh tree = new Mesh("tree2.obj" );
 					MeshRenderer treeRederer = new MeshRenderer(tree, treeMaterial);
 					treeObject.AddComponent(treeRederer);
-					treeObject.GetTransform().GetPos().Set(i*16 + x, 0, j*16 + z);
+					treeObject.GetTransform().GetPos().Set((i*16 + x)%72.0f, 0, (j*16 + z)%72.0f);
 					treeObject.SetUpdate(false);
 					AddObject(treeObject);
+
+					System.out.println(treeObject.GetTransform().GetPos());
 				}
 
 				count = ThreadLocalRandom.current().nextInt(1, 6);
 				for (int k = 0; k < count; k++)
 				{
-					x = ThreadLocalRandom.current().nextInt(0, 16);
-					z = ThreadLocalRandom.current().nextInt(0, 16);
+					x = ThreadLocalRandom.current().nextInt(-4, 12);
+					z = ThreadLocalRandom.current().nextInt(-4, 12);
 					
 					GameObject grassObject = new GameObject();
 					Mesh grass = new Mesh("grass"  + ThreadLocalRandom.current().nextInt(1, 3) + ".obj");
 					MeshRenderer grassRenderer = new MeshRenderer(grass, grassMaterial);
 					grassObject.AddComponent(grassRenderer);
-					grassObject.GetTransform().GetPos().Set(i*16 + x, 0, j*16 + z);
+					grassObject.GetTransform().GetPos().Set((i*16 + x)%72.0f, 0, (j*16 + z)%72.0f);
 					grassObject.SetUpdate(false);
 					AddObject(grassObject);
+					System.out.println(grassObject.GetTransform().GetPos());
 				}
 				
 				GameObject planeObject = new GameObject();
