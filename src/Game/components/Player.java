@@ -85,7 +85,7 @@ public class Player extends GameComponent
 		plano.AddComponent(planoRenderer);
 		Game.AddObject(plano);
 		plano.GetTransform().SetPos(GetTransform().GetPos());
-		plano.GetTransform().SetRot(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(90.0f)));
+		plano.GetTransform().SetRot(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-90.0f)));
 		plano.SetEnabled(true);
 		plano.GetTransform().SetScale(new Vector3f(0.1f, 0.1f, 0.1f));
 		plano.GetTransform().GetPos().Set(GetTransform().GetPos());
@@ -99,7 +99,6 @@ public class Player extends GameComponent
 		spotLightObject.AddComponent(spotLight);
 
 		spotLightObject.GetTransform().GetPos().Set(GetTransform().GetPos());
-		//spotLightObject.GetTransform().SetRot(new Quaternion(new Vector3f(0, 1, 0), (float) Math.toRadians(90.0f)));
 		
 		Game.AddObject(spotLightObject);
 
@@ -110,7 +109,12 @@ public class Player extends GameComponent
 	{
 		spotLightObject.GetTransform().SetRot(GetTransform().GetRot());
 		spotLightObject.GetTransform().SetPos(GetTransform().GetPos().Add(GetTransform().GetRot().GetForward().Mul(1.5f)));
-		plano.GetTransform().SetPos(GetTransform().GetPos().Add(GetTransform().GetRot().GetForward().Mul(10.5f)));
+		// score
+		plano.GetTransform().SetPos(GetTransform().GetPos()
+				.Add(GetTransform().GetRot().GetForward().Mul(10.5f))	// em frente
+				.Add(GetTransform().GetRot().GetUp().Mul(6.5f))			// acima
+				.Add(GetTransform().GetRot().GetLeft().Mul(12))			// esquerda
+		);
 	}
 	
 
