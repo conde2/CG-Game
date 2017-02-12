@@ -18,24 +18,18 @@ package Game.components;
 
 import Engine.collision.BoundingSphere;
 import Engine.collision.Collider;
-
 import Engine.components.GameComponent;
 import Engine.components.MeshRenderer;
 import Engine.components.SpotLight;
-import Engine.core.CoreEngine;
-import Engine.core.Game;
-import Engine.core.GameObject;
-import Engine.core.Input;
-import Engine.core.Vector3f;
+import Engine.core.*;
 import Engine.rendering.Attenuation;
 import Engine.rendering.Material;
 import Engine.rendering.Mesh;
 import Engine.rendering.Texture;
-import Engine.rendering.Window;
 
 import java.util.ArrayList;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 public class Player extends GameComponent
 {
@@ -44,6 +38,7 @@ public class Player extends GameComponent
 	private ArrayList<GameObject> m_bullets;
 
 	private GameObject spotLightObject;
+	private GameObject plano;
 	
 	public Player()
 	{
@@ -79,6 +74,22 @@ public class Player extends GameComponent
 			m_bullets.add(bullet);
 			Game.AddObject(bullet);
 		}
+
+		plano = new GameObject();
+		plano.SetEnabled(false);
+		plano.SetTag("plano");
+		Mesh planoMesh = new Mesh("plane3.obj");
+		Material planoMaterial = new Material(new Texture("numbers/"+String.valueOf(1)+".png"), 0, 0,
+				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+		MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
+		plano.AddComponent(planoRenderer);
+		Game.AddObject(plano);
+		plano.GetTransform().SetPos(GetTransform().GetPos());
+		plano.GetTransform().SetRot(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(90.0f)));
+		plano.SetEnabled(true);
+		plano.GetTransform().SetScale(new Vector3f(0.1f, 0.1f, 0.1f));
+		plano.GetTransform().GetPos().Set(GetTransform().GetPos());
+
 		
 		SpotLight spotLight = new SpotLight(new Vector3f(1,1,1), 4.4f,
 				new Attenuation(0,0,0.1f), 0.65f);
@@ -97,9 +108,9 @@ public class Player extends GameComponent
 	@Override
 	public void Update(float delta)
 	{
-
-		spotLightObject.GetTransform().SetRot(GetTransform().GetRot());	
+		spotLightObject.GetTransform().SetRot(GetTransform().GetRot());
 		spotLightObject.GetTransform().SetPos(GetTransform().GetPos().Add(GetTransform().GetRot().GetForward().Mul(1.5f)));
+		plano.GetTransform().SetPos(GetTransform().GetPos().Add(GetTransform().GetRot().GetForward().Mul(10.5f)));
 	}
 	
 
@@ -126,8 +137,7 @@ public class Player extends GameComponent
 	@Override
 	public void OnCollide(GameObject object)
 	{
-		
-		if (object.GetTag() == "Enemy")
+		if (object.GetTag().equals("Enemy"))
 		{
 			System.out.println("PlayerXEnemy"+coliderCounter++);
 			GetParent().GetEngine().Reset();
