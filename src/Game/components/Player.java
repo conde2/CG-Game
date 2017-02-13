@@ -49,8 +49,8 @@ public class Player extends GameComponent
 		// Player life
 		m_bullets = new ArrayList<GameObject>();
 
-		Material bulletMaterial = new Material(new Texture("wood2.png"), 0, 0,
-				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+		Material bulletMaterial = new Material(new Texture("green.png"), 0, 0,
+				new Texture("grassRock2.jpg"), new Texture("elk.png"), 0.0f, 0.0f);
 
 		for(int i = 0; i < 20; i++)
 		{
@@ -58,12 +58,14 @@ public class Player extends GameComponent
 			bullet.SetEnabled(false);
 			bullet.SetTag("Bullet");
 
-			Mesh bulletMesh = new Mesh("sheep.obj" );
+			Mesh bulletMesh = new Mesh("metapod.obj" );
 			MeshRenderer bulletRederer = new MeshRenderer(bulletMesh, bulletMaterial);
 			bullet.AddComponent(bulletRederer);
 			
 			Bullet bulletComponent = new Bullet();
 			bullet.AddComponent(bulletComponent);
+			bullet.GetTransform().SetScale(new Vector3f(0.005f,0.005f,0.005f));
+			
 
 			BoundingSphere bulletBoudingSphere = new BoundingSphere(bullet.GetTransform().GetPos(), 1);
 			Collider bulletCollider = new Collider(bulletBoudingSphere);
