@@ -85,41 +85,6 @@ public class Player extends GameComponent
 		spotLightObject.GetTransform().GetPos().Set(GetTransform().GetPos());
 		
 		Game.AddObject(spotLightObject);
-
-
-//		for (int i = 0; i < 3; i++) {
-//			GameObject plano = new GameObject();
-//			plano.SetEnabled(false);
-//			plano.SetTag("plano");
-//			Mesh planoMesh = new Mesh("plane3.obj");
-//			Material planoMaterial = new Material(new Texture("numbers/"+String.valueOf(i)+".png"), 0, 0,
-//					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
-//			MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
-//			plano.AddComponent(planoRenderer);
-//			plano.GetTransform().SetRot(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(90.0f)));
-//			plano.SetEnabled(true);
-//			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
-//			plano.GetTransform().GetPos().Set(new Vector3f(30-(i*3), 2, -8));
-//			planosScore.add(plano);
-//			Game.AddObject(plano);
-//		}
-//		for (int i = 0; i < 3; i++) {
-//			GameObject plano = new GameObject();
-//			plano.SetEnabled(false);
-//			plano.SetTag("plano");
-//			Mesh planoMesh = new Mesh("plane3.obj");
-//			Material planoMaterial = new Material(new Texture("numbers/"+String.valueOf(i)+".png"), 0, 0,
-//					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
-//			MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
-//			plano.AddComponent(planoRenderer);
-//			plano.GetTransform().SetRot(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(90.0f)));
-//			plano.SetEnabled(true);
-//			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
-//			plano.GetTransform().GetPos().Set(new Vector3f(30-(i*3), 2, -8));
-//			planosScore.add(plano);
-//			Game.AddObject(plano);
-//		}
-
 	}
 	
 	@Override

@@ -152,7 +152,7 @@ public class TestGame extends Game
 		//AddObject(monkey);
 		AddObject(player);
 		AddObject(enemyManager);
-		
+
 		planosScore = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			GameObject plano = new GameObject();
@@ -168,7 +168,7 @@ public class TestGame extends Game
 			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
 			plano.GetTransform().GetPos().Set(new Vector3f(30-(i*3), 2, -8));
 			planosScore.add(plano);
-			AddObject(plano);
+			Game.AddObject(plano);
 		}
 		for (int i = 3; i < 6; i++) {
 			GameObject plano = new GameObject();
@@ -179,20 +179,50 @@ public class TestGame extends Game
 					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
 			MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
 			plano.AddComponent(planoRenderer);
-			plano.GetTransform().SetRot(new Quaternion(new Vector3f(-1, 0, 0), (float) Math.toRadians(-90.0f)));
+			plano.GetTransform().SetRot(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(-90.0f)));
+			plano.GetTransform().Rotate(new Vector3f(0, 0, 1), (float) Math.toRadians(180.0f));
 			plano.SetEnabled(true);
 			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
-			plano.GetTransform().GetPos().Set(new Vector3f(40-(i*3), 2, 72));
+			plano.GetTransform().GetPos().Set(new Vector3f(30-((i-3)*3), 2, 72));
 			planosScore.add(plano);
-			AddObject(plano);
+			Game.AddObject(plano);
 		}
-		
-		
-		
+		for (int i = 6; i < 9; i++) {
+			GameObject plano = new GameObject();
+			plano.SetEnabled(false);
+			plano.SetTag("plano");
+			Mesh planoMesh = new Mesh("plane3.obj");
+			Material planoMaterial = new Material(new Texture("numbers/0.png"), 0, 0,
+					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+			MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
+			plano.AddComponent(planoRenderer);
+			plano.GetTransform().SetRot(new Quaternion(new Vector3f(0, 0, 1), (float) Math.toRadians(90.0f)));
+			plano.SetEnabled(true);
+			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
+			plano.GetTransform().GetPos().Set(new Vector3f(-8, 2, 30-((i-6)*3)));
+			planosScore.add(plano);
+			Game.AddObject(plano);
+		}
+		for (int i = 9; i < 12; i++) {
+			GameObject plano = new GameObject();
+			plano.SetEnabled(false);
+			plano.SetTag("plano");
+			Mesh planoMesh = new Mesh("plane3.obj");
+			Material planoMaterial = new Material(new Texture("numbers/0.png"), 0, 0,
+					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+			MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
+			plano.AddComponent(planoRenderer);
+			plano.GetTransform().SetRot(new Quaternion(new Vector3f(0, 0, 1), (float) Math.toRadians(90.0f)));
+			plano.GetTransform().Rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(90.0f));
+			plano.SetEnabled(true);
+			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
+			plano.GetTransform().GetPos().Set(new Vector3f(72, 2, 30-((i-9)*3)));
+			planosScore.add(plano);
+			Game.AddObject(plano);
+		}
 	}
-	
-	public static void addScore(int points)
-	{
+
+	public static void addScore(int points) {
 		mScore += points;
 		// units
 		int num = mScore % 10;
@@ -200,6 +230,8 @@ public class TestGame extends Game
 				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
 		planosScore.get(2).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
 		planosScore.get(3).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+		planosScore.get(6).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+		planosScore.get(11).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
 		for (int i=2; i<=3; i++)//i=2 dezena, 3 centena, 4 milhar...
 		{
 			int div = (int) Math.pow(10, i);
@@ -209,6 +241,9 @@ public class TestGame extends Game
 			planoMaterial = new Material(new Texture("numbers/"+String.valueOf(num)+".png"), 0, 0,
 					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
 			planosScore.get(3-i).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+			planosScore.get(i+2).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+			planosScore.get(i+5).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+			planosScore.get(12-i).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
 		}
 	}
 
