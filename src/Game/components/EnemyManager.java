@@ -25,6 +25,7 @@ import Engine.collision.Collider;
 import Engine.components.GameComponent;
 import Engine.components.MeshRenderer;
 import Engine.core.GameObject;
+import Engine.core.Quaternion;
 import Engine.core.Vector3f;
 import Engine.rendering.Material;
 import Engine.rendering.Mesh;
@@ -54,17 +55,19 @@ public class EnemyManager extends GameComponent
 			enemy.SetEnabled(false);
 			enemy.SetTag("Enemy");
 
-			Material enemyMaterial = new Material(new Texture("bricks2.jpg"), 1, 8,
-					new Texture("bricks2_normal.png"), new Texture("bricks2_disp.jpg"), 0.04f, -1.0f);
+			Material enemyMaterial = new Material(new Texture("pokeball.png"), 1, 8,
+					new Texture("t4.png"), new Texture("bricks2_disp.jpg"), 0.04f, -1.0f);
 
-			Mesh enemyMesh = new Mesh("monkey3.obj");
+			Mesh enemyMesh = new Mesh("pokeball.obj");
 
 			enemy.AddComponent(new Enemy()).AddComponent(new MeshRenderer(enemyMesh, enemyMaterial));
 
 			BoundingSphere boundingSphere = new BoundingSphere(enemy.GetTransform().GetPos(), 2);
 			Collider collider = new Collider(boundingSphere);
 			enemy.AddComponent(collider);
-
+			
+			enemy.GetTransform().SetScale(new Vector3f(0.01f,0.01f,0.01f));
+			
 			Game.AddObject(enemy);
 			m_enemies.add(enemy);
 		}
