@@ -1,4 +1,7 @@
 # CG-Game
+
+### Arquivo contendo manual se encontra nessa branch com o nome Manual.pdf
+
 Jogo desenvolvido para a disciplina de Computação Gráfica do departamento de computação da Universidade de São Carlos - UFSCAR
 
 JOGO:Asteroids
