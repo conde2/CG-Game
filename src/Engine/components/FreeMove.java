@@ -65,10 +65,7 @@ public class FreeMove extends GameComponent
 			GetTransform().GetPos().SetZ(66.0f);
 		if(GetTransform().GetPos().GetZ()<0.0f)
 			GetTransform().GetPos().SetZ(0.0f);
-		
-		
 	}
-	
 	
 
 	private void Move(Vector3f dir, float amt)

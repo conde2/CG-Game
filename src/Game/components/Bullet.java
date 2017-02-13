@@ -70,6 +70,7 @@ public class Bullet extends GameComponent
 		{
 			object.SetEnabled(false);
 			GetParent().SetEnabled(false);
+			Player.addScore(1);
 		}
 
 	}

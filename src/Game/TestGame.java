@@ -16,34 +16,16 @@
 
 package Game;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 import Engine.collision.BoundingSphere;
 import Engine.collision.Collider;
-import Engine.components.BaseLight;
-import Engine.components.Camera;
-import Engine.components.DirectionalLight;
-import Engine.components.FreeLook;
-import Engine.components.FreeMove;
-import Engine.components.MeshRenderer;
-import Engine.components.PointLight;
-import Engine.components.SpotLight;
-import Engine.components.Sprite;
-import Engine.core.Game;
-import Engine.core.GameObject;
-import Engine.core.Matrix4f;
-import Engine.core.Quaternion;
-import Engine.core.Vector3f;
-import Engine.rendering.Attenuation;
-import Engine.rendering.Material;
-import Engine.rendering.Mesh;
-import Engine.rendering.Texture;
-import Engine.rendering.Window;
+import Engine.components.*;
+import Engine.core.*;
+import Engine.rendering.*;
 import Game.components.EnemyManager;
-import Game.components.GameManager;
-import Game.components.ObstacleManager;
 import Game.components.Player;
+
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class TestGame extends Game
@@ -123,11 +105,6 @@ public class TestGame extends Game
 				AddObject(planeObject);
 			}
 		}
-
-		
-	
-
-
 			
 		GameObject directionalLightObject = new GameObject();
 		DirectionalLight directionalLight = new DirectionalLight(new Vector3f(0,0,1), 0.4f);
@@ -147,9 +124,9 @@ public class TestGame extends Game
 		spotLightObject.GetTransform().SetRot(new Quaternion(new Vector3f(0, 1, 0), (float) Math.toRadians(90.0f)));
 
 
-		AddObject(directionalLightObject);
-		AddObject(pointLightObject);
-		AddObject(spotLightObject);
+//		AddObject(directionalLightObject);
+//		AddObject(pointLightObject);
+//		AddObject(spotLightObject);
 
 		player = (new GameObject().AddComponent(new FreeLook(0.5f)).AddComponent(new FreeMove(10.0f))
 						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(70.0f),
@@ -176,7 +153,7 @@ public class TestGame extends Game
 	}
 	
 	public void Reset(){
-		player.GetTransform().GetPos().Set(5, 3, 5);//Reseta pra posição inciial
+		player.GetTransform().GetPos().Set(5, 3, 5);//Reseta pra posiï¿½ï¿½o inciial
 		enemyManager.GetComponent(EnemyManager.class).HideAll(); // esconde todos os inimigos
 		
 	}
