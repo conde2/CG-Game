@@ -50,7 +50,7 @@ public class Player extends GameComponent
 		m_bullets = new ArrayList<GameObject>();
 
 		Material bulletMaterial = new Material(new Texture("green.png"), 0, 0,
-				new Texture("grassRock2.jpg"), new Texture("elk.png"), 0.0f, 0.0f);
+				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
 
 		for(int i = 0; i < 20; i++)
 		{

@@ -56,7 +56,7 @@ public class EnemyManager extends GameComponent
 			enemy.SetTag("Enemy");
 
 			Material enemyMaterial = new Material(new Texture("pokeball.png"), 1, 8,
-					new Texture("elk.png"), new Texture("bricks2_disp.jpg"), 0.04f, -1.0f);
+					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
 
 			Mesh enemyMesh = new Mesh("pokeball.obj");
 
