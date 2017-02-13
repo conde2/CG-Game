@@ -6,7 +6,7 @@ AUTORES:
 		Raphael Adamski 495913
 		Joao Pasqualini	558338
 		Danilo Cardoso	413437
-REPOSITORIO: https://github.com/conde2/CG-Game/edit/game3D com JAR incluido
+REPOSITORIO: https://github.com/conde2/CG-Game/tree/game3D com JAR incluido
 
 COMO EXECUTAR: 
 1# é possivel pegar o codigo no repositório com todas as dependencias
