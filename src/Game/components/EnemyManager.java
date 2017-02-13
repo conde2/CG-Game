@@ -84,9 +84,10 @@ public class EnemyManager extends GameComponent
 	public void Spawn(GameObject object)
 	{
 
-		int x = ThreadLocalRandom.current().nextInt(0, 40);
-		int z = ThreadLocalRandom.current().nextInt(0, 40);
-		object.GetTransform().SetPos(new Vector3f(x, 5, z));
+		int x = ThreadLocalRandom.current().nextInt(0, 70);
+		int z = ThreadLocalRandom.current().nextInt(0, 70);
+		
+		object.GetTransform().SetPos(new Vector3f(x, 8, z));
 		object.SetEnabled(true);	
 	}
 

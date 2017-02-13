@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Collider extends GameComponent
 {
-	boolean m_debug = true;
+	boolean m_debug = false;
 
 	private BoundingCollider m_boundingCollider = null;
 	public Collider(BoundingCollider boundingCollider)
