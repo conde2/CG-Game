@@ -4,12 +4,13 @@
 
 Jogo desenvolvido para a disciplina de Computação Gráfica do departamento de computação da Universidade de São Carlos - UFSCAR
 
-JOGO:Asteroids
+JOGO:Alone? - In the Dark
 AUTORES: 
 		Raphael Adamski 495913
 		Joao Pasqualini	558338
 		Danilo Cardoso	413437
 REPOSITORIO: https://github.com/conde2/CG-Game/tree/game3D com JAR incluido
+VIDEO: https://youtu.be/mfeW6YZP3Aw
 
 COMO EXECUTAR: 
 1# é possivel pegar o codigo no repositório com todas as dependencias
