@@ -19,6 +19,7 @@ package Game.components;
 import Engine.components.GameComponent;
 import Engine.core.GameObject;
 import Engine.core.Vector3f;
+import Game.TestGame;
 
 public class Bullet extends GameComponent
 {
@@ -70,7 +71,7 @@ public class Bullet extends GameComponent
 		{
 			object.SetEnabled(false);
 			GetParent().SetEnabled(false);
-			Player.addScore(1);
+			TestGame.addScore(1);
 		}
 
 	}

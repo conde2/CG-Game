@@ -24,6 +24,7 @@ import Engine.rendering.*;
 import Game.components.EnemyManager;
 import Game.components.Player;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -32,7 +33,9 @@ public class TestGame extends Game
 {
 	GameObject player 		= null;
 	GameObject enemyManager = null;
-	
+	private static ArrayList<GameObject> planosScore;
+	private static int mScore = 0;
+
 	public void Init()
 	{
 		
@@ -124,9 +127,9 @@ public class TestGame extends Game
 		spotLightObject.GetTransform().SetRot(new Quaternion(new Vector3f(0, 1, 0), (float) Math.toRadians(90.0f)));
 
 
-//		AddObject(directionalLightObject);
-//		AddObject(pointLightObject);
-//		AddObject(spotLightObject);
+		AddObject(directionalLightObject);
+		AddObject(pointLightObject);
+		AddObject(spotLightObject);
 
 		player = (new GameObject().AddComponent(new FreeLook(0.5f)).AddComponent(new FreeMove(10.0f))
 						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(70.0f),
@@ -150,60 +153,74 @@ public class TestGame extends Game
 		AddObject(player);
 		AddObject(enemyManager);
 		
+		planosScore = new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			GameObject plano = new GameObject();
+			plano.SetEnabled(false);
+			plano.SetTag("plano");
+			Mesh planoMesh = new Mesh("plane3.obj");
+			Material planoMaterial = new Material(new Texture("numbers/0.png"), 0, 0,
+					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+			MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
+			plano.AddComponent(planoRenderer);
+			plano.GetTransform().SetRot(new Quaternion(new Vector3f(1, 0, 0), (float) Math.toRadians(90.0f)));
+			plano.SetEnabled(true);
+			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
+			plano.GetTransform().GetPos().Set(new Vector3f(30-(i*3), 2, -8));
+			planosScore.add(plano);
+			AddObject(plano);
+		}
+		for (int i = 3; i < 6; i++) {
+			GameObject plano = new GameObject();
+			plano.SetEnabled(false);
+			plano.SetTag("plano");
+			Mesh planoMesh = new Mesh("plane3.obj");
+			Material planoMaterial = new Material(new Texture("numbers/0.png"), 0, 0,
+					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+			MeshRenderer planoRenderer = new MeshRenderer(planoMesh, planoMaterial);
+			plano.AddComponent(planoRenderer);
+			plano.GetTransform().SetRot(new Quaternion(new Vector3f(-1, 0, 0), (float) Math.toRadians(-90.0f)));
+			plano.SetEnabled(true);
+			plano.GetTransform().SetScale(new Vector3f(0.2f, 0.2f, 0.2f));
+			plano.GetTransform().GetPos().Set(new Vector3f(40-(i*3), 2, 72));
+			planosScore.add(plano);
+			AddObject(plano);
+		}
+		
+		
+		
+	}
+	
+	public static void addScore(int points)
+	{
+		mScore += points;
+		// units
+		int num = mScore % 10;
+		Material planoMaterial = new Material(new Texture("numbers/"+String.valueOf(num)+".png"), 0, 0,
+				new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+		planosScore.get(2).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+		planosScore.get(3).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+		for (int i=2; i<=3; i++)//i=2 dezena, 3 centena, 4 milhar...
+		{
+			int div = (int) Math.pow(10, i);
+			int remainder = mScore % div;	// remove left numbers
+			int div2 = (int) Math.pow(10, i-1);
+			num = remainder/div2;			// remove right numbers
+			planoMaterial = new Material(new Texture("numbers/"+String.valueOf(num)+".png"), 0, 0,
+					new Texture("default_normal.jpg"), new Texture("default_disp.png"), 0.0f, 0.0f);
+			planosScore.get(3-i).GetComponent(MeshRenderer.class).SetMateria(planoMaterial);
+		}
+	}
+
+	public void resetScore()
+	{
+		mScore = 0;
+		addScore(0);
 	}
 	
 	public void Reset(){
 		player.GetTransform().GetPos().Set(5, 3, 5);//Reseta pra posi��o inciial
 		enemyManager.GetComponent(EnemyManager.class).HideAll(); // esconde todos os inimigos
-		
+		resetScore();
 	}
 }
-
-
-/*public class TestGame extends Game
-{
-	public void Init() {
-		// For text
-
-		// Add our camera
-		GameObject camera = new GameObject();
-		camera.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(90.0f),
-				(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f)));
-
-		GameObject player = new GameObject();
-		player.GetTransform().SetPos(new Vector3f((float) Window.GetWidth() /2,(float) Window.GetHeight()/2,0.0f));
-
-		Player playerComponent = new Player();
-		player.AddComponent(playerComponent);
-		
-		BoundingSphere boundingSphere = new BoundingSphere(player.GetTransform().GetPos(), 13);
-		Collider collider = new Collider(boundingSphere);
-		player.AddComponent(collider);
-
-		player.AddComponent(new FreeMove(78.0f));
-		
-		Sprite playerSprite = new Sprite(new Texture("spaceship.png"), 0.2f);
-		playerSprite.setScale(new Vector3f(0.15f,0.15f,1.0f));
-		playerSprite.SetColor(new Vector3f(1.0f, 1.0f, 1.0f));
-		player.AddComponent(playerSprite);
-		
-		GameObject background = new GameObject();
-		Sprite backgroundSprite = new Sprite(new Texture("background.jpg"), -0.5f);
-		background.AddComponent(backgroundSprite);
-
-		GameObject obstacleManager = new GameObject();
-		ObstacleManager obstacleManagerComponent = new ObstacleManager();
-		obstacleManager.AddComponent(obstacleManagerComponent);
-		
-		GameObject gameManager = new GameObject();
-		GameManager gameManagerComponent = new GameManager();
-		gameManager.AddComponent(gameManagerComponent);
-
-		// Desenhar primeiro os objetos com menor Z !!
-		AddObject(camera);
-		AddObject(background);
-		AddObject(gameManager);
-		AddObject(obstacleManager);
-		AddObject(player);
-	}
-}*/
